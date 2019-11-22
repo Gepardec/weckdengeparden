@@ -1,3 +1,6 @@
+### Application settings ###
+
+config/application.properties
 
 # Created by https://www.gitignore.io/api/vim,java,linux,macos,maven,patch,gradle,windows,eclipse,netbeans,sonarqube,intellij+all,visualstudiocode
 # Edit at https://www.gitignore.io/?templates=vim,java,linux,macos,maven,patch,gradle,windows,eclipse,netbeans,sonarqube,intellij+all,visualstudiocode

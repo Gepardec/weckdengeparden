@@ -1,10 +1,9 @@
 package com.gepardec.wdg.challenge;
 
-import com.gepardec.wdg.challenge.model.AnswerModel;
-
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.concurrent.CompletionStage;
 
 @Path("/challenge")
 public interface ChallengesAPI {
@@ -18,5 +17,5 @@ public interface ChallengesAPI {
     @Path("{id}/answer")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    Response answerChallenge(final String answerModelString);
+    CompletionStage<Response> answerChallenge (final String answerModelString);
 }
