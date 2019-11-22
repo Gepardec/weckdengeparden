@@ -1,0 +1,20 @@
+= weckdengeparden
+
+Simple rest services for challenging applicants.
+
+== Openshift
+
+.Secrets
+[source, bash]
+----
+# Create secret for weckdengeparden
+oc create secret generic weckdengeparden --from-file=application.properties=application.properties -n 57-services
+----
+
+.Build Configurations
+[source,bash]
+----
+# Binary build for uber jar
+oc new-build --binary=true --name=weckdengeparden --docker-image=docker.io/fabric8/s2i-java:3.0-java11 -n 57-services
+oc set triggers bc/weckdengeparden --remove-all -n 57-services
+----
