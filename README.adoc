@@ -21,7 +21,7 @@ Simple rest services for challenging applicants.
 .Request Headers
 [source]
 ----
-Content-Type: applicfation/json
+Content-Type: application/json
 ----
 
 .Request-Body
