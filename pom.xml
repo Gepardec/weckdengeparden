@@ -7,13 +7,20 @@
     <groupId>com.gepardec</groupId>
     <artifactId>wdgid</artifactId>
     <version>0.0.1</version>
-
     <name>WDG</name>
+
     <properties>
+        <!-- Project properties -->
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+        <failOnMissingWebXml>false</failOnMissingWebXml>
+
+        <!-- The revision property for CI-friendly builds -->
+        <revision>0.0.1</revision>
+
         <surefire-plugin.version>2.22.2</surefire-plugin.version>
         <lombock.version>1.18.8</lombock.version>
         <quarkus.version>1.0.0.CR1</quarkus.version>
-        <cxf-codegen-plugin.version>3.3.3</cxf-codegen-plugin.version>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
 
