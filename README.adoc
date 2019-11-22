@@ -17,7 +17,12 @@ Simple rest services for challenging applicants.
 ----
 
 `POST https://weckdengeparden-57-services.cloud.itandtel.at/challenge/1/answer` +
-Provide the following JSON as the body of the request
+
+.Request Headers
+[source]
+----
+Content-Type: applicfation/json
+----
 
 .Request-Body
 [source,json]
