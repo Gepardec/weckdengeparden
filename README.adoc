@@ -6,8 +6,13 @@ Simple rest services for challenging applicants.
 
 `GET https://weckdengeparden-57-services.cloud.itandtel.at/challenge/1` +
 
-.Response
+.Response-Headers
+[source]
+----
+Content-Type: application/json
+----
 
+.Response-Body
 [source,json]
 ----
 {
@@ -18,13 +23,31 @@ Simple rest services for challenging applicants.
 
 `POST https://weckdengeparden-57-services.cloud.itandtel.at/challenge/1/answer` +
 
-.Request Headers
+.Request-Headers
 [source]
 ----
 Content-Type: application/json
 ----
 
 .Request-Body
+[source,json]
+----
+{
+   "firstName": "<YOUR_FIRST_NAME>",
+   "lastName": "<YOUR_LASTNAME>",
+   "email": "<YOUR_EMAIL>",
+   "challengeId": 1,
+   "challengeAnswer": "<YOUR_ANSWER>"
+}
+----
+
+.Response-Headers
+[source]
+----
+Content-Type: application/json
+----
+
+.Response-Body
 [source,json]
 ----
 {
