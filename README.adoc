@@ -36,27 +36,30 @@ Content-Type: application/json
    "firstName": "<YOUR_FIRST_NAME>",
    "lastName": "<YOUR_LASTNAME>",
    "email": "<YOUR_EMAIL>",
-   "challengeId": 1,
-   "challengeAnswer": "<YOUR_ANSWER>"
+   "challengeId": "<CHALLENGE_ID_YOU_ANSWERED>",
+   "challengeAnswer": "<YOUR_ANSWER>",
+   "phone": "<OPTIONAL_YOUR_PHONE>",
+   "cv": "<OPTIONAL_YOUR_CV_IN_BASE64>",
+   "messageToGepardec": "<OPTIONAL_YOUR_MESSAGE_TO_GEPARDEC>"
 }
 ----
 
 .Response-Headers
 [source]
 ----
-Content-Type: application/json
+Content-Type: text/plain
 ----
 
-.Response-Body
-[source,json]
+.Success Response-Body
+[source]
 ----
-{
-   "firstName": "<YOUR_FIRST_NAME>",
-   "lastName": "<YOUR_LASTNAME>",
-   "email": "<YOUR_EMAIL>",
-   "challengeId": 1,
-   "challengeAnswer": "<YOUR_ANSWER>"
-}
+Danke! Du hast den Geparden in dir erweckt und wir melden uns in den nächsten Tagen bei dir! Lg, Michael Sollberger
+----
+
+.Error Response-Body
+[source]
+----
+Sorry, die Antwort ist falsch. Denk' nochmal in Ruhe darüber nach und versuch es noch einmal.
 ----
 
 == Openshift
@@ -96,9 +99,6 @@ oc create secret generic weckdengeparden --from-file=application.properties=appl
 # Binary build for uber jar
 oc new-build --binary=true --name=weckdengeparden --docker-image=docker.io/fabric8/s2i-java:3.0-java11 -n 57-services
 oc set triggers bc/weckdengeparden --remove-all -n 57-services
-
-# Start build with local binary
-oc start-build weckdengeparden --from-file=target/wdg-0.0.1-runner.jar --follow --wait -n 57-services
 ----
 
 .Template
@@ -109,4 +109,14 @@ oc process -f ocp/templates/weckdengeparden.yaml --param-file=ocp/templates/weck
 
 # Delete service resources
 oc process -f ocp/templates/weckdengeparden.yaml --param-file=ocp/templates/weckdengeparden..properties | oc delete -f - -n 57-services
+----
+
+=== Deploy application
+
+.Build Configuration
+
+[source,bash]
+----
+# Start build with local binary
+oc start-build weckdengeparden --from-file=target/wdg-0.0.1-runner.jar --follow --wait -n 57-services
 ----

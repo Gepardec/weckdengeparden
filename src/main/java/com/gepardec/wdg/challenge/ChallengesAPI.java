@@ -16,6 +16,6 @@ public interface ChallengesAPI {
     @POST
     @Path("{id}/answer")
     @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.TEXT_PLAIN)
     CompletionStage<Response> answerChallenge (final String answerModelString);
 }
