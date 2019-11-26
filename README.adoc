@@ -7,6 +7,7 @@ Simple rest services for challenging applicants.
 `GET https://weckdengeparden-57-services.cloud.itandtel.at/challenge/1` +
 
 .Response-Headers
+
 [source]
 ----
 Content-Type: application/json
@@ -24,6 +25,7 @@ Content-Type: application/json
 `POST https://weckdengeparden-57-services.cloud.itandtel.at/challenge/1/answer` +
 
 .Request-Headers
+
 [source]
 ----
 Content-Type: application/json
@@ -62,35 +64,53 @@ Danke! Du hast den Geparden in dir erweckt und wir melden uns in den nächsten T
 Sorry, die Antwort ist falsch. Denk' nochmal in Ruhe darüber nach und versuch es noch einmal.
 ----
 
+== Development
+
+=== Preparations
+
+Sensitive configurations have been externalized and must be added before starting the development.
+Place the following file in the ``/config`` directory.
+
+.application.properties
+[source,properties]
+----
+quarkus.mailer.auth-methods=DIGEST-MD5 CRAM-SHA256 CRAM-SHA1 CRAM-MD5 PLAIN LOGIN
+quarkus.mailer.from=<EMAIL_FROM_ADRESS>
+quarkus.mailer.host=<EMAIL_SMTP_HOST>
+quarkus.mailer.port=<EMAIL_SMTP_PORT>
+quarkus.mailer.ssl=<EMAIL_SSL_ENABLED>
+quarkus.mailer.username=<EMAIL_ACCOUNT_USERNAME>
+quarkus.mailer.password=<EMAIL_ACCOUNT_PASSWORD>
+quarkus.mailer.mock=<EMAIL_MOCK_PROPERTY>
+----
+
+=== Build the application
+
+Build the application with the following command
+
+.Build the uber jar
+[source,bash]
+----
+mvn clean install -Dquarkus.package.uber.jar=true
+----
+
 == Openshift
 
 In this section you see how to setup an Openshift project which hosts the ``weckdengeparden`` service.
 
 === Preparations
 
-Provide an ``application.properties`` file in the root directory of this project which contains the following content
-
-[source,properties]
-----
-quarkus.mailer.username=<EMAIL_ACCOUNT_USERNAME>
-quarkus.mailer.password=<EMAIL_ACCOUNT_PASSWORD>
-quarkus.mailer.from=<EMAIL_SENDER_ADDRESS>
-----
-
-Build the application with the following command
-
-[source,bash]
-----
-mvn clean install -Dquarkus.package.uber.jar=true
-----
+Ensure you have setup up your development environment and that you have built the application.
 
 === Setup
+
+Execute all commands in the root directory of this project.
 
 .Secrets
 [source,bash]
 ----
 # Create secret for weckdengeparden
-oc create secret generic weckdengeparden --from-file=application.properties=application.properties -n 57-services
+oc create secret generic weckdengeparden --from-file=application.properties=config/application.properties -n 57-services
 ----
 
 .Build Configuration
@@ -114,7 +134,6 @@ oc process -f ocp/templates/weckdengeparden.yaml --param-file=ocp/templates/weck
 === Deploy application
 
 .Build Configuration
-
 [source,bash]
 ----
 # Start build with local binary
