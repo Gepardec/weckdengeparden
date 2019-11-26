@@ -20,7 +20,7 @@
 
         <surefire-plugin.version>2.22.2</surefire-plugin.version>
         <lombock.version>1.18.8</lombock.version>
-        <quarkus.version>1.0.0.CR1</quarkus.version>
+        <quarkus.version>1.0.0.Final</quarkus.version>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
 
