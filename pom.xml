@@ -22,6 +22,8 @@
         <lombock.version>1.18.8</lombock.version>
         <quarkus.version>1.0.0.Final</quarkus.version>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <quarkus.package.uber.jar>false</quarkus.package.uber.jar>
     </properties>
 
     <dependencyManagement>
@@ -104,6 +106,9 @@
                         <goals>
                             <goal>build</goal>
                         </goals>
+                        <configuration>
+                            <uberJar>${quarkus.package.uber.jar}</uberJar>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>

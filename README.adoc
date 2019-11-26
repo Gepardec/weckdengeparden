@@ -1,0 +1,122 @@
+= weckdengeparden
+
+Simple rest services for challenging applicants.
+
+== REST Endpoints
+
+`GET https://weckdengeparden-57-services.cloud.itandtel.at/challenge/1` +
+
+.Response-Headers
+[source]
+----
+Content-Type: application/json
+----
+
+.Response-Body
+[source,json]
+----
+{
+   "challenge": 1,
+   "question": "1 Notebook und eine ..."
+}
+----
+
+`POST https://weckdengeparden-57-services.cloud.itandtel.at/challenge/1/answer` +
+
+.Request-Headers
+[source]
+----
+Content-Type: application/json
+----
+
+.Request-Body
+[source,json]
+----
+{
+   "firstName": "<YOUR_FIRST_NAME>",
+   "lastName": "<YOUR_LASTNAME>",
+   "email": "<YOUR_EMAIL>",
+   "challengeId": "<CHALLENGE_ID_YOU_ANSWERED>",
+   "challengeAnswer": "<YOUR_ANSWER>",
+   "phone": "<OPTIONAL_YOUR_PHONE>",
+   "cv": "<OPTIONAL_YOUR_CV_IN_BASE64>",
+   "messageToGepardec": "<OPTIONAL_YOUR_MESSAGE_TO_GEPARDEC>"
+}
+----
+
+.Response-Headers
+[source]
+----
+Content-Type: text/plain
+----
+
+.Success Response-Body
+[source]
+----
+Danke! Du hast den Geparden in dir erweckt und wir melden uns in den nächsten Tagen bei dir! Lg, Michael Sollberger
+----
+
+.Error Response-Body
+[source]
+----
+Sorry, die Antwort ist falsch. Denk' nochmal in Ruhe darüber nach und versuch es noch einmal.
+----
+
+== Openshift
+
+In this section you see how to setup an Openshift project which hosts the ``weckdengeparden`` service.
+
+=== Preparations
+
+Provide an ``application.properties`` file in the root directory of this project which contains the following content
+
+[source,properties]
+----
+quarkus.mailer.username=<EMAIL_ACCOUNT_USERNAME>
+quarkus.mailer.password=<EMAIL_ACCOUNT_PASSWORD>
+quarkus.mailer.from=<EMAIL_SENDER_ADDRESS>
+----
+
+Build the application with the following command
+
+[source,bash]
+----
+mvn clean install -Dquarkus.package.uber.jar=true
+----
+
+=== Setup
+
+.Secrets
+[source,bash]
+----
+# Create secret for weckdengeparden
+oc create secret generic weckdengeparden --from-file=application.properties=application.properties -n 57-services
+----
+
+.Build Configuration
+[source,bash]
+----
+# Binary build for uber jar
+oc new-build --binary=true --name=weckdengeparden --docker-image=docker.io/fabric8/s2i-java:3.0-java11 -n 57-services
+oc set triggers bc/weckdengeparden --remove-all -n 57-services
+----
+
+.Template
+[source,bash]
+----
+# Create service resources
+oc process -f ocp/templates/weckdengeparden.yaml --param-file=ocp/templates/weckdengeparden.properties | oc create -f - -n 57-services
+
+# Delete service resources
+oc process -f ocp/templates/weckdengeparden.yaml --param-file=ocp/templates/weckdengeparden..properties | oc delete -f - -n 57-services
+----
+
+=== Deploy application
+
+.Build Configuration
+
+[source,bash]
+----
+# Start build with local binary
+oc start-build weckdengeparden --from-file=target/wdg-0.0.1-runner.jar --follow --wait -n 57-services
+----
