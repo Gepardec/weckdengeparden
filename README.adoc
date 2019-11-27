@@ -1,6 +1,6 @@
 = weckdengeparden
 
-Simple rest services for challenging applicants.
+Simple rest services for developers who want to apply for a job or internship.
 
 == REST Endpoints
 
@@ -64,7 +64,7 @@ Danke! Du hast den Geparden in dir erweckt und wir melden uns in den nächsten T
 Sorry, die Antwort ist falsch. Denk' nochmal in Ruhe darüber nach und versuch es noch einmal.
 ----
 
-== Development
+== Developer documentation for setting up this project itself (not necessary for applicants)
 
 === Preparations
 
