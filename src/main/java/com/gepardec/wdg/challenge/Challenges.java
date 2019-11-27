@@ -3,10 +3,12 @@ package com.gepardec.wdg.challenge;
 import com.gepardec.wdg.challenge.exception.MissingInformationException;
 import com.gepardec.wdg.challenge.model.AnswerModel;
 import com.gepardec.wdg.challenge.model.QuestionModel;
+import com.google.common.net.MediaType;
 import io.quarkus.mailer.Mail;
 import io.quarkus.mailer.Mailer;
 import lombok.NonNull;
 import org.apache.http.HttpStatus;
+import org.apache.http.entity.ContentType;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.slf4j.Logger;
 
@@ -17,6 +19,8 @@ import javax.json.JsonObject;
 import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbBuilder;
 import javax.ws.rs.core.Response;
+import java.awt.*;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Base64;
 
@@ -49,13 +53,13 @@ public class Challenges implements ChallengesAPI {
 
             LOG.info(String.format("Challenge %d accepted!", id));
 
-            return Response.ok(jsonResponseChallenge.toString()).build();
+            return Response.ok(jsonResponseChallenge.toString()).encoding(StandardCharsets.UTF_8.name()).build();
         }
 
         final String challengeErrorResponse = String.format(JSON_GET_CHALLENGE_RESPONSE_ERROR.toString(), id);
 
         LOG.error(challengeErrorResponse);
-        return Response.status(HttpStatus.SC_BAD_REQUEST).entity(challengeErrorResponse).build();
+        return Response.status(HttpStatus.SC_BAD_REQUEST).encoding(StandardCharsets.UTF_8.name()).entity(challengeErrorResponse).build();
     }
 
     @Override
@@ -65,7 +69,7 @@ public class Challenges implements ChallengesAPI {
 
             if (answerModel == null) {
                 LOG.info("No body data send!");
-                return Response.status(HttpStatus.SC_BAD_REQUEST).build();
+                return Response.status(HttpStatus.SC_BAD_REQUEST).encoding(StandardCharsets.UTF_8.name()).build();
             }
 
             final boolean checkAnswer = checkAnswerModel(answerModel, getQuestionModelforId(answerModel.getChallengeId()));
@@ -78,25 +82,25 @@ public class Challenges implements ChallengesAPI {
 
                 Mail mail = Mail.withText(mailReceiver, formattedMailSubject, formattedMailBody);
                 if (!answerModel.getCv().isBlank()) {
-                    mail = mail.addAttachment("CV", Base64.getDecoder().decode(answerModel.getCv()), "application/pdf");
+                    mail = mail.addAttachment("CV", Base64.getDecoder().decode(answerModel.getCv()), MediaType.PDF.type());
                 }
 
                 mailer.send(mail);
 
-                return Response.ok(CORRECT_ANSWER).build();
+                return Response.ok(CORRECT_ANSWER).encoding(StandardCharsets.UTF_8.name()).build();
             }
 
             LOG.info(WRONG_ANSWER);
 
-            return Response.status(HttpStatus.SC_BAD_REQUEST).entity(WRONG_ANSWER).build();
+            return Response.status(HttpStatus.SC_BAD_REQUEST).encoding(StandardCharsets.UTF_8.name()).entity(WRONG_ANSWER).build();
         }
         catch (MissingInformationException e) {
             LOG.error(e.getMessage());
-            return Response.status(HttpStatus.SC_BAD_REQUEST).entity(String.format(JSON_ANSWERT_CHALLENGE_RESPONSE_ERROR.toString(), e.getMessage())).build();
+            return Response.status(HttpStatus.SC_BAD_REQUEST).encoding(StandardCharsets.UTF_8.name()).entity(String.format(JSON_ANSWERT_CHALLENGE_RESPONSE_ERROR.toString(), e.getMessage())).build();
         }
         catch (Exception e) {
             LOG.error(e.getMessage());
-            return Response.serverError().entity("Es ist ein Fehler aufgetreten ...").build();
+            return Response.serverError().entity("Es ist ein Fehler aufgetreten ...").encoding(StandardCharsets.UTF_8.name()).build();
         }
     }
 

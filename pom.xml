@@ -20,6 +20,7 @@
 
         <surefire-plugin.version>2.22.2</surefire-plugin.version>
         <lombock.version>1.18.8</lombock.version>
+        <google-guava.version>28.1-jre</google-guava.version>
         <quarkus.version>1.0.0.Final</quarkus.version>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
@@ -92,6 +93,11 @@
             <artifactId>lombok</artifactId>
             <version>${lombock.version}</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${google-guava.version}</version>
         </dependency>
     </dependencies>
 
