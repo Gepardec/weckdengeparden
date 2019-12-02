@@ -1,6 +1,13 @@
 = weckdengeparden
 
-Simple rest services for developers who want to apply for a job or internship.
+Lieber zukünftiger Developer-Gepard! Als Software-Developer ist es ja zu einfach, einfach nur ein Bewerbungs-Formular auszufüllen. Wir suchen DICH, wenn du deine Komfortzone verlassen und unser Rudel verstärken willst.
+
+Deshalb haben wir eine kleine technische Herausforderung für dich - ein REST Service, über das du uns deine Bewerbung schickst.
+
+Ich freue mich auf deinen REST-Call ;)
+
+Michael
+
 
 == REST Endpoints
 
