@@ -89,6 +89,14 @@ quarkus.mailer.ssl=<EMAIL_SSL_ENABLED>
 quarkus.mailer.username=<EMAIL_ACCOUNT_USERNAME>
 quarkus.mailer.password=<EMAIL_ACCOUNT_PASSWORD>
 quarkus.mailer.mock=<EMAIL_MOCK_PROPERTY>
+## Perosnio configurations
+personio.company.id=<PERSONIO_COMPANY_ID>
+perosnio.access.token=<PERSONIO_ACCESS_TOKEN>
+# MP-Rest-Client properties
+perosnio/mp-rest/url=https://api.personio.de
+perosnio/mp-rest/scope=javax.enterprise.context.RequestScoped
+perosnio/mp-rest/connectTimeout=2000
+perosnio/mp-rest/readTimeout=2000
 ----
 
 === Build the application
