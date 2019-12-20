@@ -1,6 +1,8 @@
 = weckdengeparden
 
-Lieber zukünftiger Developer-Gepard! Als Software-Developer ist es ja zu einfach, einfach nur ein Bewerbungs-Formular auszufüllen. Wir suchen DICH, wenn du deine Komfortzone verlassen und unser Rudel verstärken willst.
+Lieber zukünftiger Developer-Gepard!
+Als Software-Developer ist es ja zu einfach, einfach nur ein Bewerbungs-Formular auszufüllen.
+Wir suchen DICH, wenn du deine Komfortzone verlassen und unser Rudel verstärken willst.
 
 Deshalb haben wir eine kleine technische Herausforderung für dich - ein REST Service, über das du uns deine Bewerbung schickst.
 
@@ -8,10 +10,23 @@ Ich freue mich auf deinen REST-Call ;)
 
 Michael
 
-
 == REST Endpoints
 
-`GET https://weckdengeparden-57-services.cloud.itandtel.at/challenge/1` +
+`GET https://weckdengeparden-57-services.cloud.itandtel.at/challenge` +
+
+.Response-Body
+
+[source,json]
+----
+[
+  {
+    "challenge": 1,
+    "question": "..."
+  }
+]
+----
+
+`GET https://weckdengeparden-57-services.cloud.itandtel.at/challenge/<CHALLENGE_ID>` +
 
 .Response-Headers
 
@@ -29,7 +44,7 @@ Content-Type: application/json
 }
 ----
 
-`POST https://weckdengeparden-57-services.cloud.itandtel.at/challenge/1/answer` +
+`POST https://weckdengeparden-57-services.cloud.itandtel.at/challenge/<CHALLENGE_ID>/answer` +
 
 .Request-Headers
 
@@ -45,7 +60,6 @@ Content-Type: application/json
    "firstName": "<YOUR_FIRST_NAME>",
    "lastName": "<YOUR_LASTNAME>",
    "email": "<YOUR_EMAIL>",
-   "challengeId": "<CHALLENGE_ID_YOU_ANSWERED>",
    "challengeAnswer": "<YOUR_ANSWER>",
    "phone": "<OPTIONAL_YOUR_PHONE>",
    "cv": "<OPTIONAL_YOUR_CV_IN_BASE64>",
@@ -81,17 +95,9 @@ Place the following file in the ``/config`` directory.
 .application.properties
 [source,properties]
 ----
-quarkus.mailer.auth-methods=DIGEST-MD5 CRAM-SHA256 CRAM-SHA1 CRAM-MD5 PLAIN LOGIN
-quarkus.mailer.from=<EMAIL_FROM_ADRESS>
-quarkus.mailer.host=<EMAIL_SMTP_HOST>
-quarkus.mailer.port=<EMAIL_SMTP_PORT>
-quarkus.mailer.ssl=<EMAIL_SSL_ENABLED>
-quarkus.mailer.username=<EMAIL_ACCOUNT_USERNAME>
-quarkus.mailer.password=<EMAIL_ACCOUNT_PASSWORD>
-quarkus.mailer.mock=<EMAIL_MOCK_PROPERTY>
 ## Perosnio configurations
 personio.company.id=<PERSONIO_COMPANY_ID>
-perosnio.access.token=<PERSONIO_ACCESS_TOKEN>
+personio.access.token=<PERSONIO_ACCESS_TOKEN>
 # MP-Rest-Client properties
 perosnio/mp-rest/url=https://api.personio.de
 perosnio/mp-rest/scope=javax.enterprise.context.RequestScoped

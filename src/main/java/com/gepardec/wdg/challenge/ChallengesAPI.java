@@ -1,5 +1,9 @@
 package com.gepardec.wdg.challenge;
 
+import com.gepardec.wdg.challenge.model.AnswerModel;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -8,13 +12,18 @@ import javax.ws.rs.core.Response;
 public interface ChallengesAPI {
 
     @GET
+    @Path("/")
+    @Produces(MediaType.APPLICATION_JSON)
+    Response getChallenges();
+
+    @GET
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    Response getChallenge (@PathParam("id") final int id);
+    Response getChallenge(@PathParam("id") Integer id);
 
     @POST
     @Path("{id}/answer")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    Response answerChallenge (final String answerModelString);
+    Response answerChallenge(@PathParam("id") Integer id, AnswerModel answerModelString);
 }

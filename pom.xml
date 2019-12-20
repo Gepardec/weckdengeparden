@@ -21,7 +21,7 @@
         <surefire-plugin.version>2.22.2</surefire-plugin.version>
         <lombock.version>1.18.8</lombock.version>
         <google-guava.version>28.1-jre</google-guava.version>
-        <quarkus.version>1.0.0.Final</quarkus.version>
+        <quarkus.version>1.0.1.Final</quarkus.version>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <quarkus.package.uber.jar>false</quarkus.package.uber.jar>
@@ -31,7 +31,7 @@
         <dependencies>
             <dependency>
                 <groupId>io.quarkus</groupId>
-                <artifactId>quarkus-universe-bom</artifactId>
+                <artifactId>quarkus-bom</artifactId>
                 <version>${quarkus.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
@@ -49,8 +49,16 @@
             <artifactId>quarkus-resteasy-jsonb</artifactId>
         </dependency>
         <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-rest-client</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>resteasy-multipart-provider</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-hibernate-validator</artifactId>
         </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
@@ -102,15 +110,6 @@
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>${google-guava.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.microprofile.rest.client</groupId>
-            <artifactId>microprofile-rest-client-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.resteasy</groupId>
-            <artifactId>resteasy-client-microprofile</artifactId>
-            <scope>runtime</scope>
         </dependency>
     </dependencies>
 
@@ -205,6 +204,28 @@
                                             ${project.build.directory}/${project.build.finalName}-runner
                                         </native.image.path>
                                     </systemProperties>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <version>3.1.0</version>
+                        <executions>
+                            <execution>
+                                <id>copy-resources</id>
+                                <phase>compile</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>${basedir}/target/config</outputDirectory>
+                                    <resources>
+                                        <resource>
+                                            <directory>${basedir}/config</directory>
+                                            <filtering>false</filtering>
+                                        </resource>
+                                    </resources>
                                 </configuration>
                             </execution>
                         </executions>

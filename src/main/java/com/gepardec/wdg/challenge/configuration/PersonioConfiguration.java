@@ -10,11 +10,8 @@ public class PersonioConfiguration {
     @ConfigProperty(name = "personio.company.id")
     private String companyId;
 
-    @ConfigProperty(name = "perosnio.access.token")
+    @ConfigProperty(name = "personio.access.token")
     private String accesstoken;
-
-    public PersonioConfiguration() {
-    }
 
     public String getCompanyId() {
         return companyId;

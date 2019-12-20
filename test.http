@@ -1,0 +1,25 @@
+## Get Challenges
+GET http://localhost:8080/challenge
+
+### Get Invalid Challenge Id
+GET http://localhost:8080/challenge/7
+
+### Get Valid Challenge Id
+GET http://localhost:8080/challenge/1
+
+### Provide no answer
+POST http://localhost:8080/challenge/1/answer
+Content-Type: application/json
+
+### Provide invalid answer
+POST http://localhost:8080/challenge/1/answer
+Content-Type: application/json
+
+{
+   "firstName": "Thomas",
+   "lastName": "Herzog",
+   "email": "thomas.herzog@gepardec.com",
+   "challengeAnswer": "no answer"
+}
+
+###
