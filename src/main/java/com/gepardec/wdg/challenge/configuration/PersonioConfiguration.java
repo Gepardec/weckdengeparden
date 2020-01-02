@@ -8,10 +8,10 @@ import javax.enterprise.context.RequestScoped;
 public class PersonioConfiguration {
 
     @ConfigProperty(name = "personio.company.id")
-    private String companyId;
+    String companyId;
 
     @ConfigProperty(name = "personio.access.token")
-    private String accesstoken;
+    String accesstoken;
 
     public String getCompanyId() {
         return companyId;

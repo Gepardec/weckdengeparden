@@ -1,5 +1,6 @@
 package com.gepardec.wdg.client.personio;
 
+import org.eclipse.microprofile.rest.client.annotation.RegisterProvider;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 
@@ -9,12 +10,13 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 
 @RegisterRestClient(configKey = "personio")
+@RegisterProvider(PersonioResponseExceptionMapper.class)
 @Path("/recruiting")
 public interface RecruitingApi {
 
     @Path("/applicant")
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    Response createApplicant(@MultipartForm ApplicationForm applicationForm);
+    PersonioResponse createApplicant(@MultipartForm ApplicationForm applicationForm);
 
 }

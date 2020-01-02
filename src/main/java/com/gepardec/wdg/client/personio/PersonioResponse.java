@@ -1,14 +1,13 @@
 package com.gepardec.wdg.client.personio;
 
-import javax.json.bind.annotation.JsonbNillable;
-
-@JsonbNillable
-public class Response {
+public class PersonioResponse {
 
     public boolean success;
     public String message;
 
-    public Response() {
+    public PersonioResponse(boolean success, String message) {
+        this.success = success;
+        this.message = message;
     }
 
     public boolean isSuccess() {
@@ -25,5 +24,13 @@ public class Response {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    @Override
+    public String toString() {
+        return "PersonioResponse{" +
+                "success=" + success +
+                ", message='" + message + '\'' +
+                '}';
     }
 }

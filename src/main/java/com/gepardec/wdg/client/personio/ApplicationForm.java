@@ -39,7 +39,7 @@ public class ApplicationForm {
     private String message;
 
     @FormParam("custom_attribute_260264")
-    private int recrutingChannel;
+    private Integer recrutingChannel;
 
     @FormParam("custom_attribute_260264")
     private String empfehlung;
@@ -128,11 +128,11 @@ public class ApplicationForm {
         this.message = message;
     }
 
-    public int getRecrutingChannel() {
+    public Integer getRecrutingChannel() {
         return recrutingChannel;
     }
 
-    public void setRecrutingChannel(int recrutingChannel) {
+    public void setRecrutingChannel(Integer recrutingChannel) {
         this.recrutingChannel = recrutingChannel;
     }
 
