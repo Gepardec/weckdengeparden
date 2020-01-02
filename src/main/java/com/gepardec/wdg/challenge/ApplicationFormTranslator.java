@@ -5,7 +5,6 @@ import com.gepardec.wdg.challenge.model.Answer;
 import com.gepardec.wdg.client.personio.ApplicationForm;
 
 import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.util.Base64;
 
 public class ApplicationFormTranslator {
@@ -17,6 +16,8 @@ public class ApplicationFormTranslator {
         final ApplicationForm form = new ApplicationForm();
         form.setCompanyId(config.getCompanyId());
         form.setAccessToken(config.getAccesstoken());
+        form.setJobPositionId(config.getJobPositionId());
+
         form.setTitle(model.getTitle());
         form.setFirstName(model.getFirstName());
         form.setLastName(model.getLastName());
@@ -25,14 +26,13 @@ public class ApplicationFormTranslator {
         form.setMessage(model.getMessageToGepardec());
         form.setLinkedInLink(model.getLinkedInLink());
         form.setXingLink(model.getXingLink());
-        form.setMessage(model.getMessageToGepardec());
         form.setEmpfehlung(model.getOtherSource());
-        form.setDocuments(null);
+        form.setMessage(model.getMessageToGepardec());
         if (model.getSource() != null) {
-            form.setRecrutingChannel(model.getSource().getId());
+            form.setRecrutingChannel(model.getSource().idStr);
         }
         if (model.getCv() != null) {
-            form.setDocuments(new InputStream[]{new ByteArrayInputStream(model.getCv().getBytes())});
+            form.setDocument(new ByteArrayInputStream(Base64.getDecoder().decode(model.getCv())));
         }
 
         return form;

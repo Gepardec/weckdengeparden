@@ -1,52 +1,72 @@
 package com.gepardec.wdg.client.personio;
 
+import org.jboss.resteasy.annotations.jaxrs.FormParam;
 import org.jboss.resteasy.annotations.providers.multipart.PartType;
 
-import javax.ws.rs.FormParam;
 import javax.ws.rs.core.MediaType;
 import java.io.InputStream;
+import java.io.Serializable;
 
-public class ApplicationForm {
+public class ApplicationForm implements Serializable {
 
     @FormParam("company_id")
+    @PartType(MediaType.TEXT_PLAIN)
     private String companyId;
 
     @FormParam("access_token")
+    @PartType(MediaType.TEXT_PLAIN)
     private String accessToken;
 
-    @FormParam(value = "title")
+    @FormParam("job_position_id")
+    @PartType(MediaType.TEXT_PLAIN)
+    private String jobPositionId;
+
+    @FormParam("title")
+    @PartType(MediaType.TEXT_PLAIN)
     private String title;
 
     @FormParam("first_name")
+    @PartType(MediaType.TEXT_PLAIN)
     private String firstName;
 
     @FormParam("last_name")
+    @PartType(MediaType.TEXT_PLAIN)
     private String lastName;
 
     @FormParam("email")
+    @PartType(MediaType.TEXT_PLAIN)
     private String email;
 
     @FormParam("phone")
+    @PartType(MediaType.TEXT_PLAIN)
     private String phone;
 
     @FormParam("custom_attribute_177021")
+    @PartType(MediaType.TEXT_PLAIN)
     private String xingLink;
 
     @FormParam("custom_attribute_177020")
+    @PartType(MediaType.TEXT_PLAIN)
     private String linkedInLink;
 
     @FormParam("message")
+    @PartType(MediaType.TEXT_PLAIN)
     private String message;
 
     @FormParam("custom_attribute_260264")
-    private Integer recrutingChannel;
+    @PartType(MediaType.TEXT_PLAIN)
+    private String recrutingChannel;
 
     @FormParam("custom_attribute_260264")
+    @PartType(MediaType.TEXT_PLAIN)
     private String empfehlung;
 
-    @FormParam("documents")
+    @FormParam("document0")
     @PartType(MediaType.APPLICATION_OCTET_STREAM)
-    private InputStream[] documents;
+    private InputStream document;
+
+    public ApplicationForm() {
+    }
 
     public String getCompanyId() {
         return companyId;
@@ -62,6 +82,14 @@ public class ApplicationForm {
 
     public void setAccessToken(String accessToken) {
         this.accessToken = accessToken;
+    }
+
+    public String getJobPositionId() {
+        return jobPositionId;
+    }
+
+    public void setJobPositionId(String jobPositionId) {
+        this.jobPositionId = jobPositionId;
     }
 
     public String getTitle() {
@@ -128,11 +156,11 @@ public class ApplicationForm {
         this.message = message;
     }
 
-    public Integer getRecrutingChannel() {
+    public String getRecrutingChannel() {
         return recrutingChannel;
     }
 
-    public void setRecrutingChannel(Integer recrutingChannel) {
+    public void setRecrutingChannel(String recrutingChannel) {
         this.recrutingChannel = recrutingChannel;
     }
 
@@ -144,11 +172,11 @@ public class ApplicationForm {
         this.empfehlung = empfehlung;
     }
 
-    public InputStream[] getDocuments() {
-        return documents;
+    public InputStream getDocument() {
+        return document;
     }
 
-    public void setDocuments(InputStream[] documents) {
-        this.documents = documents;
+    public void setDocument(InputStream document) {
+        this.document = document;
     }
 }

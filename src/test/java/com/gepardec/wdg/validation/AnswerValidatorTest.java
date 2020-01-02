@@ -1,7 +1,6 @@
 package com.gepardec.wdg.validation;
 
 import com.gepardec.wdg.challenge.model.Answer;
-import com.gepardec.wdg.challenge.validation.AnswerValid;
 import com.gepardec.wdg.challenge.validation.AnswerValidator;
 import com.gepardec.wdg.client.personio.Source;
 import org.junit.jupiter.api.Assertions;
@@ -9,12 +8,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-
-import static org.mockito.Mockito.*;
-
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import javax.validation.ConstraintValidatorContext;
+
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class AnswerValidatorTest {
@@ -41,6 +39,7 @@ class AnswerValidatorTest {
         when(context.buildConstraintViolationWithTemplate(anyString())).thenReturn(constraintViolationBuilder);
         final Answer given = new Answer();
         given.setSource(Source.SONSTIGES);
+        given.setOtherSource(null);
         Assertions.assertFalse(validator.isValid(given, context));
 
         verify(context, times(1)).buildConstraintViolationWithTemplate(anyString());
@@ -56,6 +55,8 @@ class AnswerValidatorTest {
     @Test
     void isValid_withNullSource_thenTrue() {
         final Answer given = new Answer();
+        given.setSource(null);
+        given.setOtherSource(null);
         Assertions.assertTrue(validator.isValid(given, context));
     }
 
@@ -63,6 +64,7 @@ class AnswerValidatorTest {
     void isValid_withSourceLINKEDIN_thenTrue() {
         final Answer given = new Answer();
         given.setSource(Source.LINKEDIN);
+        given.setOtherSource(null);
         Assertions.assertTrue(validator.isValid(given, context));
     }
 

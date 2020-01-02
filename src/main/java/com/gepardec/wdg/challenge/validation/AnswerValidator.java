@@ -1,7 +1,6 @@
 package com.gepardec.wdg.challenge.validation;
 
 import com.gepardec.wdg.challenge.model.Answer;
-import com.gepardec.wdg.challenge.model.Challenges;
 import com.gepardec.wdg.client.personio.Source;
 
 import javax.validation.ConstraintValidator;

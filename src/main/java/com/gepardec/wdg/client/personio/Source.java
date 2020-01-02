@@ -19,9 +19,12 @@ public enum Source {
 
     final int id;
 
+    public final String idStr;
+
     Source(String text, int id) {
         this.text = text;
         this.id = id;
+        this.idStr = String.valueOf(id);
     }
 
     public String getText() {

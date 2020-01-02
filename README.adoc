@@ -93,7 +93,7 @@ Content-Type: application/json
    "firstName": "<YOUR_FIRST_NAME>",
    "lastName": "<YOUR_LASTNAME>",
    "email": "<YOUR_EMAIL>",
-   "challengeAnswer": "<YOUR_ANSWER>",
+   "answer": "<YOUR_ANSWER>",
    "title": "<OPTIONAL_YOUR_TITLE>",
    "phone": "<OPTIONAL_YOUR_PHONE>",
    "linkedInLink": "<OPTIONAL_YOUR_LINKEDIN_LINK>",
@@ -172,8 +172,9 @@ Place the following file in the ``/config`` directory.
 [source,properties]
 ----
 ## Perosnio configurations
-personio.company.id=<COMPANY_ID>
-personio.access.token=<ACCESS_TOKEN>
+personio.company_id=<COMPANY_ID>
+personio.access_token=<ACCESS_TOKEN>
+personio.default.job_position_id=<DEFAULT_JOB_POSITION_ID>
 # MP-Rest-Client properties
 personio/mp-rest/url=https://api.personio.de
 ----

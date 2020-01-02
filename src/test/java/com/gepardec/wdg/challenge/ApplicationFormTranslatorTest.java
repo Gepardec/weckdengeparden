@@ -24,11 +24,13 @@ class ApplicationFormTranslatorTest {
 
     private static final String ACCESS_TOKEN = "ACCESS_TOKEN";
     private static final String COMPANY_ID = "COMPANY_ID";
+    private static final String JOB_ID = "JOB_ID";
 
     @BeforeEach
     void beforeEach() {
         when(personioConfiguration.getAccesstoken()).thenReturn(ACCESS_TOKEN);
         when(personioConfiguration.getCompanyId()).thenReturn(COMPANY_ID);
+        when(personioConfiguration.getJobPositionId()).thenReturn(JOB_ID);
     }
 
     @Test
@@ -51,6 +53,7 @@ class ApplicationFormTranslatorTest {
         Assertions.assertAll(
                 () -> Assertions.assertEquals(ACCESS_TOKEN, translated.getAccessToken(), "accessToken"),
                 () -> Assertions.assertEquals(COMPANY_ID, translated.getCompanyId(), "companyId"),
+                () -> Assertions.assertEquals(JOB_ID, translated.getJobPositionId(), "jobPositionId"),
                 () -> Assertions.assertEquals(given.getFirstName(), translated.getFirstName(), "firstName"),
                 () -> Assertions.assertEquals(given.getLastName(), translated.getLastName(), "lastName"),
                 () -> Assertions.assertEquals(given.getEmail(), translated.getEmail(), "email"),
@@ -62,15 +65,15 @@ class ApplicationFormTranslatorTest {
                 () -> Assertions.assertEquals(given.getOtherSource(), translated.getEmpfehlung(), "empfehlung"));
 
         if (given.getSource() != null) {
-            Assertions.assertEquals(given.getSource().getId(), translated.getRecrutingChannel(), "recrutingChannel");
+            Assertions.assertEquals(given.getSource().idStr, translated.getRecrutingChannel(), "recrutingChannel");
         } else {
             Assertions.assertNull(translated.getRecrutingChannel());
         }
         if (given.getCv() != null) {
             final byte[] expectedCvData = Base64.getDecoder().decode(given.getCv().getBytes());
             final String expectedCv = new String(expectedCvData);
-            final byte[] cvData = IOUtils.toByteArray(translated.getDocuments()[0]);
-            final String cv = new String(Base64.getDecoder().decode(cvData));
+            final byte[] cvData = IOUtils.toByteArray(translated.getDocument());
+            final String cv = new String(cvData);
             Assertions.assertEquals(expectedCv, cv, "documents");
         }
     }

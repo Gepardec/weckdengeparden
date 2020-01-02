@@ -34,18 +34,18 @@ public class Answer {
     private String cv;
 
     @URL
-    private String xingLink;
+    private String xingLink = "";
 
     @URL
-    private String linkedInLink;
+    private String linkedInLink = "";
 
-    private Source source;
+    private Source source = Source.SONSTIGES;
 
-    private String otherSource;
+    private String otherSource = "Bewerber hat nichst definiert";
 
-    private String title;
+    private String title = "";
 
-    private String phone;
+    private String phone = "";
 
-    private String messageToGepardec;
+    private String messageToGepardec = "";
 }

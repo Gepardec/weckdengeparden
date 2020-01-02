@@ -97,18 +97,6 @@ class ChallengeResourceTest {
     }
 
     @Test
-    void answer_withNoOtherSourceDefined_then400Returned() {
-        final Answer answer = buildValidAnswer(Challenges.CHALLENGE1.getId());
-        answer.setSource(Source.SONSTIGES);
-        given().contentType(ContentType.JSON)
-                .body(answer)
-                .post("/challenge/1/answer")
-                .then().statusCode(HttpStatus.SC_BAD_REQUEST)
-                .body("success", equalTo(false))
-                .body("message", equalTo("The request was invalid due to constraint violations"));
-    }
-
-    @Test
     void answer_withInvalidAnswer_then400Returned() {
         final Answer answer = buildValidAnswer(Challenges.CHALLENGE1.getId());
         answer.setAnswer("Invalid answer");

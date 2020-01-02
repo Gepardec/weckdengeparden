@@ -16,10 +16,10 @@ POST http://localhost:8080/challenge/1/answer
 Content-Type: application/json
 
 {
-   "firstName": "Thomas",
-   "lastName": "Herzog",
-   "email": "thomas.herzog@gepardec.com",
-   "challengeAnswer": "no answer"
+  "firstName": "TEST_Thomas",
+  "lastName": "TEST_Herzog",
+  "email": "thomas.herzog@gepardec.com",
+  "answer": "50"
 }
 
 ###

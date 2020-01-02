@@ -81,6 +81,7 @@ public class ChallengesResource {
 
         log.info(CORRECT_ANSWER);
         final ApplicationForm applicationForm = ApplicationFormTranslator.answerToApplicationForm(personioConfiguration, answer);
+//        final MultipartFormDataInput applicationForm = ApplicationFormTranslator.answerToMultipartOutput(personioConfiguration, answer);
         final PersonioResponse personioResponse = recruitingApi.createApplicant(applicationForm);
         log.info("ApplicationForm submitted. {}", personioResponse);
 
