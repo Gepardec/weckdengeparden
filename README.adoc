@@ -12,24 +12,38 @@ Michael
 
 == REST Endpoints
 
+=== List available challenges
+
 `GET https://weckdengeparden-57-services.cloud.itandtel.at/challenge` +
 
-.Response-Body
 
+==== Success Response
+
+.Response-Headers
+[source]
+----
+Content-Type: application/json
+----
+
+.Response-Body
 [source,json]
 ----
 [
   {
-    "challenge": 1,
+    "id": 1,
     "question": "..."
   }
 ]
 ----
 
+=== Challenge by id
+
 `GET https://weckdengeparden-57-services.cloud.itandtel.at/challenge/<CHALLENGE_ID>` +
 
-.Response-Headers
 
+==== Success Response
+
+.Response-Headers
 [source]
 ----
 Content-Type: application/json
@@ -39,10 +53,29 @@ Content-Type: application/json
 [source,json]
 ----
 {
-   "challenge": 1,
+   "id": 1,
    "question": "1 Notebook und eine ..."
 }
 ----
+
+==== Error Response
+
+.Response-Headers
+[source]
+----
+Content-Type: application/json
+----
+
+.Response-Body
+[source,json]
+----
+{
+   "message": "...",
+   "success": false
+}
+----
+
+=== Answer challenge
 
 `POST https://weckdengeparden-57-services.cloud.itandtel.at/challenge/<CHALLENGE_ID>/answer` +
 
@@ -61,28 +94,71 @@ Content-Type: application/json
    "lastName": "<YOUR_LASTNAME>",
    "email": "<YOUR_EMAIL>",
    "challengeAnswer": "<YOUR_ANSWER>",
+   "title": "<OPTIONAL_YOUR_TITLE>",
    "phone": "<OPTIONAL_YOUR_PHONE>",
+   "linkedInLink": "<OPTIONAL_YOUR_LINKEDIN_LINK>",
+   "xingLink": "<OPTIONAL_YOUR_XING_LINK>",
+   "source": "<OPTIONAL_SOURCE>",
    "cv": "<OPTIONAL_YOUR_CV_IN_BASE64>",
    "messageToGepardec": "<OPTIONAL_YOUR_MESSAGE_TO_GEPARDEC>"
 }
 ----
 
+TIP: See link:src/main/java/com/gepardec/wdg/client/personio/Source[Source.java] for possible enum values. +
+     Your CV must be a file encoded in Base64.
+
+==== Success Response
+
 .Response-Headers
 [source]
 ----
-Content-Type: text/plain
+Content-Type: application/json
 ----
 
 .Success Response-Body
 [source]
 ----
-Danke! Du hast den Geparden in dir erweckt und wir melden uns in den nächsten Tagen bei dir! Lg, Michael Sollberger
+{
+   "message": "Danke! Du hast den Geparden in dir erweckt und wir melden uns in den nächsten Tagen bei dir! Lg, Michael Sollberger",
+   "success": true
+}
 ----
 
-.Error Response-Body
+==== Constraint Violation Response
+
+.Response-Headers
 [source]
 ----
-Sorry, die Antwort ist falsch. Denk' nochmal in Ruhe darüber nach und versuch es noch einmal.
+Content-Type: application/json
+----
+
+.Success Response-Body
+[source]
+----
+{
+   "message": "The request was invalid due to constraint violations",
+   "success": false,
+   "violations" : [
+        "..."
+   ]
+}
+----
+
+==== Invalid Answer Response
+
+.Response-Headers
+[source]
+----
+Content-Type: application/json
+----
+
+.Success Response-Body
+[source]
+----
+{
+   "message": "Sorry, die Antwort ist falsch. Denk' nochmal in Ruhe darüber nach und versuch es noch einmal.",
+   "success": false
+}
 ----
 
 == Developer documentation for setting up this project itself (not necessary for applicants)
@@ -96,13 +172,10 @@ Place the following file in the ``/config`` directory.
 [source,properties]
 ----
 ## Perosnio configurations
-personio.company.id=<PERSONIO_COMPANY_ID>
-personio.access.token=<PERSONIO_ACCESS_TOKEN>
+personio.company.id=<COMPANY_ID>
+personio.access.token=<ACCESS_TOKEN>
 # MP-Rest-Client properties
-perosnio/mp-rest/url=https://api.personio.de
-perosnio/mp-rest/scope=javax.enterprise.context.RequestScoped
-perosnio/mp-rest/connectTimeout=2000
-perosnio/mp-rest/readTimeout=2000
+personio/mp-rest/url=https://api.personio.de
 ----
 
 === Build the application

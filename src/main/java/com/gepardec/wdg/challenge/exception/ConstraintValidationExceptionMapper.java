@@ -26,6 +26,6 @@ public class ConstraintValidationExceptionMapper implements ExceptionMapper<Cons
     @Override
     public Response toResponse(ConstraintViolationException exception) {
         log.info("Constraint violation(s) on resource: '{}'", uriInfo.getPath());
-        return Response.status(HttpStatus.SC_BAD_REQUEST).entity(BadRequestResponse.invalid(exception.getConstraintViolations())).build();
+        return Response.status(HttpStatus.SC_BAD_REQUEST).entity(BadRequestResponse.invalid("The request was invalid due to constraint violations", exception.getConstraintViolations())).build();
     }
 }

@@ -4,6 +4,10 @@ import com.gepardec.wdg.challenge.configuration.PersonioConfiguration;
 import com.gepardec.wdg.challenge.model.Answer;
 import com.gepardec.wdg.client.personio.ApplicationForm;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.util.Base64;
+
 public class ApplicationFormTranslator {
 
     private ApplicationFormTranslator() {
@@ -22,11 +26,14 @@ public class ApplicationFormTranslator {
         form.setLinkedInLink(model.getLinkedInLink());
         form.setXingLink(model.getXingLink());
         form.setMessage(model.getMessageToGepardec());
+        form.setEmpfehlung(model.getOtherSource());
+        form.setDocuments(null);
         if (model.getSource() != null) {
             form.setRecrutingChannel(model.getSource().getId());
         }
-        form.setEmpfehlung(model.getOtherSource());
-        form.setDocuments(null);
+        if (model.getCv() != null) {
+            form.setDocuments(new InputStream[]{new ByteArrayInputStream(model.getCv().getBytes())});
+        }
 
         return form;
     }

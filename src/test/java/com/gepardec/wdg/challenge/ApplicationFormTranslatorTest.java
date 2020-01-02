@@ -4,6 +4,7 @@ import com.gepardec.wdg.challenge.configuration.PersonioConfiguration;
 import com.gepardec.wdg.challenge.model.Answer;
 import com.gepardec.wdg.client.personio.ApplicationForm;
 import com.gepardec.wdg.client.personio.Source;
+import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,14 +32,14 @@ class ApplicationFormTranslatorTest {
     }
 
     @Test
-    void answerToApplicationForm_whenSourceNull_thenNoRecrutingchannel() {
+    void answerToApplicationForm_whenSourceNull_thenNoRecrutingchannel() throws Exception {
         final Answer given = buildValidAnswer();
         final ApplicationForm form = ApplicationFormTranslator.answerToApplicationForm(personioConfiguration, given);
         assertTranslation(given, form);
     }
 
     @Test
-    void answerToApplicationForm_whenSourceSONSTIGE_thenRecrutingchannelSet() {
+    void answerToApplicationForm_whenSourceSONSTIGE_thenRecrutingchannelSet() throws Exception {
         final Answer given = buildValidAnswer();
         given.setSource(Source.SONSTIGES);
         given.setOtherSource("My friend");
@@ -46,7 +47,7 @@ class ApplicationFormTranslatorTest {
         assertTranslation(given, form);
     }
 
-    private void assertTranslation(final Answer given, final ApplicationForm translated) {
+    private void assertTranslation(final Answer given, final ApplicationForm translated) throws Exception {
         Assertions.assertAll(
                 () -> Assertions.assertEquals(ACCESS_TOKEN, translated.getAccessToken(), "accessToken"),
                 () -> Assertions.assertEquals(COMPANY_ID, translated.getCompanyId(), "companyId"),
@@ -64,6 +65,13 @@ class ApplicationFormTranslatorTest {
             Assertions.assertEquals(given.getSource().getId(), translated.getRecrutingChannel(), "recrutingChannel");
         } else {
             Assertions.assertNull(translated.getRecrutingChannel());
+        }
+        if (given.getCv() != null) {
+            final byte[] expectedCvData = Base64.getDecoder().decode(given.getCv().getBytes());
+            final String expectedCv = new String(expectedCvData);
+            final byte[] cvData = IOUtils.toByteArray(translated.getDocuments()[0]);
+            final String cv = new String(Base64.getDecoder().decode(cvData));
+            Assertions.assertEquals(expectedCv, cv, "documents");
         }
     }
 
