@@ -2,22 +2,11 @@ package com.gepardec.wdg.challenge.exception;
 
 public class PersonioClientException extends RuntimeException {
 
-    public final String uri;
-    public final int statusCode;
-    public final String body;
-
-    public PersonioClientException(String uri, int statusCode, String body) {
-        this.uri = uri;
-        this.statusCode = statusCode;
-        this.body = body;
+    public PersonioClientException(String message) {
+        super(message);
     }
 
-    @Override
-    public String toString() {
-        return "PersonioClientException{" +
-                "uri='" + uri + '\'' +
-                ", statusCode=" + statusCode +
-                ", body='" + body + '\'' +
-                '}';
+    public static PersonioClientException of(int statusCode, String body) {
+        return new PersonioClientException(String.format("Call failed with status: '%d' and had body%n%s", statusCode, body));
     }
 }

@@ -9,7 +9,7 @@ public class PersonioResponseExceptionMapper implements ResponseExceptionMapper<
 
     @Override
     public PersonioClientException toThrowable(Response response) {
-        return new PersonioClientException("unkown", response.getStatus(), readResponseEntity(response));
+        return PersonioClientException.of(response.getStatus(), readResponseEntity(response));
     }
 
     private String readResponseEntity(Response response) {

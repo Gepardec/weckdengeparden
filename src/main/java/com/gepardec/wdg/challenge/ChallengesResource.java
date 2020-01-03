@@ -1,6 +1,6 @@
 package com.gepardec.wdg.challenge;
 
-import com.gepardec.wdg.challenge.configuration.PersonioConfiguration;
+import com.gepardec.wdg.application.configuration.PersonioConfiguration;
 import com.gepardec.wdg.challenge.model.*;
 import com.gepardec.wdg.client.personio.ApplicationForm;
 import com.gepardec.wdg.client.personio.PersonioResponse;
@@ -90,7 +90,7 @@ public class ChallengesResource {
 
     private Response buildChallengeNotFoundResponse(final Integer id) {
         return Response.status(Response.Status.BAD_REQUEST)
-                .entity(BadRequestResponse.error(String.format("No challenge found for provided id=%s", id)))
+                .entity(ConstraintViolationResponse.error(String.format("No challenge found for provided id=%s", id)))
                 .build();
     }
 

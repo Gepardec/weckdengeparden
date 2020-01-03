@@ -1,4 +1,4 @@
-package com.gepardec.wdg.challenge.configuration;
+package com.gepardec.wdg.application.configuration;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 

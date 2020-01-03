@@ -1,6 +1,6 @@
 package com.gepardec.wdg.challenge;
 
-import com.gepardec.wdg.challenge.configuration.PersonioConfiguration;
+import com.gepardec.wdg.application.configuration.PersonioConfiguration;
 import com.gepardec.wdg.challenge.model.Answer;
 import com.gepardec.wdg.client.personio.ApplicationForm;
 

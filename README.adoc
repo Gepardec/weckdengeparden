@@ -177,7 +177,18 @@ personio.access_token=<ACCESS_TOKEN>
 personio.default.job_position_id=<DEFAULT_JOB_POSITION_ID>
 # MP-Rest-Client properties
 personio/mp-rest/url=https://api.personio.de
+# Opentracing configuration
+quarkus.jaeger.enabled=true
+quarkus.jaeger.service-name=weckdengeparden
+quarkus.jaeger.agent-host-port=<AGENT_HOST_PORT>
+quarkus.jaeger.reporter-log-spans=<TRUE_IF_SPAN_SHALL_BE_LOGGED>
+quarkus.jaeger.sampler-type=<SAMPLE_TYPE>
+quarkus.jaeger.sampler-param=<SAMPLE_PARAM>
+quarkus.jaeger.reporter-max-queue-size=<SPAN_QUEUE_SIZE>
+quarkus.jaeger.reporter-flush-interval=<FLUSH_DURATION_EG_1.500S>
 ----
+
+TIP: See link:https://quarkus.io/guides/opentracing[quarkus-opentracing]
 
 === Build the application
 
