@@ -14,6 +14,8 @@ public class PersonioResponseExceptionMapper implements ResponseExceptionMapper<
 
     private String readResponseEntity(Response response) {
         try {
+            // TODO: Validate response which shall be populated to the client.
+            // E.g. Applicant has already applied to position.
             return response.readEntity(String.class);
         } catch (Exception e) {
             return String.format("Response content could not be read. Error: %s", e.getMessage());

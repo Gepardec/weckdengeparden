@@ -5,6 +5,9 @@ public class PersonioResponse {
     public boolean success;
     public String message;
 
+    public PersonioResponse() {
+    }
+
     public PersonioResponse(boolean success, String message) {
         this.success = success;
         this.message = message;
