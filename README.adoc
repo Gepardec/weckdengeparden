@@ -227,31 +227,31 @@ Ensure you have setup up your development environment and that you have built th
 
 === Setup
 
-Execute all commands in the root directory of this project.
+Execute all commands in the root directory of this project. Ensure that your are logged into the proper Openshift project.
 
 .Secrets
 [source,bash]
 ----
 # Create secret for weckdengeparden
-oc create secret generic weckdengeparden --from-file=application.properties=config/application.properties -n 57-services
+oc create secret generic weckdengeparden --from-file=application.properties=config/application.properties
 ----
 
 .Build Configuration
 [source,bash]
 ----
 # Binary build for uber jar
-oc new-build --binary=true --name=weckdengeparden --docker-image=docker.io/fabric8/s2i-java:3.0-java11 -n 57-services
-oc set triggers bc/weckdengeparden --remove-all -n 57-services
+oc new-build --binary=true --name=weckdengeparden --docker-image=docker.io/fabric8/s2i-java:3.0-java11
+oc set triggers bc/weckdengeparden --remove-all
 ----
 
 .Template
 [source,bash]
 ----
 # Create service resources
-oc process -f ocp/templates/weckdengeparden.yaml --param-file=ocp/templates/weckdengeparden.properties | oc create -f - -n 57-services
+oc process -f ocp/templates/weckdengeparden.yaml --param-file=ocp/templates/weckdengeparden.properties | oc create -f -
 
 # Delete service resources
-oc process -f ocp/templates/weckdengeparden.yaml --param-file=ocp/templates/weckdengeparden..properties | oc delete -f - -n 57-services
+oc process -f ocp/templates/weckdengeparden.yaml --param-file=ocp/templates/weckdengeparden.properties | oc delete -f -
 ----
 
 === Deploy application
@@ -260,5 +260,5 @@ oc process -f ocp/templates/weckdengeparden.yaml --param-file=ocp/templates/weck
 [source,bash]
 ----
 # Start build with local binary
-oc start-build weckdengeparden --from-file=target/wdg-0.0.1-runner.jar --follow --wait -n 57-services
+oc start-build weckdengeparden --from-file=target/wdg-0.0.1-runner.jar --follow --wait
 ----
