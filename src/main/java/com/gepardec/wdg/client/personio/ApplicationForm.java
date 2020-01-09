@@ -1,6 +1,7 @@
 package com.gepardec.wdg.client.personio;
 
 import org.jboss.resteasy.annotations.jaxrs.FormParam;
+import org.jboss.resteasy.annotations.providers.multipart.PartFilename;
 import org.jboss.resteasy.annotations.providers.multipart.PartType;
 
 import javax.ws.rs.core.MediaType;
@@ -61,7 +62,8 @@ public class ApplicationForm implements Serializable {
     @PartType(MediaType.TEXT_PLAIN)
     private String empfehlung;
 
-    @FormParam("document0")
+    @PartFilename("cv")
+    @FormParam("document1")
     @PartType(MediaType.APPLICATION_OCTET_STREAM)
     private InputStream document;
 
