@@ -104,7 +104,7 @@ Content-Type: application/json
 }
 ----
 
-TIP: See link:src/main/java/com/gepardec/wdg/client/personio/Source[Source.java] for possible enum values. +
+TIP: See link:src/main/java/com/gepardec/wdg/client/personio/Source.java[Source.java] for possible enum values (Use the enum name). +
      Your CV must be a file encoded in Base64.
 
 ==== Success Response
@@ -141,6 +141,23 @@ Content-Type: application/json
    "violations" : [
         "..."
    ]
+}
+----
+
+==== E-Mail already used for an application
+
+.Response-Headers
+[source]
+----
+Content-Type: application/json
+----
+
+.Success Response-Body
+[source]
+----
+{
+   "message": "The used email address has already been used for an application",
+   "success": false
 }
 ----
 
