@@ -3,7 +3,6 @@ package com.gepardec.wdg.challenge;
 import com.gepardec.wdg.application.configuration.PersonioConfiguration;
 import com.gepardec.wdg.challenge.model.*;
 import com.gepardec.wdg.client.personio.ApplicationForm;
-import com.gepardec.wdg.client.personio.PersonioResponse;
 import com.gepardec.wdg.client.personio.RecruitingApi;
 import org.apache.http.HttpStatus;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
@@ -75,14 +74,13 @@ public class ChallengesResource {
         }
         final boolean correctAnswer = challenge.getAnswer().trim().equalsIgnoreCase(answer.getAnswer().trim());
         if (!correctAnswer) {
-            log.info(WRONG_ANSWER);
+            log.info("Wrong answer provided. challengeId={}, answer={}", challenge.getId(), answer.getAnswer());
             return Response.status(HttpStatus.SC_BAD_REQUEST).entity(BaseResponse.error(WRONG_ANSWER)).build();
         }
 
-        log.info(CORRECT_ANSWER);
+        log.info("Correct answer provided. challengeId={}", challenge.getId());
         final ApplicationForm applicationForm = ApplicationFormTranslator.answerToApplicationForm(personioConfiguration, answer);
-//        final MultipartFormDataInput applicationForm = ApplicationFormTranslator.answerToMultipartOutput(personioConfiguration, answer);
-        final PersonioResponse personioResponse = recruitingApi.createApplicant(applicationForm);
+        final String personioResponse = recruitingApi.createApplicant(applicationForm);
         log.info("ApplicationForm submitted. {}", personioResponse);
 
         return Response.ok(BaseResponse.success(CORRECT_ANSWER)).build();
@@ -90,7 +88,7 @@ public class ChallengesResource {
 
     private Response buildChallengeNotFoundResponse(final Integer id) {
         return Response.status(Response.Status.BAD_REQUEST)
-                .entity(ConstraintViolationResponse.error(String.format("No challenge found for provided id=%s", id)))
+                .entity(BaseResponse.error(String.format("No challenge found for provided id=%s", id)))
                 .build();
     }
 

@@ -15,9 +15,10 @@ import javax.ws.rs.core.MediaType;
 
 @Traced
 @RegisterRestClient(configKey = "personio")
-// We need to register manuallry otherwise won't work with mp-rest-client
+// We need to register manually otherwise won't work with mp-rest-client
 @RegisterProviders({
-        @RegisterProvider(PersonioResponseExceptionMapper.class),
+        @RegisterProvider(Personio400ExceptionMapper.class),
+        @RegisterProvider(PersonioOtherExceptionMapper.class),
         @RegisterProvider(MultipartFormAnnotationWriter.class)
 })
 @Path("/recruiting")
@@ -27,6 +28,6 @@ public interface RecruitingApi {
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
-    PersonioResponse createApplicant(@MultipartForm ApplicationForm applicationForm);
+    String createApplicant(@MultipartForm ApplicationForm applicationForm);
 
 }

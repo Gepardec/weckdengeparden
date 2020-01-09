@@ -2,6 +2,7 @@ package com.gepardec.wdg.challenge.exception;
 
 import com.gepardec.wdg.application.exception.ExceptionHandledEvent;
 import com.gepardec.wdg.challenge.model.BaseResponse;
+import com.gepardec.wdg.client.personio.PersonioError;
 import org.slf4j.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -33,9 +34,13 @@ public class PersonioClientExceptionMapper implements ExceptionMapper<PersonioCl
     @Override
     public Response toResponse(PersonioClientException exception) {
         log.error(String.format("Call on resource '%s' failed because personio rest call failed", uriInfo.getPath()), exception);
-        final Response response = Response.serverError().entity(BaseResponse.error("Sorry, a call to a backend service failed. Please try again")).build();
+        final Response response = Response.serverError().entity(BaseResponse.error(exception.applicationError.clientMessage)).build();
         handledEvent.fire(ExceptionHandledEvent.Builder.newBuilder(exception)
-                .withMessage("Personio rest client call failed")
+                .withMessage(String.format("Response-Status: %d, Response-Message: %s, Personio-Error: %s, Client-Response: %s",
+                        exception.status,
+                        exception.originalMessage,
+                        exception.applicationError.name(),
+                        exception.applicationError.clientMessage))
                 .withIsError(true)
                 .build());
         return response;
