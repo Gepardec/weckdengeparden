@@ -1,6 +1,6 @@
-package com.gepardec.wdg.validation;
+package com.gepardec.wdg.application.validation;
 
-import com.gepardec.wdg.challenge.validation.Base64Validator;
+import com.gepardec.wdg.application.validation.Base64Validator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

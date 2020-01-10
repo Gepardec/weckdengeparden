@@ -1,8 +1,8 @@
 package com.gepardec.wdg.challenge.model;
 
 import com.gepardec.wdg.challenge.validation.AnswerValid;
-import com.gepardec.wdg.challenge.validation.Base64;
-import com.gepardec.wdg.challenge.validation.Base64Length;
+import com.gepardec.wdg.application.validation.Base64;
+import com.gepardec.wdg.application.validation.Base64Length;
 import com.gepardec.wdg.client.personio.Source;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,7 +30,7 @@ public class Answer {
     private String email;
 
     @Base64(message = "{AnswerModel.cv.base64}")
-    @Base64Length(max = 10_250, message = "{AnswerModel.cv.base64Length}")
+    @Base64Length(max = 10_485_760, message = "{AnswerModel.cv.base64Length}")
     private String cv;
 
     @URL

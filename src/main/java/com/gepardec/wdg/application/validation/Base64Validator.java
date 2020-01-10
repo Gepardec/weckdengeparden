@@ -1,4 +1,4 @@
-package com.gepardec.wdg.challenge.validation;
+package com.gepardec.wdg.application.validation;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

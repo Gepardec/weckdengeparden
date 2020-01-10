@@ -1,4 +1,4 @@
-package com.gepardec.wdg.challenge.validation;
+package com.gepardec.wdg.application.validation;
 
 
 import javax.validation.Constraint;
@@ -11,7 +11,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Base64 {
 
-    String message() default "{com.gepardec.wdg.challenge.validation.Base64}";
+    String message() default "{com.gepardec.wdg.application.validation.Base64}";
 
     Class<?>[] groups() default {};
 

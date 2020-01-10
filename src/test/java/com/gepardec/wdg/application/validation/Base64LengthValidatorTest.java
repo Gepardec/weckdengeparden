@@ -1,7 +1,7 @@
-package com.gepardec.wdg.validation;
+package com.gepardec.wdg.application.validation;
 
-import com.gepardec.wdg.challenge.validation.Base64Length;
-import com.gepardec.wdg.challenge.validation.Base64LengthValidator;
+import com.gepardec.wdg.application.validation.Base64Length;
+import com.gepardec.wdg.application.validation.Base64LengthValidator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,6 +19,12 @@ class Base64LengthValidatorTest {
         final Base64Length base64Length = createAnnotation(10, 20);
         validator = new Base64LengthValidator();
         validator.initialize(base64Length);
+    }
+
+    @Test
+    void init_withOverlap_throwsIllegalArgumentException() {
+        final Base64Length base64Length = createAnnotation(10, 9);
+        Assertions.assertThrows(IllegalArgumentException.class, () -> validator.initialize(base64Length));
     }
 
     @Test

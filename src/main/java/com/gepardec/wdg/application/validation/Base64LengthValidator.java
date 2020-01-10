@@ -1,4 +1,4 @@
-package com.gepardec.wdg.challenge.validation;
+package com.gepardec.wdg.application.validation;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
@@ -13,6 +13,9 @@ public class Base64LengthValidator implements ConstraintValidator<Base64Length, 
     public void initialize(Base64Length constraintAnnotation) {
         minLength = constraintAnnotation.min();
         maxLength = constraintAnnotation.max();
+        if (minLength > maxLength) {
+            throw new IllegalArgumentException("Minlength must not be greater than maxlength");
+        }
     }
 
     @Override
