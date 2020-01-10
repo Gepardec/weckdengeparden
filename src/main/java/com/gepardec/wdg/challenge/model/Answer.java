@@ -33,10 +33,10 @@ public class Answer {
     @Base64Length(max = 10_485_760, message = "{AnswerModel.cv.base64Length}")
     private String cv;
 
-    @URL
+    @URL(message = "{AnswerModel.xingLink.url}")
     private String xingLink = "";
 
-    @URL
+    @URL(message = "{AnswerModel.linkedInLink.url}")
     private String linkedInLink = "";
 
     private Source source = Source.SONSTIGES;
