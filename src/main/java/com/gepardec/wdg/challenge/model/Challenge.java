@@ -1,8 +1,5 @@
 package com.gepardec.wdg.challenge.model;
 
-import lombok.Value;
-
-@Value
 public class Challenge {
 
     private final int id;
@@ -15,5 +12,13 @@ public class Challenge {
 
     public static Challenge of(final int id, final String question) {
         return new Challenge(id, question);
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getQuestion() {
+        return question;
     }
 }

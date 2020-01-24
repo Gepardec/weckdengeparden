@@ -16,8 +16,8 @@ public class ApplicationFormTranslator {
         final ApplicationForm form = new ApplicationForm();
         form.setCompanyId(config.getCompanyId());
         form.setAccessToken(config.getAccesstoken());
-        form.setJobPositionId(config.getJobPositionId());
 
+        form.setJobPositionId(model.getJobId());
         form.setTitle(model.getTitle());
         form.setFirstName(model.getFirstName());
         form.setLastName(model.getLastName());

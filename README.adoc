@@ -90,6 +90,7 @@ Content-Type: application/json
 [source,json]
 ----
 {
+   "jobId": "<JOB_ID_THE_APPLICATION_IS_FOR>",
    "firstName": "<YOUR_FIRST_NAME>",
    "lastName": "<YOUR_LASTNAME>",
    "email": "<YOUR_EMAIL>",
@@ -191,7 +192,6 @@ Place the following file in the ``/config`` directory.
 ## Perosnio configurations
 personio.company_id=<COMPANY_ID>
 personio.access_token=<ACCESS_TOKEN>
-personio.default.job_position_id=<DEFAULT_JOB_POSITION_ID>
 # MP-Rest-Client properties
 personio/mp-rest/url=https://api.personio.de
 # Opentracing configuration

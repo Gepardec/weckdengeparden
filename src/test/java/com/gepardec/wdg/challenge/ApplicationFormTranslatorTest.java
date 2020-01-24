@@ -30,7 +30,6 @@ class ApplicationFormTranslatorTest {
     void beforeEach() {
         when(personioConfiguration.getAccesstoken()).thenReturn(ACCESS_TOKEN);
         when(personioConfiguration.getCompanyId()).thenReturn(COMPANY_ID);
-        when(personioConfiguration.getJobPositionId()).thenReturn(JOB_ID);
     }
 
     @Test
@@ -53,7 +52,7 @@ class ApplicationFormTranslatorTest {
         Assertions.assertAll(
                 () -> Assertions.assertEquals(ACCESS_TOKEN, translated.getAccessToken(), "accessToken"),
                 () -> Assertions.assertEquals(COMPANY_ID, translated.getCompanyId(), "companyId"),
-                () -> Assertions.assertEquals(JOB_ID, translated.getJobPositionId(), "jobPositionId"),
+                () -> Assertions.assertEquals(given.getJobId(), translated.getJobPositionId(), "jobPositionId"),
                 () -> Assertions.assertEquals(given.getFirstName(), translated.getFirstName(), "firstName"),
                 () -> Assertions.assertEquals(given.getLastName(), translated.getLastName(), "lastName"),
                 () -> Assertions.assertEquals(given.getEmail(), translated.getEmail(), "email"),
@@ -80,6 +79,7 @@ class ApplicationFormTranslatorTest {
 
     private Answer buildValidAnswer() {
         final Answer answer = new Answer();
+        answer.setJobId("1");
         answer.setTitle("Ing.");
         answer.setFirstName("Thomas");
         answer.setLastName("Herzog");
