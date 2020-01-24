@@ -17,4 +17,13 @@ public class PersonioClientException extends RuntimeException {
     public static PersonioClientException of(final int status, final String errorMessage) {
         return new PersonioClientException(status, errorMessage, PersonioError.forMessage(errorMessage));
     }
+
+    @Override
+    public String toString() {
+        return "PersonioClientException{" +
+                "status=" + status +
+                ", originalMessage='" + originalMessage + '\'' +
+                ", applicationError=" + applicationError +
+                '}';
+    }
 }
