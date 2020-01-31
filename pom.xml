@@ -24,7 +24,7 @@
         <quarkus.version>1.0.1.Final</quarkus.version>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <quarkus.package.uber.jar>false</quarkus.package.uber.jar>
+        <package.uber.jar>false</package.uber.jar>
     </properties>
 
     <dependencyManagement>
@@ -125,7 +125,7 @@
                             <goal>build</goal>
                         </goals>
                         <configuration>
-                            <uberJar>${quarkus.package.uber.jar}</uberJar>
+                            <uberJar>${package.uber.jar}</uberJar>
                         </configuration>
                     </execution>
                 </executions>

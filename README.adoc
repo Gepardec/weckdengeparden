@@ -214,7 +214,7 @@ Build the application with the following command
 .Build the uber jar
 [source,bash]
 ----
-mvn clean install -Dquarkus.package.uber.jar=true
+mvn clean install -Dpackage.uber.jar=true
 ----
 
 == Openshift
