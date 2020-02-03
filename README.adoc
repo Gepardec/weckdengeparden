@@ -1,4 +1,4 @@
-= weckdengeparden
+= Bewirb dich!
 
 Lieber zukünftiger Developer-Gepard!
 Als Software-Developer ist es ja zu einfach, einfach nur ein Bewerbungs-Formular auszufüllen.
