@@ -1,5 +1,6 @@
 ### Application settings ###
 
+/config/*.properties
 application_old.properties
 
 # Created by https://www.gitignore.io/api/vim,java,linux,macos,maven,patch,gradle,windows,eclipse,netbeans,sonarqube,intellij+all,visualstudiocode
