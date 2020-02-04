@@ -342,3 +342,4 @@ gradle-app.setting
 **/build/
 
 # End of https://www.gitignore.io/api/vim,java,linux,macos,maven,patch,gradle,windows,eclipse,netbeans,sonarqube,intellij+all,visualstudiocode
+/config/application.properties
