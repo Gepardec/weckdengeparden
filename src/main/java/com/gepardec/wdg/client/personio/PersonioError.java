@@ -9,6 +9,8 @@ import java.util.stream.Stream;
 public enum PersonioError {
     ALREADY_APPLIED("Applicant already applied to this position.",
             "The used email address has already been used for an application"),
+    JOBID_NOT_FOUND("Could not find the job position",
+            "Bitte gib eine JobID an! (Hint: die steht auf der Website unter dem Jobtitel)"),
     UNDEFINED("",
             "Sorry, something went wrong with a call to our backend service, please try again later");
 
