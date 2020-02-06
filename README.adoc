@@ -229,6 +229,16 @@ Ensure you have setup up your development environment and that you have built th
 
 Execute all commands in the root directory of this project. Ensure that your are logged into the proper Openshift project.
 
+.Jaeger Services
+[source,bash]
+----
+# Create jaeger services
+oc process -f templates/jaeger.yaml -o yaml  | oc apply -f -
+
+# Delete jaeger services
+oc process -f templates/jaeger.yaml -o yaml  | oc delete -f -
+----
+
 .Secrets
 [source,bash]
 ----
