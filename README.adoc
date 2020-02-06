@@ -194,7 +194,7 @@ personio.company_id=<COMPANY_ID>
 personio.access_token=<ACCESS_TOKEN>
 # MP-Rest-Client properties
 personio/mp-rest/url=https://api.personio.de
-# Opentracing configuration
+# Opentracing/Jaeger configuration
 quarkus.jaeger.enabled=true
 quarkus.jaeger.service-name=weckdengeparden
 quarkus.jaeger.agent-host-port=<AGENT_HOST_PORT>
@@ -272,3 +272,7 @@ oc process -f ocp/templates/weckdengeparden.yaml --param-file=ocp/templates/weck
 # Start build with local binary
 oc start-build weckdengeparden --from-file=target/wdg-0.0.1-runner.jar --follow --wait
 ----
+
+== Tracing
+
+The services calls are traced with opentracing and can be analysed with Jaeger you can reach link:https://jaeger-query-57-services.cloud.itandtel.at/[here].
