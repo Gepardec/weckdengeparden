@@ -129,6 +129,8 @@ class ChallengeResourceTest {
         answer.setFirstName("Thomas");
         answer.setLastName("Herzog");
         answer.setEmail("thomas.herzog@gepardec.om");
+        answer.setMessageToGepardec("This is my message");
+        answer.setSource(Source.LINKEDIN);
         answer.setAnswer(challenges.getAnswer());
 
         return answer;

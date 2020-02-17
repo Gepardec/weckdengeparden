@@ -8,6 +8,7 @@ import org.hibernate.validator.constraints.URL;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @AnswerValid
 public class Answer {
@@ -38,15 +39,17 @@ public class Answer {
     @URL(message = "{AnswerModel.linkedInLink.url}")
     private String linkedInLink = "";
 
-    private Source source = Source.SONSTIGES;
+    @NotEmpty(message = "{AnswerModel.messageToGepardec.notEmpty}")
+    private String messageToGepardec;
 
-    private String otherSource = "Bewerber hat nichst definiert";
+    @NotNull(message = "{AnswerModel.source.notNull}")
+    private Source source;
+
+    private String otherSource = "";
 
     private String title = "";
 
     private String phone = "";
-
-    private String messageToGepardec = "";
 
     public Answer() {
     }

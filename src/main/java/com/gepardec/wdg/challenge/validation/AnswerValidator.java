@@ -5,15 +5,18 @@ import com.gepardec.wdg.client.personio.Source;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
+import java.util.Arrays;
+import java.util.List;
 
 public class AnswerValidator implements ConstraintValidator<AnswerValid, Answer> {
+
+    private static final List<Source> sources = Arrays.asList(Source.SONSTIGES, Source.MESSEN, Source.MEETUPS, Source.EMPFEHLUNG);
 
     @Override
     public boolean isValid(Answer answer, ConstraintValidatorContext context) {
         boolean valid = true;
         if (answer != null) {
-            // When source = Source.SONSTIGE the otherSource attribute must be set as well
-            if (Source.SONSTIGES.equals(answer.getSource()) && (answer.getOtherSource() == null || answer.getOtherSource().trim().isEmpty())) {
+            if (sources.contains(answer.getSource()) && (answer.getOtherSource() == null || answer.getOtherSource().trim().isEmpty())) {
                 context.buildConstraintViolationWithTemplate("{AnswerModel.source.otherSource.invalid}")
                         .addPropertyNode("source")
                         .addConstraintViolation();

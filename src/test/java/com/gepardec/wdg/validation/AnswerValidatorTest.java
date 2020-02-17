@@ -7,6 +7,10 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.aggregator.ArgumentsAccessor;
+import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -33,12 +37,13 @@ class AnswerValidatorTest {
         validator = new AnswerValidator();
     }
 
-    @Test
-    void isValid_withSourceSONSTIGE_thenFalse() {
+    @ParameterizedTest
+    @EnumSource(value = Source.class, names = {"SONSTIGES", "MESSEN", "MEETUPS", "EMPFEHLUNG"})
+    void isValid_withValidSourcesEmptyOtherSource_thenFalse(final Source source) {
         when(constraintViolationBuilder.addPropertyNode(anyString())).thenReturn(nodeBuilderCustomizableContext);
         when(context.buildConstraintViolationWithTemplate(anyString())).thenReturn(constraintViolationBuilder);
         final Answer given = new Answer();
-        given.setSource(Source.SONSTIGES);
+        given.setSource(source);
         given.setOtherSource(null);
         Assertions.assertFalse(validator.isValid(given, context));
 
@@ -68,10 +73,11 @@ class AnswerValidatorTest {
         Assertions.assertTrue(validator.isValid(given, context));
     }
 
-    @Test
-    void isValid_withSourceSONSTIGEAndOtherSource_thenTrue() {
+    @ParameterizedTest
+    @EnumSource(value = Source.class, names = {"SONSTIGES", "MESSEN", "MEETUPS", "EMPFEHLUNG"})
+    void isValid_withValidSourceAndOtherSource_thenTrue(final Source source) {
         final Answer given = new Answer();
-        given.setSource(Source.SONSTIGES);
+        given.setSource(source);
         given.setOtherSource("My friend");
         Assertions.assertTrue(validator.isValid(given, context));
     }
