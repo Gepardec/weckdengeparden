@@ -184,8 +184,8 @@ Content-Type: application/json
 
 === Preparations
 
-Sensitive configurations have been externalized and must be added before starting the development.
-Place the following file in the ``/config`` directory.
+Sensitive configurations have been externalized and must be added before starting the development. +
+Place the following configuration file in the ``/config`` directory additionally to a truststore.jks which holds personio related trusted certificates.
 
 .application.properties
 [source,properties]
@@ -195,6 +195,9 @@ personio.company_id=<COMPANY_ID>
 personio.access_token=<ACCESS_TOKEN>
 # MP-Rest-Client properties
 personio/mp-rest/url=https://api.personio.de
+personio/mp-rest/trustStore=<FQN_OF_TRUSTSTORE_FILE>
+personio/mp-rest/trustStorePassword=<PWD_OF_TRUSTSTORE_FILE>
+personio/mp-rest/trustStoreType=<TRUSTSTORE_TYPE>
 # Opentracing/Jaeger configuration
 quarkus.jaeger.enabled=true
 quarkus.jaeger.service-name=weckdengeparden
@@ -224,7 +227,9 @@ In this section you see how to setup an Openshift project which hosts the ``weck
 
 === Preparations
 
-Ensure you have setup up your development environment and that you have built the application.
+. Ensure you have setup up your development environment and that you have built the application.
+. Ensure that you have an valid ``config/application.properties`` file
+. Ensure you have a ``config/truststore.jks`` file which contains personio related trusted certificates
 
 === Setup
 
@@ -244,7 +249,9 @@ oc process -f templates/jaeger.yaml -o yaml  | oc delete -f -
 [source,bash]
 ----
 # Create secret for weckdengeparden
-oc create secret generic weckdengeparden --from-file=application.properties=config/application.properties
+oc create secret generic weckdengeparden \
+   --from-file=application.properties=config/application-ocp.properties \
+   --from-file=truststore.jks=config/truststore.jks
 ----
 
 .Build Configuration
