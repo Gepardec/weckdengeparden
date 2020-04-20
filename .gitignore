@@ -1,6 +1,7 @@
 ### Application settings ###
 
 /config/*.properties
+/config/*.yml
 /config/*.jks
 /*.properties
 /*.cer

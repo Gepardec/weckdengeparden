@@ -1,7 +1,10 @@
 package com.gepardec.wdg.challenge;
 
 import com.gepardec.wdg.application.configuration.PersonioConfiguration;
-import com.gepardec.wdg.challenge.model.*;
+import com.gepardec.wdg.challenge.model.Answer;
+import com.gepardec.wdg.challenge.model.BaseResponse;
+import com.gepardec.wdg.challenge.model.Challenge;
+import com.gepardec.wdg.challenge.model.Challenges;
 import com.gepardec.wdg.client.personio.ApplicationForm;
 import com.gepardec.wdg.client.personio.RecruitingApi;
 import org.apache.http.HttpStatus;
@@ -13,7 +16,12 @@ import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.Comparator;

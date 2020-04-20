@@ -51,12 +51,13 @@ class ChallengeResourceTest {
 
     @Test
     void byId_withGETAndValidId_thenChallengeReturned() {
-        final Challenges challenges = Challenges.forId(1).get();
-        final Challenge expectedChallenge = Challenge.of(challenges.getId(), challenges.getQuestion());
-        given().get("/challenge/1")
-                .then()
-                .statusCode(HttpStatus.SC_OK)
-                .assertThat().body(equalTo(toJson(expectedChallenge)));
+        Challenges.forId(1).ifPresent(challenge -> {
+            final Challenge expectedChallenge = Challenge.of(challenge.getId(), challenge.getQuestion());
+            given().get("/challenge/1")
+                    .then()
+                    .statusCode(HttpStatus.SC_OK)
+                    .assertThat().body(equalTo(toJson(expectedChallenge)));
+        });
     }
 
     @Test
@@ -129,6 +130,7 @@ class ChallengeResourceTest {
         answer.setFirstName("Thomas");
         answer.setLastName("Herzog");
         answer.setEmail("thomas.herzog@gepardec.om");
+        answer.setPhone("+43123456789");
         answer.setMessageToGepardec("This is my message");
         answer.setSource(Source.LINKEDIN);
         answer.setAnswer(challenges.getAnswer());

@@ -84,6 +84,7 @@ class ApplicationFormTranslatorTest {
         answer.setFirstName("Thomas");
         answer.setLastName("Herzog");
         answer.setEmail("thomas.herzog@gepardec.om");
+        answer.setPhone("+43123456789");
         answer.setMessageToGepardec("This is my message");
         answer.setXingLink("http://xing.com");
         answer.setLinkedInLink("http://linkedin.com");
