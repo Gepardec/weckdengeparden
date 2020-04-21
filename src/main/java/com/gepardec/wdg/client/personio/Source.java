@@ -13,7 +13,8 @@ public enum Source {
     EMPFEHLUNG("Empfehlung von (Bitte Textfeld ausfüllen)", 118683),
     MESSEN("Messen", 118671),
     MEETUPS("Meetups", 118672),
-    SONSTIGES("Sonstige (Bitte Textfeld ausfüllen)", 118673);
+    SONSTIGES("Sonstige (Bitte Textfeld ausfüllen)", 118673),
+    NONE("None", 0);
 
     final String text;
 

@@ -3,6 +3,7 @@ package com.gepardec.wdg.challenge.model;
 import com.gepardec.wdg.application.jsonb.JsonBDeserializerBinding;
 import com.gepardec.wdg.application.validation.Base64;
 import com.gepardec.wdg.application.validation.Base64Length;
+import com.gepardec.wdg.application.validation.SourceSelection;
 import com.gepardec.wdg.challenge.validation.AnswerValid;
 import com.gepardec.wdg.client.personio.Source;
 import org.hibernate.validator.constraints.URL;
@@ -47,6 +48,7 @@ public class Answer {
 
     @NotNull(message = "{AnswerModel.source.notNull}")
     @JsonbTypeDeserializer(JsonBDeserializerBinding.class)
+    @SourceSelection(message = "{AnswerModel.source.selection}")
     private Source source;
 
     private String otherSource = "";
