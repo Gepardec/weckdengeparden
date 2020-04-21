@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbBuilder;
+import java.util.Base64;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -134,6 +135,7 @@ class ChallengeResourceTest {
         answer.setMessageToGepardec("This is my message");
         answer.setSource(Source.LINKEDIN);
         answer.setAnswer(challenges.getAnswer());
+        answer.setCv(Base64.getEncoder().encodeToString("This is my CV".getBytes()));
 
         return answer;
     }
