@@ -31,7 +31,7 @@ public class ApplicationFormTranslator {
         if (model.getSource() != null) {
             form.setRecrutingChannel(model.getSource().idStr);
         }
-        if (model.getCv() != null) {
+        if (model.getCv() != null && !model.getCv().isBlank()) {
             form.setDocument(new ByteArrayInputStream(Base64.getDecoder().decode(model.getCv())));
         }
 

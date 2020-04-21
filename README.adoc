@@ -102,12 +102,14 @@ Content-Type: application/json
    "phone": "<OPTIONAL_YOUR_PHONE>",
    "linkedInLink": "<OPTIONAL_YOUR_LINKEDIN_LINK>",
    "xingLink": "<OPTIONAL_YOUR_XING_LINK>",
-   "cv": "<OPTIONAL_YOUR_CV_IN_BASE64>"
+   "cv": "<YOUR_CV_IN_BASE64>"
 }
 ----
 
 TIP: The possible enum values for the property ``source`` see link:src/main/java/com/gepardec/wdg/client/personio/Source.java[Source.java] (Use the enum name). +
      The property ``cv`` must be a file encoded in a Base64 String.
+
+IMPORTANT: All field except `linkedInLink`, `xingLink`, `titel` and `phone` are required.
 
 ==== Success Response
 

@@ -1,11 +1,13 @@
 package com.gepardec.wdg.challenge.model;
 
+import com.gepardec.wdg.application.jsonb.JsonBDeserializerBinding;
 import com.gepardec.wdg.application.validation.Base64;
 import com.gepardec.wdg.application.validation.Base64Length;
 import com.gepardec.wdg.challenge.validation.AnswerValid;
 import com.gepardec.wdg.client.personio.Source;
 import org.hibernate.validator.constraints.URL;
 
+import javax.json.bind.annotation.JsonbTypeDeserializer;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -31,6 +33,7 @@ public class Answer {
 
     @Base64(message = "{AnswerModel.cv.base64}")
     @Base64Length(max = 10_485_760, message = "{AnswerModel.cv.base64Length}")
+    @NotEmpty(message = "{AnswerModel.cv.notEmpty}")
     private String cv;
 
     @URL(message = "{AnswerModel.xingLink.url}")
@@ -43,6 +46,7 @@ public class Answer {
     private String messageToGepardec;
 
     @NotNull(message = "{AnswerModel.source.notNull}")
+    @JsonbTypeDeserializer(JsonBDeserializerBinding.class)
     private Source source;
 
     private String otherSource = "";
