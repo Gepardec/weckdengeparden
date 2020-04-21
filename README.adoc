@@ -106,8 +106,8 @@ Content-Type: application/json
 }
 ----
 
-TIP: See link:src/main/java/com/gepardec/wdg/client/personio/Source.java[Source.java] for possible enum values (Use the enum name). +
-     Your CV must be a file encoded in Base64.
+TIP: The possible enum values for the property ``source`` see link:src/main/java/com/gepardec/wdg/client/personio/Source.java[Source.java] (Use the enum name). +
+     The property ``cv`` must be a file encoded in a Base64 String.
 
 ==== Success Response
 
@@ -188,25 +188,31 @@ Sensitive configurations have been externalized and must be added before startin
 Place the following configuration file in the ``/config`` directory additionally to a truststore.jks which holds personio related trusted certificates.
 
 .application.properties
-[source,properties]
+[source,yaml]
 ----
-## Perosnio configurations
-personio.company_id=<COMPANY_ID>
-personio.access_token=<ACCESS_TOKEN>
-# MP-Rest-Client properties
-personio/mp-rest/url=https://api.personio.de
-personio/mp-rest/trustStore=<FQN_OF_TRUSTSTORE_FILE>
-personio/mp-rest/trustStorePassword=<PWD_OF_TRUSTSTORE_FILE>
-personio/mp-rest/trustStoreType=<TRUSTSTORE_TYPE>
-# Opentracing/Jaeger configuration
-quarkus.jaeger.enabled=true
-quarkus.jaeger.service-name=weckdengeparden
-quarkus.jaeger.agent-host-port=<AGENT_HOST_PORT>
-quarkus.jaeger.reporter-log-spans=<TRUE_IF_SPAN_SHALL_BE_LOGGED>
-quarkus.jaeger.sampler-type=<SAMPLE_TYPE>
-quarkus.jaeger.sampler-param=<SAMPLE_PARAM>
-quarkus.jaeger.reporter-max-queue-size=<SPAN_QUEUE_SIZE>
-quarkus.jaeger.reporter-flush-interval=<FLUSH_DURATION_EG_1.500S>
+quarkus:
+  log:
+    console:
+      enable: true
+      level: ALL
+  jaeger:
+    enabled: false
+    service-name: "weckdengeparden"
+    agent-host-port: "AGENT_HOST_PORT"
+    reporter-log-spans: false
+    sampler-type: "const"
+    sampler-parameter: 1
+    reporter-flush-interval: 1.500S
+    reporter-max-queue-size: 200
+
+personio:
+  company_id: "COMPANY_ID"
+  access_token: "ACCESS_TOKEN"
+
+personio/mp-rest/url: "https://api.personio.de"
+personio/mp-rest/trustStorePassword: "PWD_OF_TRUSTSTORE_FILE"
+personio/mp-rest/trustStoreType: "TRUSTSTORE_TYPE"
+personio/mp-rest/trustStore: "FQN_OF_TRUSTSTORE_FILE"
 ----
 
 TIP: See link:https://quarkus.io/guides/opentracing[quarkus-opentracing]
@@ -228,7 +234,7 @@ In this section you see how to setup an Openshift project which hosts the ``weck
 === Preparations
 
 . Ensure you have setup up your development environment and that you have built the application.
-. Ensure that you have an valid ``config/application.properties`` file
+. Ensure that you have an valid ``config/application.yml`` file
 . Ensure you have a ``config/truststore.jks`` file which contains personio related trusted certificates
 
 === Setup
@@ -250,7 +256,7 @@ oc process -f templates/jaeger.yaml -o yaml  | oc delete -f -
 ----
 # Create secret for weckdengeparden
 oc create secret generic weckdengeparden \
-   --from-file=application.properties=config/application-ocp.properties \
+   --from-file=application.yml=config/application-ocp.yml \
    --from-file=truststore.jks=config/truststore.jks
 ----
 
@@ -278,9 +284,5 @@ oc process -f ocp/templates/weckdengeparden.yaml --param-file=ocp/templates/weck
 [source,bash]
 ----
 # Start build with local binary
-oc start-build weckdengeparden --from-file=target/wdg-0.0.1-runner.jar --follow --wait
+oc start-build weckdengeparden --from-file=target/wdg-1.0.0-runner.jar --follow --wait
 ----
-
-== Tracing
-
-The services calls are traced with opentracing and can be analysed with Jaeger you can reach link:https://jaeger-query-57-services.cloud.itandtel.at/[here].
