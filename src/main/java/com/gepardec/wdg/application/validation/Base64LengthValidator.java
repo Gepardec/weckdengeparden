@@ -20,9 +20,10 @@ public class Base64LengthValidator implements ConstraintValidator<Base64Length, 
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
-        if (value == null) {
-            return true;
+        if (value == null || value.isBlank()) {
+            return false;
         }
+
         final long length = value.length();
         final long padding = calculatePadding(value);
         final long size = (long) ((double) length * 0.75) - padding;
