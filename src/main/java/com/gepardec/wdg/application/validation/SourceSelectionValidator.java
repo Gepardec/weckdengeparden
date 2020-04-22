@@ -12,6 +12,6 @@ public class SourceSelectionValidator implements ConstraintValidator<SourceSelec
             return false;
         }
 
-        return !source.equals(Source.NONE);
+        return !source.equals(Source.ERROR);
     }
 }

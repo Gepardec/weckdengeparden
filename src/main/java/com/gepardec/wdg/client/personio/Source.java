@@ -14,7 +14,7 @@ public enum Source {
     MESSEN("Messen", 118671),
     MEETUPS("Meetups", 118672),
     SONSTIGES("Sonstige (Bitte Textfeld ausfüllen)", 118673),
-    NONE("None", 0);
+    ERROR("Error", 0);
 
     final String text;
 

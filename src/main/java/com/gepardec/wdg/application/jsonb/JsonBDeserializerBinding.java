@@ -19,7 +19,7 @@ public class JsonBDeserializerBinding implements JsonbDeserializer<Source> {
     public Source deserialize(JsonParser jsonParser, DeserializationContext deserializationContext, Type type) {
 
         if(!enumNames.contains(jsonParser.getString())) {
-            return Source.NONE;
+            return Source.ERROR;
         }
 
         return Source.valueOf(jsonParser.getString());

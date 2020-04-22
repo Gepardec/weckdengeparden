@@ -16,8 +16,8 @@ public class Base64Validator implements ConstraintValidator<Base64, String> {
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
-        if (value == null) {
-            return true;
+        if (value == null || value.isBlank()) {
+            return false;
         }
 
         final String sanitized = value.replaceAll(WHITESPACE_REGEX, "");

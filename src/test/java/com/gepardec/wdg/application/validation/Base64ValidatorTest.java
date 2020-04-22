@@ -16,9 +16,15 @@ class Base64ValidatorTest {
     }
 
     @Test
-    void isValid_withNull_thenTrue() {
-        Assertions.assertTrue(validator.isValid(null, null));
+    void isValid_withNull_thenFalse() {
+        Assertions.assertFalse(validator.isValid(null, null));
     }
+
+    @Test
+    void isValid_withEmptyString_thenFalse() {
+        Assertions.assertFalse(validator.isValid("", null));
+    }
+
 
     @Test
     void isValid_withInvalidString_thenFalse() {
