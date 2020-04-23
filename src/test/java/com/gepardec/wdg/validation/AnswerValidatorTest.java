@@ -54,8 +54,8 @@ class AnswerValidatorTest {
     }
 
     @Test
-    void isValid_withNull_thenTrue() {
-        Assertions.assertTrue(validator.isValid(null, context));
+    void isValid_withNull_thenFalse() {
+        Assertions.assertFalse(validator.isValid(null, context));
     }
 
     @Test

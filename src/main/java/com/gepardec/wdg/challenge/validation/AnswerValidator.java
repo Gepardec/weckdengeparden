@@ -14,7 +14,10 @@ public class AnswerValidator implements ConstraintValidator<AnswerValid, Answer>
     @Override
     public boolean isValid(Answer answer, ConstraintValidatorContext context) {
         boolean valid = true;
-        if (answer != null) {
+
+        if(answer == null) {
+            valid = false;
+        } else {
             if (answer.getSource() != null && sources.contains(answer.getSource()) && (answer.getOtherSource() == null || answer.getOtherSource().isBlank())) {
                 context.buildConstraintViolationWithTemplate("{AnswerModel.source.otherSource.invalid}")
                         .addPropertyNode("source")

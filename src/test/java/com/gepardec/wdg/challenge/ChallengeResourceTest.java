@@ -23,6 +23,12 @@ import static org.hamcrest.Matchers.equalTo;
 @QuarkusTest
 class ChallengeResourceTest {
 
+    // use this malformed answers to test the request filters and intercept bad json body messages and avoid that json deserializer throws any error
+    private static final List<String> MALFORMED_ANSWERS_LIST = List.of(
+            "{\"jobId\": \"196500\"\"firstName\": \"Philipp\",\"lastName\": \"Wurm\",\"email\": \"philipp.wurm@gepardec.com\",\"answer\": \"50\",\"source\": \"xing\",\"messageToGepardec\": \"Test\",\"otherSource\": \"\",\"title\": \"\",\"phone\": \"\",\"linkedInLink\": \"\",\"xingLink\": \"\",\"cv\": \"\"}",
+            "{\"jobId\": \"196500\",\"firstName\": \"Philipp\",\"lastName\": \"Wurm\",\"email\": \"philipp.wurm@gepardec.com\",\"answer\": \"50\",\"source\": \"xing\",\"messageToGepardec\": \"Test\",\"otherSource\": \"\",\"title\": \"\",\"phone\": \"\",\"linkedInLink\": \"\",\"xingLink\": \"\",\"cv\": \"\""
+    );
+
     @Test
     void list_withPOST_then404Returned() {
         given().post("/challenge")
@@ -83,7 +89,7 @@ class ChallengeResourceTest {
                 .post("/challenge/1/answer")
                 .then().statusCode(HttpStatus.SC_BAD_REQUEST)
                 .body("success", equalTo(false))
-                .body("message", equalTo("The request was invalid due to constraint violations"));
+                .body("message", equalTo("Bitte überprüfe das Format vom Request-Body, hier stimmt irgendetwas nicht ganz! :-)"));
     }
 
     @Test
@@ -121,6 +127,26 @@ class ChallengeResourceTest {
                 .then().statusCode(HttpStatus.SC_OK)
                 .body("success", equalTo(true))
                 .body("message", equalTo("Danke! Du hast den Geparden in dir erweckt und wir melden uns in den nächsten Tagen bei dir! Lg, Michael Sollberger"));
+    }
+
+    @Test
+    void answer_withMalformedJsonBody1_then400Returned() {
+        given().contentType(ContentType.JSON)
+                .body(MALFORMED_ANSWERS_LIST.get(0))
+                .post("/challenge/1/answer")
+                .then().statusCode(HttpStatus.SC_BAD_REQUEST)
+                .body("success", equalTo(false))
+                .body("message", equalTo("Bitte überprüfe das Format vom Request-Body, hier stimmt irgendetwas nicht ganz! :-)"));
+    }
+
+    @Test
+    void answer_withMalformedJsonBody2_then400Returned() {
+        given().contentType(ContentType.JSON)
+                .body(MALFORMED_ANSWERS_LIST.get(1))
+                .post("/challenge/1/answer")
+                .then().statusCode(HttpStatus.SC_BAD_REQUEST)
+                .body("success", equalTo(false))
+                .body("message", equalTo("Bitte überprüfe das Format vom Request-Body, hier stimmt irgendetwas nicht ganz! :-)"));
     }
 
     private Answer buildValidAnswer(final int challengeId) {
