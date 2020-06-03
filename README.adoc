@@ -96,7 +96,7 @@ Content-Type: application/json
    "email": "<YOUR_EMAIL>",
    "answer": "<YOUR_ANSWER>",
    "source": "<YOUR_SOURCE_WHERE_YOU_HEARD_FROM_US>",
-   "messageToGepardec": "<WHY_GEPARDEC_?>",
+   "messageToGepardec": "<Was kann dein Beitrag zur Umsetzung der Vision von gepardec sein?>",
    "otherSource": "<OPTIONLA_IF_SOURCE_NOT_SET_TO__MESSEN_MEETUPS_EMPFEHLUNG_SONSTIGE>",
    "title": "<OPTIONAL_YOUR_TITLE>",
    "phone": "<OPTIONAL_YOUR_PHONE>",
