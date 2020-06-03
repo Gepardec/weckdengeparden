@@ -6,7 +6,7 @@ Wir suchen DICH, wenn du deine Komfortzone verlassen und unser Rudel verstärken
 
 Deshalb haben wir eine kleine technische Herausforderung für dich - ein REST Service, über das du uns deine Bewerbung schickst.
 
-Wichtig für uns: Was kann dein Beitrag zur Umsetzung der Vision von gepardec sein? 
+Wichtig für uns: Was kann dein Beitrag zur Umsetzung der [Vision](https://www.gepardec.com/arbeit-kultur/werte-und-kultur/) von gepardec sein? 
 Bitte beantworte das in der "messageToGepardec".
 
 Ich freue mich auf deinen REST-Call ;)
