@@ -100,7 +100,7 @@ Content-Type: application/json
    "answer": "<YOUR_ANSWER>",
    "source": "<YOUR_SOURCE_WHERE_YOU_HEARD_FROM_US>",
    "messageToGepardec": "<Was kann dein Beitrag zur Umsetzung der Vision von gepardec sein?>",
-   "otherSource": "<OPTIONLA_IF_SOURCE_NOT_SET_TO__MESSEN_MEETUPS_EMPFEHLUNG_SONSTIGE>",
+   "otherSource": "<OPTIONAL_IF_SOURCE_NOT_SET_TO__MESSEN_MEETUPS_EMPFEHLUNG_SONSTIGE>",
    "title": "<OPTIONAL_YOUR_TITLE>",
    "phone": "<OPTIONAL_YOUR_PHONE>",
    "linkedInLink": "<OPTIONAL_YOUR_LINKEDIN_LINK>",
