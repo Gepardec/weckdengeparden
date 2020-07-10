@@ -218,6 +218,7 @@ personio/mp-rest/url: "https://api.personio.de"
 personio/mp-rest/trustStorePassword: "PWD_OF_TRUSTSTORE_FILE"
 personio/mp-rest/trustStoreType: "TRUSTSTORE_TYPE"
 personio/mp-rest/trustStore: "FQN_OF_TRUSTSTORE_FILE"
+personio/mp-rest/scope: "javax.enterprise.context.RequestScoped"
 ----
 
 TIP: See link:https://quarkus.io/guides/opentracing[quarkus-opentracing]
