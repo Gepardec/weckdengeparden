@@ -234,6 +234,7 @@ personio/mp-rest/scope: "javax.enterprise.context.RequestScoped"
 
 ApplicationMailer:
   Default: "ADD_DEFAULT_ADDRESS"
+----
 
 TIP: See link:https://quarkus.io/guides/opentracing[quarkus-opentracing]
 
