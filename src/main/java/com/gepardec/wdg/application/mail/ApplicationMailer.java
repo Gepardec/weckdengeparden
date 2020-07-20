@@ -9,6 +9,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.core.Response;
 
 @Path("")
 public class ApplicationMailer {
@@ -19,18 +20,11 @@ public class ApplicationMailer {
     @Inject
     private Mailer mailer;
 
-    @Inject
-    private ReactiveMailer reactiveMailer;
-
     @Path("/sendDefaultMail")
     @GET
-    public void sendMailToDefaultMailAddress(String subject, String text) {
+    public Response sendMailToDefaultMailAddress(String subject, String text) {
         mailer.send(Mail.withText(defaultMailAddress, subject, text));
+        return Response.accepted().build();
     }
 
-    @Path("/sendMail")
-    @GET
-    public void sendMail(String receiver, String subject, String text) {
-        mailer.send(Mail.withText(receiver, subject, text));
-    }
 }
