@@ -13,6 +13,8 @@ Ich freue mich auf deinen REST-Call ;)
 
 Michael
 
+Links: link:https://github.com/Gepardec/weckdengeparden/wiki/Home[Support]
+
 == REST Endpoints
 
 === List available challenges
@@ -100,7 +102,7 @@ Content-Type: application/json
    "answer": "<YOUR_ANSWER>",
    "source": "<YOUR_SOURCE_WHERE_YOU_HEARD_FROM_US>",
    "messageToGepardec": "<Was kann dein Beitrag zur Umsetzung der Vision von gepardec sein?>",
-   "otherSource": "<OPTIONLA_IF_SOURCE_NOT_SET_TO__MESSEN_MEETUPS_EMPFEHLUNG_SONSTIGE>",
+   "otherSource": "<OPTIONAL_IF_SOURCE_NOT_SET_TO__MESSEN_MEETUPS_EMPFEHLUNG_SONSTIGE>",
    "title": "<OPTIONAL_YOUR_TITLE>",
    "phone": "<OPTIONAL_YOUR_PHONE>",
    "linkedInLink": "<OPTIONAL_YOUR_LINKEDIN_LINK>",
@@ -228,10 +230,10 @@ personio/mp-rest/url: "https://api.personio.de"
 personio/mp-rest/trustStorePassword: "PWD_OF_TRUSTSTORE_FILE"
 personio/mp-rest/trustStoreType: "TRUSTSTORE_TYPE"
 personio/mp-rest/trustStore: "FQN_OF_TRUSTSTORE_FILE"
+personio/mp-rest/scope: "javax.enterprise.context.RequestScoped"
 
 ApplicationMailer:
   Default: "ADD_DEFAULT_ADDRESS"
-----
 
 TIP: See link:https://quarkus.io/guides/opentracing[quarkus-opentracing]
 
