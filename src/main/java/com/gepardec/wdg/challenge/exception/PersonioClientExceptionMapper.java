@@ -39,7 +39,7 @@ public class PersonioClientExceptionMapper implements ExceptionMapper<PersonioCl
     @Override
     public Response toResponse(PersonioClientException exception) {
         log.error(String.format("Call on resource '%s' failed because personio rest call failed", uriInfo.getPath()), exception);
-        final Response response = Response.status(getHttpResponseStatusForPersonioError(exception.applicationError))
+        final Response response = Response.status(getHttpResponseStatusForPersonioError(exception))
                 .entity(BaseResponse.error(exception.applicationError.clientMessage))
                 .build();
         handledEvent.fire(ExceptionHandledEvent.Builder.newBuilder(exception)
@@ -50,12 +50,13 @@ public class PersonioClientExceptionMapper implements ExceptionMapper<PersonioCl
                         exception.applicationError.clientMessage))
                 .withIsError(true)
                 .build());
-        mailer.sendMailToDefaultMailAddress("sup-tech", exception.originalMessage);
+
         return response;
     }
 
-    private int getHttpResponseStatusForPersonioError(final PersonioError personioError) {
-        if (PersonioError.UNDEFINED.equals(personioError)) {
+    private int getHttpResponseStatusForPersonioError(final PersonioClientException exception) {
+        if (PersonioError.UNDEFINED.equals(exception.applicationError)) {
+            mailer.sendMailToDefaultMailAddress("wdg-sup-tech", "status: " + exception.status + " OriginalMessage: " + exception.originalMessage + " stacktrace: " + exception.getMessage());
             return HttpStatus.SC_INTERNAL_SERVER_ERROR;
         }
 

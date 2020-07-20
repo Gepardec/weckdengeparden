@@ -43,7 +43,7 @@ public class OtherExceptionMapper implements ExceptionMapper<Exception> {
         log.error(String.format("Call on resource '%s' produced an error", uriInfo.getPath()), exception);
         Response response = Response.serverError().entity("Sorry, an unexpected error occurred on our site.").build();
         handledEvent.fire(ExceptionHandledEvent.Builder.newBuilder(exception).withIsError(true).build());
-        mailer.sendMailToDefaultMailAddress("sup-tech", exception.getMessage());
+        mailer.sendMailToDefaultMailAddress("wdg-sup-tech", exception.getMessage());
         return response;
     }
 }
