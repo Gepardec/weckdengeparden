@@ -13,6 +13,8 @@ Ich freue mich auf deinen REST-Call ;)
 
 Michael
 
+Links: [Support](https://github.com/Gepardec/weckdengeparden/wiki/Home)
+
 == REST Endpoints
 
 === List available challenges
