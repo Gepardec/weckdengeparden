@@ -1,6 +1,7 @@
 package com.gepardec.wdg.challenge.exception;
 
 import com.gepardec.wdg.application.exception.ExceptionHandledEvent;
+import com.gepardec.wdg.application.mail.ApplicationMailer;
 import org.slf4j.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -29,6 +30,9 @@ public class OtherExceptionMapper implements ExceptionMapper<Exception> {
 
     @Context
     HttpServletRequest request;
+
+    @Inject
+    ApplicationMailer mailer;
 
     @Override
     public Response toResponse(Exception exception) {
