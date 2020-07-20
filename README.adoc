@@ -210,6 +210,16 @@ quarkus:
     reporter-flush-interval: 1.500S
     reporter-max-queue-size: 200
 
+  mailer:
+    from: MAILER_EMAIL
+    host: MAILER_HOST
+    port: PORT
+    ssl: true
+    username: USER_NAME
+    password: PASSWORD
+    # If set to "true" no actual emails will be sent only printed to stdout and collected within a MockMailbox
+    mock: false
+
 personio:
   company_id: "COMPANY_ID"
   access_token: "ACCESS_TOKEN"
@@ -218,6 +228,9 @@ personio/mp-rest/url: "https://api.personio.de"
 personio/mp-rest/trustStorePassword: "PWD_OF_TRUSTSTORE_FILE"
 personio/mp-rest/trustStoreType: "TRUSTSTORE_TYPE"
 personio/mp-rest/trustStore: "FQN_OF_TRUSTSTORE_FILE"
+
+ApplicationMailer:
+  Default: "ADD_DEFAULT_ADDRESS"
 ----
 
 TIP: See link:https://quarkus.io/guides/opentracing[quarkus-opentracing]
