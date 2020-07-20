@@ -1,6 +1,7 @@
 package com.gepardec.wdg.challenge.exception;
 
 import com.gepardec.wdg.application.exception.ExceptionHandledEvent;
+import com.gepardec.wdg.application.mail.ApplicationMailer;
 import com.gepardec.wdg.challenge.model.BaseResponse;
 import com.gepardec.wdg.client.personio.PersonioError;
 import org.apache.http.HttpStatus;
@@ -32,6 +33,9 @@ public class PersonioClientExceptionMapper implements ExceptionMapper<PersonioCl
     @Context
     HttpServletRequest request;
 
+    @Inject
+    ApplicationMailer mailer;
+
     @Override
     public Response toResponse(PersonioClientException exception) {
         log.error(String.format("Call on resource '%s' failed because personio rest call failed", uriInfo.getPath()), exception);
@@ -46,6 +50,7 @@ public class PersonioClientExceptionMapper implements ExceptionMapper<PersonioCl
                         exception.applicationError.clientMessage))
                 .withIsError(true)
                 .build());
+        mailer.sendMailToDefaultMailAddress("sup-tech", exception.originalMessage);
         return response;
     }
 
