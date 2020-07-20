@@ -13,7 +13,7 @@ Ich freue mich auf deinen REST-Call ;)
 
 Michael
 
-Links: [Support](https://github.com/Gepardec/weckdengeparden/wiki/Home)
+Links: link:https://github.com/Gepardec/weckdengeparden/wiki/Home[Support]
 
 == REST Endpoints
 
