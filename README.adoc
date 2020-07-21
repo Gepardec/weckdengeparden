@@ -13,7 +13,10 @@ Ich freue mich auf deinen REST-Call ;)
 
 Michael
 
-Links: link:https://github.com/Gepardec/weckdengeparden/wiki/Home[Support]
+Deine abgesendeten Daten werden nur zum Zweck der Bearbeitung deiner Bewerbung verarbeitet. Weitere Informationen findest du in unserer link:https://www.gepardec.com/datenschutz[Datenschutzerklärung].
+
+Wenn du uns zu technischen Fragen kontaktieren willst, check unsere link:https://github.com/Gepardec/weckdengeparden/wiki/Home[Support] Seite.
+
 
 == REST Endpoints
 
