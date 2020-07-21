@@ -95,26 +95,21 @@ Content-Type: application/json
 [source,json]
 ----
 {
-   "jobId": "<JOB_ID_THE_APPLICATION_IS_FOR>",
-   "firstName": "<YOUR_FIRST_NAME>",
-   "lastName": "<YOUR_LASTNAME>",
-   "email": "<YOUR_EMAIL>",
-   "answer": "<YOUR_ANSWER>",
-   "source": "<YOUR_SOURCE_WHERE_YOU_HEARD_FROM_US>",
+   "jobId": "<JobId der Website>",
+   "firstName": "<Vorname>",
+   "lastName": "<Nachname>",
+   "email": "<E-Mail Adresse>",
+   "answer": "<Antwort der Challenge>",
+   "source": "<Woher hast du von uns erfahren; siehe link:src/main/java/com/gepardec/wdg/client/personio/Source.java[Source.java]>",
    "messageToGepardec": "<Was kann dein Beitrag zur Umsetzung der Vision von gepardec sein?>",
-   "otherSource": "<OPTIONAL_IF_SOURCE_NOT_SET_TO__MESSEN_MEETUPS_EMPFEHLUNG_SONSTIGE>",
-   "title": "<OPTIONAL_YOUR_TITLE>",
-   "phone": "<OPTIONAL_YOUR_PHONE>",
-   "linkedInLink": "<OPTIONAL_YOUR_LINKEDIN_LINK>",
-   "xingLink": "<OPTIONAL_YOUR_XING_LINK>",
-   "cv": "<YOUR_CV_IN_BASE64>"
+   "otherSource": "<Wenn Source auf EMPFEHLUNG oder SONSTIGES gesetzt ist, dann hier Details angeben>",
+   "title": "<Titel vorangestellt (optional)>",
+   "phone": "<Telefonnummer (optional)>",
+   "linkedInLink": "<LinkedIn Profil URL (optional)>",
+   "xingLink": "<Xing Profil URL (optional)>",
+   "cv": "<Lebenslauf in Base64 encodiert>"
 }
 ----
-
-TIP: The possible enum values for the property ``source`` see link:src/main/java/com/gepardec/wdg/client/personio/Source.java[Source.java] (Use the enum name). +
-     The property ``cv`` must be a file encoded in a Base64 String.
-
-IMPORTANT: All field except `linkedInLink`, `xingLink`, `titel` and `phone` are required.
 
 ==== Success Response
 
