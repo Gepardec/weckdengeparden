@@ -3,7 +3,7 @@ package com.gepardec.wdg.challenge.exception;
 import com.gepardec.wdg.application.exception.ExceptionHandledEvent;
 import com.gepardec.wdg.application.mail.ApplicationMailer;
 import com.gepardec.wdg.challenge.model.BaseResponse;
-import com.gepardec.wdg.client.personio.PersonioError;
+import com.gepardec.wdg.client.personio.error.PersonioError;
 import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
 

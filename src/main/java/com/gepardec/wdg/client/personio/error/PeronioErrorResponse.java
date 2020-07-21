@@ -1,4 +1,4 @@
-package com.gepardec.wdg.client.personio;
+package com.gepardec.wdg.client.personio.error;
 
 public class PeronioErrorResponse {
     private String error;

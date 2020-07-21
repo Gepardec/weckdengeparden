@@ -1,5 +1,6 @@
 package com.gepardec.wdg.client.personio;
 
+import com.gepardec.wdg.client.personio.error.Personio400ExceptionMapper;
 import org.eclipse.microprofile.opentracing.Traced;
 import org.eclipse.microprofile.rest.client.annotation.RegisterProvider;
 import org.eclipse.microprofile.rest.client.annotation.RegisterProviders;
@@ -18,7 +19,6 @@ import javax.ws.rs.core.MediaType;
 // We need to register manually otherwise won't work with mp-rest-client
 @RegisterProviders({
         @RegisterProvider(Personio400ExceptionMapper.class),
-        @RegisterProvider(PersonioOtherExceptionMapper.class),
         @RegisterProvider(MultipartFormAnnotationWriter.class)
 })
 @Path("/recruiting")
