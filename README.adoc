@@ -100,7 +100,7 @@ Content-Type: application/json
    "lastName": "<Nachname>",
    "email": "<E-Mail Adresse>",
    "answer": "<Antwort der Challenge>",
-   "source": "<Woher hast du von uns erfahren; siehe Source.java*",
+   "source": "<Woher hast du von uns erfahren; siehe Source.java",
    "messageToGepardec": "<Was kann dein Beitrag zur Umsetzung der Vision von gepardec sein?>",
    "otherSource": "<Wenn Source auf EMPFEHLUNG oder SONSTIGES gesetzt ist, dann hier Details angeben>",
    "title": "<Titel vorangestellt (optional)>",
@@ -110,8 +110,6 @@ Content-Type: application/json
    "cv": "<Lebenslauf in Base64 encodiert>"
 }
 ----
-
-* link:src/main/java/com/gepardec/wdg/client/personio/Source.java[Source.java]
 
 ==== Success Response
 
