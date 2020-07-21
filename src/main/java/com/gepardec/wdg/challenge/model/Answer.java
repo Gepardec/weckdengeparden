@@ -12,11 +12,12 @@ import javax.json.bind.annotation.JsonbTypeDeserializer;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @AnswerValid
 public class Answer {
 
-    @NotEmpty(message = "{AnswerModel.jobId.notEmpty}")
+    @Size(min = 6, max = 6, message = "{AnswerModel.jobId.wrongSize}")
     private String jobId;
 
     @NotEmpty(message = "{AnswerModel.answer.notEmpty}")
