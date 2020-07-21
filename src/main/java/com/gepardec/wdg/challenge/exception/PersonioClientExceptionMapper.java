@@ -50,7 +50,6 @@ public class PersonioClientExceptionMapper implements ExceptionMapper<PersonioCl
                         exception.applicationError.clientMessage))
                 .withIsError(true)
                 .build());
-
         return response;
     }
 
