@@ -1,6 +1,6 @@
 package com.gepardec.wdg.challenge.exception;
 
-import com.gepardec.wdg.client.personio.PersonioError;
+import com.gepardec.wdg.client.personio.error.PersonioError;
 
 public class PersonioClientException extends RuntimeException {
 
