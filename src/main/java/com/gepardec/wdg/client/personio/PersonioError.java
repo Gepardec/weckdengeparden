@@ -8,11 +8,12 @@ import java.util.stream.Stream;
 
 public enum PersonioError {
     ALREADY_APPLIED("Applicant already applied to this position.",
-            "The used email address has already been used for an application"),
+            "Du bist hartnäckig, dass gefällt uns. Leider wurde deine E-Mail-Adresse für diesen Job bereits verwendet. Für eine neue Bewerbung verwende bitte auch eine neue E-Mail-Adresse."),
     JOBID_NOT_FOUND("Could not find the job position",
-            "Bitte gib eine JobID an! (Hint: die steht auf der Website unter dem Jobtitel)"),
+            "Du bist nur noch einen kleinen Schritt von deinem Ziel entfernt. Die JobID ist nicht vorhanden oder fehlerhaft. Wirf einen Blick in die Jobausschreibung."),
+    JOB_NOT_PUBLISHED("Sorry, this job position is not available anymore", "Netter Versuch. Ein Gepard war leider etwas schneller als du. Dieser Job ist nicht mehr verfügbar."),
     UNDEFINED("",
-            "Sorry, something went wrong with a call to our backend service, please try again later");
+            "Hallelujah! In unser Service hat sich ein unerwarteter Fehler eingeschlichen. Unser DevOps-Team wurde soeben verständigt und löst das Problem. Wir informieren dich, sobald unser Service wieder verfügbar ist.Weitere Infos zum Support findest du hier >> <https://github.com/Gepardec/weckdengeparden/wiki>");
 
     private static final Map<String, PersonioError> applicationErrors = Stream.of(PersonioError.values())
             .collect(Collectors.toMap(error -> error.message.toUpperCase(), Function.identity()));
