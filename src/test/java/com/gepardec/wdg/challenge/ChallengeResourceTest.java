@@ -153,7 +153,7 @@ class ChallengeResourceTest {
         final Challenges challenges = Challenges.forId(challengeId)
                 .orElseThrow(() -> new IllegalArgumentException(String.format("No challenge with id '%d' found", challengeId)));
         final Answer answer = new Answer();
-        answer.setJobId("1");
+        answer.setJobId("155555");
         answer.setFirstName("Thomas");
         answer.setLastName("Herzog");
         answer.setEmail("thomas.herzog@gepardec.om");

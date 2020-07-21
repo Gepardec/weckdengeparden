@@ -79,7 +79,7 @@ class ApplicationFormTranslatorTest {
 
     private Answer buildValidAnswer() {
         final Answer answer = new Answer();
-        answer.setJobId("1");
+        answer.setJobId("155555");
         answer.setTitle("Ing.");
         answer.setFirstName("Thomas");
         answer.setLastName("Herzog");
