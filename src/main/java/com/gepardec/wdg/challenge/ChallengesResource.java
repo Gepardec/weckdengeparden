@@ -1,5 +1,6 @@
 package com.gepardec.wdg.challenge;
 
+import com.gepardec.wdg.application.configuration.LoggerConsts;
 import com.gepardec.wdg.application.configuration.PersonioConfiguration;
 import com.gepardec.wdg.challenge.model.Answer;
 import com.gepardec.wdg.challenge.model.BaseResponse;
@@ -50,6 +51,7 @@ public class ChallengesResource {
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
     public Response list() {
+        log.info(LoggerConsts.INFO_001+" Fetching all challenges!");
         final List<Challenge> challenges = Stream.of(Challenges.values())
                 .sorted(Comparator.comparing(Challenges::getId))
                 .map((challenge) -> Challenge.of(challenge.getId(), challenge.getQuestion()))
@@ -61,12 +63,12 @@ public class ChallengesResource {
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response byId(@PathParam("id") @Min(value = 1) final Integer id) {
+        log.info(LoggerConsts.INFO_002+" Provided Challenge for id '{}' ", id);
+
         final Challenges challenge = getChallengeForId(id);
         if (challenge == null) {
             return buildChallengeNotFoundResponse(id);
         }
-        log.info("Provided Challenge for id '{}'", id);
-
         return Response.ok(Challenge.of(challenge.getId(), challenge.getQuestion())).build();
     }
 
@@ -76,20 +78,23 @@ public class ChallengesResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response answer(@PathParam("id") @Min(value = 1, message = "{AnswerModel.id.min}") Integer id,
             @NotNull(message = "{AnswerModel.notNull}") @Valid final Answer answer) {
+        log.info(LoggerConsts.INFO_003+" Provided Answer for challenge id '{}' with jobId '{}'", id, answer.getJobId());
+
         final Challenges challenge = getChallengeForId(id);
         if (challenge == null) {
+            log.warn(LoggerConsts.WARN_001+" Challenge with id '{}' with jobId '{}' not found!", id, answer.getJobId());
             return buildChallengeNotFoundResponse(id);
         }
         final boolean correctAnswer = challenge.getAnswer().trim().equalsIgnoreCase(answer.getAnswer().trim());
         if (!correctAnswer) {
-            log.info("Wrong answer provided. challengeId={}, answer={}", challenge.getId(), answer.getAnswer());
+            log.info(LoggerConsts.WARN_002+" Wrong answer provided. challengeId={}, answer={}, jobId={}", challenge.getId(), answer.getAnswer(), answer.getJobId());
             return Response.status(HttpStatus.SC_BAD_REQUEST).entity(BaseResponse.error(WRONG_ANSWER)).build();
         }
 
-        log.info("Correct answer provided. challengeId={}", challenge.getId());
+        log.info(LoggerConsts.INFO_004+" Correct answer `provided`. challengeId={} jobId={}", challenge.getId(), answer.getJobId());
         final ApplicationForm applicationForm = ApplicationFormTranslator.answerToApplicationForm(personioConfiguration, answer);
         final String personioResponse = recruitingApi.createApplicant(applicationForm);
-        log.info("ApplicationForm submitted. {}", personioResponse);
+        log.info(LoggerConsts.INFO_005+" ApplicationForm for challengeId='{}', jobId={} submitted. {}", challenge.getId(), answer.getJobId(), personioResponse);
 
         return Response.ok(BaseResponse.success(CORRECT_ANSWER)).build();
     }

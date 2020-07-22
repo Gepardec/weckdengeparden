@@ -1,5 +1,6 @@
 package com.gepardec.wdg.challenge.exception;
 
+import com.gepardec.wdg.application.configuration.LoggerConsts;
 import com.gepardec.wdg.application.exception.ExceptionHandledEvent;
 import com.gepardec.wdg.application.mail.ApplicationMailer;
 import com.gepardec.wdg.challenge.model.BaseResponse;
@@ -39,6 +40,7 @@ public class PersonioClientExceptionMapper implements ExceptionMapper<PersonioCl
     @Override
     public Response toResponse(PersonioClientException exception) {
         log.error(String.format("Call on resource '%s' failed because personio rest call failed", uriInfo.getPath()), exception);
+        explicitPersonioExceptionLogging(exception);
         final Response response = Response.status(getHttpResponseStatusForPersonioError(exception))
                 .entity(BaseResponse.error(exception.applicationError.clientMessage))
                 .build();
@@ -55,10 +57,19 @@ public class PersonioClientExceptionMapper implements ExceptionMapper<PersonioCl
 
     private int getHttpResponseStatusForPersonioError(final PersonioClientException exception) {
         if (PersonioError.UNDEFINED.equals(exception.applicationError)) {
+            log.info(LoggerConsts.ERROR_WDG_SUP_TECH + " Job Error Undefined: status='{}', originalMessage='{}', applicationError='{}'", exception.status, exception.originalMessage, exception.applicationError);
             mailer.sendMailToDefaultMailAddress("wdg-sup-tech", "status: " + exception.status + " OriginalMessage: " + exception.originalMessage + " stacktrace: " + exception.getMessage());
             return HttpStatus.SC_INTERNAL_SERVER_ERROR;
         }
 
         return HttpStatus.SC_BAD_REQUEST;
+    }
+
+    private void explicitPersonioExceptionLogging(final PersonioClientException exception) {
+        if (PersonioError.ALREADY_APPLIED.equals(exception.applicationError)) {
+            log.info(LoggerConsts.WARN_004 + " Already Applied: status='{}', originalMessage='{}', applicationError='{}'", exception.status, exception.originalMessage, exception.applicationError);
+        } else if(PersonioError.JOBID_NOT_FOUND.equals(exception.applicationError) || PersonioError.JOB_NOT_PUBLISHED.equals(exception.applicationError) || PersonioError.JOBID_EMPTY.equals(exception.applicationError) || PersonioError.JOBID_NOT_VALID.equals(exception.applicationError)) {
+            log.info(LoggerConsts.WARN_003 + " Job Error: status='{}', originalMessage='{}', applicationError='{}'", exception.status, exception.originalMessage, exception.applicationError);
+        }
     }
 }

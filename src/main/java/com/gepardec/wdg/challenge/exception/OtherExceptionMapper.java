@@ -1,5 +1,6 @@
 package com.gepardec.wdg.challenge.exception;
 
+import com.gepardec.wdg.application.configuration.LoggerConsts;
 import com.gepardec.wdg.application.exception.ExceptionHandledEvent;
 import com.gepardec.wdg.application.mail.ApplicationMailer;
 import org.slf4j.Logger;
@@ -43,6 +44,7 @@ public class OtherExceptionMapper implements ExceptionMapper<Exception> {
         log.error(String.format("Call on resource '%s' produced an error", uriInfo.getPath()), exception);
         Response response = Response.serverError().entity("Sorry, an unexpected error occurred on our site.").build();
         handledEvent.fire(ExceptionHandledEvent.Builder.newBuilder(exception).withIsError(true).build());
+        log.info(LoggerConsts.ERROR_WDG_SUP_TECH + " Technical Error: message='{}'", exception.getMessage());
         mailer.sendMailToDefaultMailAddress("wdg-sup-tech", exception.getMessage());
         return response;
     }
