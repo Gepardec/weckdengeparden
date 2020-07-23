@@ -1,6 +1,6 @@
 = Bewirb dich!
 
-*-- ACHTUNG: Unser Service steht aktuell nicht zur Verfügung. Wir arbeiten an der Behebung! --
+*-- ACHTUNG: Unser Service steht aktuell nicht zur Verfügung. Wir arbeiten an der Behebung! --*
 
 Lieber zukünftiger Developer-Gepard!
 Als Software-Developer ist es ja zu einfach, einfach nur ein Bewerbungs-Formular auszufüllen.
