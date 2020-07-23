@@ -1,5 +1,6 @@
 package com.gepardec.wdg.challenge.exception;
 
+import com.gepardec.wdg.application.configuration.LoggerConsts;
 import com.gepardec.wdg.application.exception.ExceptionHandledEvent;
 import com.gepardec.wdg.challenge.model.ConstraintViolationResponse;
 import org.apache.http.HttpStatus;
@@ -30,7 +31,7 @@ public class ConstraintValidationExceptionMapper implements ExceptionMapper<Cons
 
     @Override
     public Response toResponse(ConstraintViolationException exception) {
-        log.info("Constraint violation(s) on resource: '{}'", uriInfo.getPath());
+        log.info(LoggerConsts.WARN_003+" Constraint violation(s) on resource: '{}'", uriInfo.getPath());
         final Response response = Response.status(HttpStatus.SC_BAD_REQUEST).entity(ConstraintViolationResponse.invalid("The request was invalid due to constraint violations", exception.getConstraintViolations())).build();
         handledEvent.fire(ExceptionHandledEvent.Builder.newBuilder(exception).withIsError(false).build());
         return response;
