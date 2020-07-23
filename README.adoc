@@ -1,7 +1,7 @@
 = Bewirb dich!
 
 
-[red] *--- ACHTUNG: Unser Service ist aktuell nicht verfügbar. Wir arbeiten an der Behebung! ---*
+[red]*--- ACHTUNG: Unser Service ist aktuell nicht verfügbar. Wir arbeiten an der Behebung! ---*
 
 
 Lieber zukünftiger Developer-Gepard!
