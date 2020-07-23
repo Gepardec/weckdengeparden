@@ -42,7 +42,7 @@ public class OtherExceptionMapper implements ExceptionMapper<Exception> {
             return ((WebApplicationException) exception).getResponse();
         }
         log.error(String.format("Call on resource '%s' produced an error", uriInfo.getPath()), exception);
-        Response response = Response.serverError().entity("Sorry, an unexpected error occurred on our site.").build();
+        Response response = Response.serverError().entity("Hallelujah! In unser Service hat sich ein unerwarteter Fehler eingeschlichen. Unser DevOps-Team wurde soeben verständigt und löst das Problem. Wir informieren dich, sobald unser Service wieder verfügbar ist.Weitere Infos zum Support findest du hier >> <https://github.com/Gepardec/weckdengeparden/wiki>").build();
         handledEvent.fire(ExceptionHandledEvent.Builder.newBuilder(exception).withIsError(true).build());
         log.info(LoggerConsts.ERROR_WDG_SUP_TECH + " Technical Error: message='{}'", exception.getMessage());
         mailer.sendMailToDefaultMailAddress("wdg-sup-tech", exception.getMessage());
