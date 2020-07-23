@@ -1,5 +1,11 @@
 = Bewirb dich!
 
+<h2>
+-
+ACHTUNG: Unser Service ist aktuell nicht verfügbar. Wir arbeiten an der Behebung!
+-
+</h2>
+
 Lieber zukünftiger Developer-Gepard!
 Als Software-Developer ist es ja zu einfach, einfach nur ein Bewerbungs-Formular auszufüllen.
 Wir suchen DICH, wenn du deine Komfortzone verlassen und unser Rudel verstärken willst.
