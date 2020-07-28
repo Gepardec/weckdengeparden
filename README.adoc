@@ -1,4 +1,4 @@
-![Gepardec Logo](https://github.com/Gepardec/weckdengeparden/blob/master/GEPARDEC_logo_RGB_hellerhg.png)
+![Logo](GEPARDEC_logo_RGB_hellerhg.png)
 
 = Bewirb dich!
 
