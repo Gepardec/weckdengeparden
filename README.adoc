@@ -1,4 +1,4 @@
-image::https://raw.githubusercontent.com/Gepardec/weckdengeparden/master/GEPARDEC_logo_RGB_hellerhg.png[Logo]
+image::https://raw.githubusercontent.com/Gepardec/weckdengeparden/master/weckdengepardenindir.jpg[Sujet]
 
 = Bewirb dich!
 
