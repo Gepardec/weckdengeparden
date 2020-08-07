@@ -3,9 +3,7 @@ quarkus:
   log:
     console:
       enable: true
-      format: "%d{HH:mm:ss} %-5p [%c{2.}] (%t) %s%e%n"
       level: "INFO"
-      color: "true"
 
 personio/mp-rest/scope: "javax.enterprise.context.RequestScoped"
 personio/mp-rest/connectTimeout: 2000
