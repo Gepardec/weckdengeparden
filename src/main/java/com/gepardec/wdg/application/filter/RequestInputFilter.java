@@ -27,7 +27,7 @@ public class RequestInputFilter implements ContainerRequestFilter {
     @Context
     UriInfo info;
 
-    private static final Logger LOG = Logger.getLogger(RequestInputFilter.class);
+    private static final org.jboss.logging.Logger log = Logger.getLogger(RequestInputFilter.class);
 
     private static final Jsonb jsonb = JsonbBuilder.create();
 
@@ -53,7 +53,7 @@ public class RequestInputFilter implements ContainerRequestFilter {
 
                 jsonb.fromJson(input, Answer.class);
             } catch (JsonbException e) {
-                LOG.error("Error while parsing body input! " + e.getMessage());
+                log.error("Error while parsing body input! " + e.getMessage());
                 ctx.abortWith(Response.status(Response.Status.BAD_REQUEST)
                         .entity(ConstraintViolationResponse.error("Bitte überprüfe das Format vom Request-Body, hier stimmt irgendetwas nicht ganz! :-)"))
                         .build());
