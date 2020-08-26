@@ -3,7 +3,6 @@ package com.gepardec.wdg.application.mail;
 import io.quarkus.mailer.Mail;
 import io.quarkus.mailer.MockMailbox;
 import io.quarkus.test.junit.QuarkusTest;
-import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,14 +14,14 @@ import java.util.List;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.any;
+import static org.hamcrest.Matchers.hasSize;
 
 
 @QuarkusTest
 public class ApplicationMailerTest {
 
-    @ConfigProperty(name = "ApplicationMailer.Default")
-    private String DEFAULT_ADR;
+    private final String DEFAULT_ADR = "karriere@gepardec.com";
 
     @Inject
     MockMailbox mailbox;
