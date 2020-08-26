@@ -21,7 +21,7 @@ import static org.hamcrest.Matchers.hasSize;
 @QuarkusTest
 public class ApplicationMailerTest {
 
-    private final String DEFAULT_ADR = "karriere@gepardec.com";
+    private static final String DEFAULT_ADR = "karriere@gepardec.com";
 
     @Inject
     MockMailbox mailbox;
