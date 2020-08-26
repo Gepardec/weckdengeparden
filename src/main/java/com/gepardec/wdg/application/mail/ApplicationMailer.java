@@ -12,7 +12,7 @@ import javax.ws.rs.core.Response;
 @Path("")
 public class ApplicationMailer {
 
-    @ConfigProperty(name = "DefaultApplicationMailer")
+    @ConfigProperty(name = "ApplicationMailer.Default")
     private String defaultMailAddress;
 
     @Inject
