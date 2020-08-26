@@ -4,9 +4,6 @@ quarkus:
     console:
       enable: true
       level: ALL
-  quarkus:
-    mailer:
-      mock: true
 
 personio/mp-rest/scope: "javax.enterprise.context.RequestScoped"
 personio/mp-rest/connectTimeout: 2000
@@ -15,6 +12,3 @@ mp:
   opentracing:
     server:
       operation-name-provider: "http-path"
-
-ApplicationMailer:
-  Default: "karriere@gepardec.com"
