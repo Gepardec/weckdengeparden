@@ -3,7 +3,14 @@ quarkus:
   log:
     console:
       enable: true
-      level: "INFO"
+      level: ALL
+  quarkus:
+    mailer:
+      mock: true
+
+personio:
+  company_id: "333"
+  access_token: "333"
 
 personio/mp-rest/scope: "javax.enterprise.context.RequestScoped"
 personio/mp-rest/connectTimeout: 2000
@@ -12,3 +19,6 @@ mp:
   opentracing:
     server:
       operation-name-provider: "http-path"
+
+ApplicationMailer:
+  Default: "karriere@gepardec.com"
