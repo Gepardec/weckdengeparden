@@ -186,3 +186,117 @@ Content-Type: application/json
    "success": false
 }
 ----
+== Developer documentation for setting up this project itself (not necessary for applicants)
+
+=== Preparations
+
+Sensitive configurations have been externalized and must be added before starting the development. +
+Place the following configuration file in the ``/config`` directory additionally to a truststore.jks which holds personio related trusted certificates.
+
+.application.properties
+[source,yaml]
+----
+quarkus:
+  log:
+    console:
+      enable: true
+      level: ALL
+  jaeger:
+    enabled: false
+    service-name: "weckdengeparden"
+    agent-host-port: "AGENT_HOST_PORT"
+    reporter-log-spans: false
+    sampler-type: "const"
+    sampler-parameter: 1
+    reporter-flush-interval: 1.500S
+    reporter-max-queue-size: 200
+  mailer:
+    from: MAILER_EMAIL
+    host: MAILER_HOST
+    port: PORT
+    ssl: true
+    username: USER_NAME
+    password: PASSWORD
+    # If set to "true" no actual emails will be sent only printed to stdout and collected within a MockMailbox
+    mock: false
+personio:
+  company_id: "COMPANY_ID"
+  access_token: "ACCESS_TOKEN"
+personio/mp-rest/url: "https://api.personio.de"
+personio/mp-rest/trustStorePassword: "PWD_OF_TRUSTSTORE_FILE"
+personio/mp-rest/trustStoreType: "TRUSTSTORE_TYPE"
+personio/mp-rest/trustStore: "FQN_OF_TRUSTSTORE_FILE"
+personio/mp-rest/scope: "javax.enterprise.context.RequestScoped"
+ApplicationMailer:
+  Default: "ADD_DEFAULT_ADDRESS"
+----
+
+TIP: See link:https://quarkus.io/guides/opentracing[quarkus-opentracing]
+
+=== Build the application
+
+Build the application with the following command
+
+.Build the uber jar
+[source,bash]
+----
+mvn clean install -Dpackage.uber.jar=true
+----
+
+== Openshift
+
+In this section you see how to setup an Openshift project which hosts the ``weckdengeparden`` service.
+
+=== Preparations
+
+. Ensure you have setup up your development environment and that you have built the application.
+. Ensure that you have an valid ``config/application.yml`` file
+. Ensure you have a ``config/truststore.jks`` file which contains personio related trusted certificates
+
+=== Setup
+
+Execute all commands in the root directory of this project. Ensure that your are logged into the proper Openshift project.
+
+.Jaeger Services
+[source,bash]
+----
+# Create jaeger services
+oc process -f templates/jaeger.yaml -o yaml  | oc apply -f -
+# Delete jaeger services
+oc process -f templates/jaeger.yaml -o yaml  | oc delete -f -
+----
+
+.Secrets
+[source,bash]
+----
+# Create secret for weckdengeparden
+oc create secret generic weckdengeparden \
+   --from-file=application.yml=config/application-ocp.yml \
+   --from-file=truststore.jks=config/truststore.jks
+----
+
+.Build Configuration
+[source,bash]
+----
+# Binary build for uber jar
+oc new-build --binary=true --name=weckdengeparden --docker-image=docker.io/fabric8/s2i-java:3.0-java11
+oc set triggers bc/weckdengeparden --remove-all
+----
+
+.Template
+[source,bash]
+----
+# Create service resources
+oc process -f ocp/templates/weckdengeparden.yaml --param-file=ocp/templates/weckdengeparden.properties | oc create -f -
+# Delete service resources
+oc process -f ocp/templates/weckdengeparden.yaml --param-file=ocp/templates/weckdengeparden.properties | oc delete -f -
+----
+
+=== Deploy application
+
+.Build Configuration
+[source,bash]
+----
+# Start build with local binary
+oc start-build weckdengeparden --from-file=target/wdg-1.0.0-runner.jar --follow --wait
+----
