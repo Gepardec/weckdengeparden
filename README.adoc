@@ -275,28 +275,11 @@ oc create secret generic weckdengeparden \
    --from-file=truststore.jks=config/truststore.jks
 ----
 
-.Build Configuration
+.New-App
 [source,bash]
 ----
-# Binary build for uber jar
-oc new-build --binary=true --name=weckdengeparden --docker-image=docker.io/fabric8/s2i-java:3.0-java11
-oc set triggers bc/weckdengeparden --remove-all
+# Creates a new application by using the openjdk-11 image stream to build the sources from the Github repository. The new-app command also constructs a build configuration which builds sources into a new application image, deployment configuration that deploys the image, and a service which provide load balanced access to the deployment that is running your image
+oc new-app registry.access.redhat.com/ubi8/openjdk-11:latest~https://github.com/Gepardec/weckdengeparden.git --name=weckdengeparden
+
 ----
 
-.Template
-[source,bash]
-----
-# Create service resources
-oc process -f ocp/templates/weckdengeparden.yaml --param-file=ocp/templates/weckdengeparden.properties | oc create -f -
-# Delete service resources
-oc process -f ocp/templates/weckdengeparden.yaml --param-file=ocp/templates/weckdengeparden.properties | oc delete -f -
-----
-
-=== Deploy application
-
-.Build Configuration
-[source,bash]
-----
-# Start build with local binary
-oc start-build weckdengeparden --from-file=target/wdg-1.0.0-runner.jar --follow --wait
-----
