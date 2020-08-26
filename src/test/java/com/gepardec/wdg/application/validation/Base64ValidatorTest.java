@@ -50,11 +50,6 @@ class Base64ValidatorTest {
         Assertions.assertTrue(validator.isValid(base64, null));
     }
 
-    @Test
-    void test_failing() {
-        Assertions.assertTrue(false, String.valueOf(true));
-    }
-
     public String createBase64StringForPadding(final int paddingCount) {
         final Base64.Encoder encoder = Base64.getEncoder();
         switch (paddingCount) {
