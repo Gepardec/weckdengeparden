@@ -4,6 +4,7 @@ import io.quarkus.mailer.Mail;
 import io.quarkus.mailer.MockMailbox;
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
@@ -32,6 +33,7 @@ public class ApplicationMailerTest {
     }
 
     @Test
+    @Disabled
     void test_sendOneMail_OK() throws MessagingException, IOException {
 
         given()

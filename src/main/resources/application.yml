@@ -8,10 +8,6 @@ quarkus:
     mailer:
       mock: true
 
-personio:
-  company_id: "333"
-  access_token: "333"
-
 personio/mp-rest/scope: "javax.enterprise.context.RequestScoped"
 personio/mp-rest/connectTimeout: 2000
 personio/mp-rest/readTimeout: 2000
