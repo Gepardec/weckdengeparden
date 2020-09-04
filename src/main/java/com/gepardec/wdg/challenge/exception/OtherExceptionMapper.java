@@ -1,6 +1,6 @@
 package com.gepardec.wdg.challenge.exception;
 
-import com.gepardec.wdg.application.configuration.LoggerConsts;
+import com.gepardec.wdg.application.configuration.Consts;
 import com.gepardec.wdg.application.exception.ExceptionHandledEvent;
 import com.gepardec.wdg.application.mail.ApplicationMailer;
 import org.jboss.logging.Logger;
@@ -43,7 +43,7 @@ public class OtherExceptionMapper implements ExceptionMapper<Exception> {
         log.error(String.format("Call on resource '%s' produced an error", uriInfo.getPath()), exception);
         Response response = Response.serverError().entity("Hallelujah! In unser Service hat sich ein unerwarteter Fehler eingeschlichen. Unser DevOps-Team wurde soeben verständigt und löst das Problem. Wir informieren dich, sobald unser Service wieder verfügbar ist.Weitere Infos zum Support findest du hier >> <https://github.com/Gepardec/weckdengeparden/wiki>").build();
         handledEvent.fire(ExceptionHandledEvent.Builder.newBuilder(exception).withIsError(true).build());
-        log.info(String.format(LoggerConsts.ERROR_WDG_SUP_TECH + " Technical Error: message='%s'", exception.getMessage()));
+        log.info(String.format(Consts.ERROR_WDG_SUP_TECH + " Technical Error: message='%s'", exception.getMessage()));
         mailer.sendMailToDefaultMailAddress("wdg-sup-tech", String.format("Message: '%s', Cause: '%s', Stacktrace: '%s',", exception.getMessage(), exception.getCause().toString(), exception.getStackTrace().toString()));
         return response;
     }
