@@ -71,7 +71,7 @@ public class ChallengesResource {
     @Path("/{id}/answer")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    @Retry(maxRetries = 3)
+    @Retry()
     public Response answer(@PathParam("id") @Min(value = 1, message = "{AnswerModel.id.min}") Integer id,
             @NotNull(message = "{AnswerModel.notNull}") @Valid final Answer answer) {
         log.info(String.format(LoggerConsts.INFO_003+" Provided Answer for challengeId='%s' with jobId='%s'", id, answer.getJobId()));
