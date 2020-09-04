@@ -1,6 +1,6 @@
 package com.gepardec.wdg.challenge.exception;
 
-import com.gepardec.wdg.application.configuration.LoggerConsts;
+import com.gepardec.wdg.application.configuration.Consts;
 import com.gepardec.wdg.application.exception.ExceptionHandledEvent;
 import com.gepardec.wdg.application.mail.ApplicationMailer;
 import com.gepardec.wdg.challenge.model.BaseResponse;
@@ -56,8 +56,8 @@ public class PersonioClientExceptionMapper implements ExceptionMapper<PersonioCl
 
     private int getHttpResponseStatusForPersonioError(final PersonioClientException exception) {
         if (PersonioError.UNDEFINED.equals(exception.applicationError)) {
-            log.info(String.format(LoggerConsts.ERROR_WDG_SUP_TECH + " Job Error Undefined: status='%s', originalMessage='%s', applicationError='%s'", exception.status, exception.originalMessage, exception.applicationError));
-            mailer.sendMailToDefaultMailAddress("wdg-sup-tech", "status: " + exception.status + " OriginalMessage: " + exception.originalMessage + " stacktrace: " + exception.getMessage());
+            log.info(String.format(Consts.ERROR_WDG_SUP_TECH + " Job Error Undefined: status='%s', originalMessage='%s', applicationError='%s'", exception.status, exception.originalMessage, exception.applicationError));
+            mailer.sendMailToDefaultMailAddress(Consts.MAIL_SUBJECT_WDG_SUP_TECH, "status: " + exception.status + " OriginalMessage: " + exception.originalMessage + " applicationError: " + exception.applicationError);
             return HttpStatus.SC_INTERNAL_SERVER_ERROR;
         }
 
@@ -66,9 +66,9 @@ public class PersonioClientExceptionMapper implements ExceptionMapper<PersonioCl
 
     private void explicitPersonioExceptionLogging(final PersonioClientException exception) {
         if (PersonioError.ALREADY_APPLIED.equals(exception.applicationError)) {
-            log.info(String.format(LoggerConsts.WARN_004 + " Already Applied: status='%s', originalMessage='%s', applicationError='%s'", exception.status, exception.originalMessage, exception.applicationError));
+            log.info(String.format(Consts.WARN_004 + " Already Applied: status='%s', originalMessage='%s', applicationError='%s'", exception.status, exception.originalMessage, exception.applicationError));
         } else if(PersonioError.JOBID_NOT_FOUND.equals(exception.applicationError) || PersonioError.JOB_NOT_PUBLISHED.equals(exception.applicationError) || PersonioError.JOBID_EMPTY.equals(exception.applicationError) || PersonioError.JOBID_NOT_VALID.equals(exception.applicationError)) {
-            log.info(String.format(LoggerConsts.WARN_003 + " Job Error: status='%s', originalMessage='%s', applicationError='%s'", exception.status, exception.originalMessage, exception.applicationError));
+            log.info(String.format(Consts.WARN_003 + " Job Error: status='%s', originalMessage='%s', applicationError='%s'", exception.status, exception.originalMessage, exception.applicationError));
         }
     }
 }

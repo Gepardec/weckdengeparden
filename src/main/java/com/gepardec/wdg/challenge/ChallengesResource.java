@@ -1,6 +1,6 @@
 package com.gepardec.wdg.challenge;
 
-import com.gepardec.wdg.application.configuration.LoggerConsts;
+import com.gepardec.wdg.application.configuration.Consts;
 import com.gepardec.wdg.application.configuration.PersonioConfiguration;
 import com.gepardec.wdg.challenge.model.Answer;
 import com.gepardec.wdg.challenge.model.BaseResponse;
@@ -17,12 +17,7 @@ import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.Comparator;
@@ -50,7 +45,7 @@ public class ChallengesResource {
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
     public Response list() {
-        log.info(LoggerConsts.INFO_001+" Fetching all challenges!");
+        log.info(Consts.INFO_001+" Fetching all challenges!");
         final List<Challenge> challenges = Stream.of(Challenges.values())
                 .sorted(Comparator.comparing(Challenges::getId))
                 .map(challenge -> Challenge.of(challenge.getId(), challenge.getQuestion()))
@@ -62,7 +57,7 @@ public class ChallengesResource {
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response byId(@PathParam("id") @Min(value = 1) final Integer id) {
-        log.info(String.format(LoggerConsts.INFO_002+" Provided Challenge for id='%s'", id));
+        log.info(String.format(Consts.INFO_002+" Provided Challenge for id='%s'", id));
 
         final Challenges challenge = getChallengeForId(id);
         if (challenge == null) {
@@ -77,23 +72,23 @@ public class ChallengesResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response answer(@PathParam("id") @Min(value = 1, message = "{AnswerModel.id.min}") Integer id,
             @NotNull(message = "{AnswerModel.notNull}") @Valid final Answer answer) {
-        log.info(String.format(LoggerConsts.INFO_003+" Provided Answer for challengeId='%s' with jobId='%s'", id, answer.getJobId()));
+        log.info(String.format(Consts.INFO_003+" Provided Answer for challengeId='%s' with jobId='%s'", id, answer.getJobId()));
 
         final Challenges challenge = getChallengeForId(id);
         if (challenge == null) {
-            log.warn(String.format(LoggerConsts.WARN_001+" Challenge with id='%s' with jobId='%s' not found!", id, answer.getJobId()));
+            log.warn(String.format(Consts.WARN_001+" Challenge with id='%s' with jobId='%s' not found!", id, answer.getJobId()));
             return buildChallengeNotFoundResponse(id);
         }
         final boolean correctAnswer = challenge.getAnswer().trim().equalsIgnoreCase(answer.getAnswer().trim());
         if (!correctAnswer) {
-            log.info(String.format(LoggerConsts.WARN_002+" Wrong answer provided. challengeId='%s', answer='%s', jobId='%s'", challenge.getId(), answer.getAnswer(), answer.getJobId()));
+            log.info(String.format(Consts.WARN_002+" Wrong answer provided. challengeId='%s', answer='%s', jobId='%s'", challenge.getId(), answer.getAnswer(), answer.getJobId()));
             return Response.status(HttpStatus.SC_BAD_REQUEST).entity(BaseResponse.error(WRONG_ANSWER)).build();
         }
 
-        log.info(String.format(LoggerConsts.INFO_004+" Correct answer `provided`. challengeId='%s' jobId='%s'", challenge.getId(), answer.getJobId()));
+        log.info(String.format(Consts.INFO_004+" Correct answer `provided`. challengeId='%s' jobId='%s'", challenge.getId(), answer.getJobId()));
         final ApplicationForm applicationForm = ApplicationFormTranslator.answerToApplicationForm(personioConfiguration, answer);
         final String personioResponse = recruitingApi.createApplicant(applicationForm);
-        log.info(String.format(LoggerConsts.INFO_005+" ApplicationForm for challengeId='%s', jobId='%s' submitted. '%s'", challenge.getId(), answer.getJobId(), personioResponse));
+        log.info(String.format(Consts.INFO_005+" ApplicationForm for challengeId='%s', jobId='%s' submitted. '%s'", challenge.getId(), answer.getJobId(), personioResponse));
 
         return Response.ok(BaseResponse.success(CORRECT_ANSWER)).build();
     }
