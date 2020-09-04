@@ -57,7 +57,7 @@ public class PersonioClientExceptionMapper implements ExceptionMapper<PersonioCl
     private int getHttpResponseStatusForPersonioError(final PersonioClientException exception) {
         if (PersonioError.UNDEFINED.equals(exception.applicationError)) {
             log.info(String.format(Consts.ERROR_WDG_SUP_TECH + " Job Error Undefined: status='%s', originalMessage='%s', applicationError='%s'", exception.status, exception.originalMessage, exception.applicationError));
-            mailer.sendMailToDefaultMailAddress(Consts.MAIL_SUBJECT_WDG_SUP_TECH, "status: " + exception.status + " OriginalMessage: " + exception.originalMessage + " stacktrace: " + exception.getMessage());
+            mailer.sendMailToDefaultMailAddress(Consts.MAIL_SUBJECT_WDG_SUP_TECH, "status: " + exception.status + " OriginalMessage: " + exception.originalMessage + " applicationError: " + exception.applicationError);
             return HttpStatus.SC_INTERNAL_SERVER_ERROR;
         }
 
