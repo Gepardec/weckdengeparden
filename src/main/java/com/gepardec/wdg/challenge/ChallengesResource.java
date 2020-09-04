@@ -9,6 +9,7 @@ import com.gepardec.wdg.challenge.model.Challenges;
 import com.gepardec.wdg.client.personio.ApplicationForm;
 import com.gepardec.wdg.client.personio.RecruitingApi;
 import org.apache.http.HttpStatus;
+import org.eclipse.microprofile.faulttolerance.Retry;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.logging.Logger;
 
@@ -70,6 +71,7 @@ public class ChallengesResource {
     @Path("/{id}/answer")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
+    @Retry()
     public Response answer(@PathParam("id") @Min(value = 1, message = "{AnswerModel.id.min}") Integer id,
             @NotNull(message = "{AnswerModel.notNull}") @Valid final Answer answer) {
         log.info(String.format(Consts.INFO_003+" Provided Answer for challengeId='%s' with jobId='%s'", id, answer.getJobId()));
