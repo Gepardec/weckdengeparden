@@ -269,7 +269,7 @@ oc process -f templates/jaeger.yaml -o yaml  | oc delete -f -
 .Secrets
 [source,bash]
 ----
-# Create secret for weckdengeparden, if the secret already exists but only needs to be updated the "apply" command can be used instead of "create"
+# Create secret for weckdengeparden, if the secret already exists add "-o yaml --dry-run | oc apply -f -"
 oc create secret generic weckdengeparden \
    --from-file=application.yml=config/application-ocp.yml \
    --from-file=truststore.jks=config/truststore.jks
