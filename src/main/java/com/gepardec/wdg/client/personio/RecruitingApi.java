@@ -1,6 +1,7 @@
 package com.gepardec.wdg.client.personio;
 
 import com.gepardec.wdg.client.personio.error.Personio400ExceptionMapper;
+import org.eclipse.microprofile.faulttolerance.Retry;
 import org.eclipse.microprofile.opentracing.Traced;
 import org.eclipse.microprofile.rest.client.annotation.RegisterProvider;
 import org.eclipse.microprofile.rest.client.annotation.RegisterProviders;
@@ -28,6 +29,7 @@ public interface RecruitingApi {
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
+    @Retry
     String createApplicant(@MultipartForm ApplicationForm applicationForm);
 
 }
