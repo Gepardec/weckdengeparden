@@ -9,10 +9,7 @@ import com.gepardec.wdg.client.personio.Source;
 import org.hibernate.validator.constraints.URL;
 
 import javax.json.bind.annotation.JsonbTypeDeserializer;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 @AnswerValid
 public class Answer {
@@ -23,10 +20,10 @@ public class Answer {
     @NotEmpty(message = "{AnswerModel.answer.notEmpty}")
     private String answer;
 
-    @NotEmpty(message = "{AnswerModel.firstName.notEmpty}")
+    @NotBlank(message = "{AnswerModel.firstName.notEmpty}")
     private String firstName;
 
-    @NotEmpty(message = "{AnswerModel.lastName.notEmpty}")
+    @NotBlank(message = "{AnswerModel.lastName.notEmpty}")
     private String lastName;
 
     @NotEmpty(message = "{AnswerModel.email.notEmpty}")
