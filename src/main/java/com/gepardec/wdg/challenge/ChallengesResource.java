@@ -70,7 +70,16 @@ public class ChallengesResource {
             log.warn(String.format(Consts.WARN_001+" Challenge with id='%s' with jobId='%s' not found!", id, answer.getJobId()));
             return buildChallengeNotFoundResponse(id);
         }
-        final boolean correctAnswer = challenge.getAnswer().trim().equalsIgnoreCase(answer.getAnswer().trim());
+
+        boolean correctAnswer = false;
+
+        if (challenge.getId() == 2){
+            correctAnswer = challenge.getAnswer().trim().contains(answer.getAnswer().trim());
+        } else {
+            correctAnswer = challenge.getAnswer().trim().equalsIgnoreCase(answer.getAnswer().trim());
+        }
+
+
         if (!correctAnswer) {
             log.info(String.format(Consts.WARN_002+" Wrong answer provided. challengeId='%s', answer='%s', jobId='%s'", challenge.getId(), answer.getAnswer(), answer.getJobId()));
             return Response.status(HttpStatus.SC_BAD_REQUEST).entity(BaseResponse.error(WRONG_ANSWER)).build();
