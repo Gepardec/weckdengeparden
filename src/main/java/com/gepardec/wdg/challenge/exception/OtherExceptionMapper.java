@@ -2,7 +2,6 @@ package com.gepardec.wdg.challenge.exception;
 
 import com.gepardec.wdg.application.configuration.Consts;
 import com.gepardec.wdg.application.exception.ExceptionHandledEvent;
-import com.gepardec.wdg.application.mail.ApplicationMailer;
 import org.jboss.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -33,10 +32,7 @@ public class OtherExceptionMapper implements ExceptionMapper<Exception> {
     @Context
     HttpServletRequest request;
 
-    @Inject
-    ApplicationMailer mailer;
-
-    @Override
+       @Override
     public Response toResponse(Exception exception) {
         if (exception instanceof WebApplicationException) {
             log.info(String.format("WebApplicationException occurred. Error: %s", exception.getMessage()));
@@ -46,7 +42,6 @@ public class OtherExceptionMapper implements ExceptionMapper<Exception> {
         Response response = Response.serverError().entity("Hallelujah! In unser Service hat sich ein unerwarteter Fehler eingeschlichen. Unser DevOps-Team wurde soeben verständigt und löst das Problem. Wir informieren dich, sobald unser Service wieder verfügbar ist.Weitere Infos zum Support findest du hier >> <https://github.com/Gepardec/weckdengeparden/wiki>").build();
         handledEvent.fire(ExceptionHandledEvent.Builder.newBuilder(exception).withIsError(true).build());
         log.error(String.format(Consts.ERROR_WDG_SUP_TECH + " Technical Error: message='%s'", exception.getMessage()));
-        mailer.sendMailToDefaultMailAddress(Consts.MAIL_SUBJECT_WDG_SUP_TECH, String.format("Message: '%s',\nCause: '%s',\nStacktrace: '%s',", exception.getMessage(), exception.getCause().toString(), getExceptionStackTraceString(exception)));
         return response;
     }
 
