@@ -17,6 +17,11 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
+        <!-- Broken Parts -->
+        <!-- <project.build.sourceEncoding>ASCII</project.build.sourceEncoding> -->
+         <!-- project.reporting.outputEncoding>ASCII</project.reporting.outputEncoding> -->
+
+
         <!-- The revision property for CI-friendly builds -->
         <revision>1.0.0</revision>
 

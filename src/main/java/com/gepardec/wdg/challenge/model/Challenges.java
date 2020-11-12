@@ -9,7 +9,7 @@ import java.util.stream.Stream;
 public enum Challenges {
     CHALLENGE2(2, "Broken Project: Deine Aufgabe besteht darin, das Projekt, " +
             "welches unser Praktikant leider nicht so ganz hinbekommen hat, " +
-            "wieder zum Laufen zu bringen. Hol dir das beste Broken Project ever jetzt unter: https://github.com/Gepardec/weckdengeparden", "https://github.com/Gepardec/"),
+            "wieder zum Laufen zu bringen. Hol dir das beste Broken Project ever jetzt unter: https://github.com/Gepardec/weckdengeparden", "github.com/Gepardec/"),
     CHALLENGE1(1, "1 Notebook und eine Maus kosten zusammen 1100 Euro. Der Notebook kostet 1000 Euro mehr als die Maus. Wieviel kostet die Maus?", "50"),
     UNKNOWN(0, "", "");
 
