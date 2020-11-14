@@ -1,6 +1,7 @@
 package com.gepardec.wdg.challenge;
 
 import com.gepardec.wdg.application.configuration.Consts;
+import com.gepardec.wdg.application.validation.URLValidator;
 import com.gepardec.wdg.challenge.model.Answer;
 import com.gepardec.wdg.challenge.model.BaseResponse;
 import com.gepardec.wdg.challenge.model.Challenge;
@@ -17,8 +18,10 @@ import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.net.URL;
 import java.util.Comparator;
 import java.util.List;
+import java.util.regex.Matcher;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -72,9 +75,12 @@ public class ChallengesResource {
         }
 
         boolean correctAnswer = false;
+        URLValidator urlval = new URLValidator();
+
 
         if (challenge.getId() == 2){
-            correctAnswer = challenge.getAnswer().trim().contains(answer.getAnswer().trim());
+            String urlPullRQ = answer.getAnswer().replace(" ", "");
+            correctAnswer = urlPullRQ.substring(0, challenge.getAnswer().length()).matches("https://github.com/Gepardec/weckdengeparden/pull/") && urlval.isValid(urlPullRQ, null) && urlPullRQ.substring(challenge.getAnswer().length()).matches(".*\\d.*");
         } else {
             correctAnswer = challenge.getAnswer().trim().equalsIgnoreCase(answer.getAnswer().trim());
         }
