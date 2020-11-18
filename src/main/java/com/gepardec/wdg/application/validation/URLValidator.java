@@ -5,6 +5,8 @@ import javax.validation.ConstraintValidatorContext;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+ //@WINStage3: UnitTests für diese Klasse fehlen!
+
 public class URLValidator implements ConstraintValidator<URL, String> {
 
     private static final String URL_REGEX =

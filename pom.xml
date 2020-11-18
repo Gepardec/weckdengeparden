@@ -51,17 +51,12 @@
               <artifactId>quarkus-resteasy</artifactId>
           </dependency>
 
-        <!-- nachfolgende dependencies löschen oder auskommentieren -->
-        <!--  -->
-        <dependency>
-              <groupId>io.quarkus</groupId>
-              <artifactId>quarkus-resteasy-jsonb</artifactId>
-          </dependency>
+        <!-- @WINStage1 Ohne Jason wirds nix. -->
 
-          <dependency>
-              <groupId>io.quarkus</groupId>
-              <artifactId>quarkus-rest-client</artifactId>
-          </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-rest-client</artifactId>
+        </dependency>
 
           <dependency>
               <groupId>org.jboss.resteasy</groupId>

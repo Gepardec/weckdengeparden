@@ -27,4 +27,21 @@ public class SourceSelectionValidatorTest {
     void isValid_withXingEnumValue_thenTrue() {
         Assertions.assertTrue(validator.isValid(Source.XING, null));
     }
+
+//neue Tests:
+    @Test
+    void isValid_withInstagramEnumValue_thenTrue() {
+        Assertions.assertTrue(validator.isValid(Source.INSTAGRAM, null));
+    }
+
+    @Test
+    void isValid_withMessenEnumValue_thenTrue() {
+        Assertions.assertTrue(validator.isValid(Source.MESSEN, null));
+    }
+
+    @Test
+    void isValid_withFacebookEnumValue_thenTrue() {
+        Assertions.assertTrue(validator.isValid(Source.FACEBOOK, null));
+    }
+
 }

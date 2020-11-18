@@ -39,7 +39,7 @@ class Base64ValidatorTest {
     }
 
 
-    // Test isValid_withPadding1_thenTruealse() will fail because of a broken CodePart
+    //@WINStage2: Test isValid_withPadding1_thenTruealse() will fail because of a broken CodePart
     @Test
     void isValid_withPadding1_thenTruealse() {
         final String base64 = createBase64StringForPadding(1);
