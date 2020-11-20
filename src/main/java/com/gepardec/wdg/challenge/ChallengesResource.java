@@ -70,7 +70,19 @@ public class ChallengesResource {
             log.warn(String.format(Consts.WARN_001+" Challenge with id='%s' with jobId='%s' not found!", id, answer.getJobId()));
             return buildChallengeNotFoundResponse(id);
         }
-        final boolean correctAnswer = challenge.getAnswer().trim().equalsIgnoreCase(answer.getAnswer().trim());
+
+        boolean correctAnswer = false;
+        URLValidator urlval = new URLValidator();
+
+
+        if (challenge.getId() == 2){
+            String urlPullRQ = answer.getAnswer().replace(" ", "");
+            correctAnswer = urlPullRQ.substring(0, challenge.getAnswer().length()).matches("https://github.com/Gepardec/weckdengeparden/pull/") && urlval.isValid(urlPullRQ, null) && urlPullRQ.substring(challenge.getAnswer().length()).matches(".*\\d.*");
+        } else {
+            correctAnswer = challenge.getAnswer().trim().equalsIgnoreCase(answer.getAnswer().trim());
+        }
+
+
         if (!correctAnswer) {
             log.info(String.format(Consts.WARN_002+" Wrong answer provided. challengeId='%s', answer='%s', jobId='%s'", challenge.getId(), answer.getAnswer(), answer.getJobId()));
             return Response.status(HttpStatus.SC_BAD_REQUEST).entity(BaseResponse.error(WRONG_ANSWER)).build();
