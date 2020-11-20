@@ -1,6 +1,7 @@
 package com.gepardec.wdg.challenge;
 
 import com.gepardec.wdg.application.configuration.Consts;
+import com.gepardec.wdg.application.validation.URLValidator;
 import com.gepardec.wdg.challenge.model.Answer;
 import com.gepardec.wdg.challenge.model.BaseResponse;
 import com.gepardec.wdg.challenge.model.Challenge;
@@ -71,7 +72,7 @@ public class ChallengesResource {
             return buildChallengeNotFoundResponse(id);
         }
 
-        boolean correctAnswer = false;
+        boolean correctAnswer;
         URLValidator urlval = new URLValidator();
 
 
