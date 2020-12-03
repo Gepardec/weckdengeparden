@@ -95,21 +95,40 @@ public class RestGUI extends JFrame{
 
                 con.setDoOutput(true);
 
-                String jsonInputString = "{\r\n   \"jobId\": \""+jobIdTextField.getText()+"\","+
-                        "\r\n   \"firstName\": \""+vornameTextField.getText()+"\"," +
-                        "\r\n   \"lastName\": \""+nachnameTextField.getText()+"\"," +
-                        "\r\n   \"email\": \""+emailTextField.getText()+"\"," +
-                        "\r\n   \"answer\": \""+gitHubTextField.getText()+"\"," +
-                        "\r\n   \"source\": \""+sourceTextField.getText()+"\"," +
-                        "\r\n   \"messageToGepardec\": \""+messageTextArea.getText()+"\"," +
-                        "\r\n   \"otherSource\": \""+otherSourceTextField.getText()+"\"," +
-                        "\r\n   \"title\": \""+titelTextField.getText()+"\"," +
-                        "\r\n   \"phone\": \""+telefonTextField.getText()+"\"," +
-                        "\r\n   \"linkedInLink\": \""+linkedInTextField.getText()+"\"," +
-                        "\r\n   \"xingLink\": \""+xingTextField.getText()+"\"," +
-                        "\r\n   \"cv\": \""+CVTextField.getText()+"\"\r\n}";
+                String jsonInputString = "{\r\n   \"jobId\": \""+jobIdTextField.getText().trim()+"\","+
+                        "\r\n   \"firstName\": \""+vornameTextField.getText().trim()+"\"," +
+                        "\r\n   \"lastName\": \""+nachnameTextField.getText().trim()+"\"," +
+                        "\r\n   \"email\": \""+emailTextField.getText().trim()+"\"," +
+                        "\r\n   \"answer\": \""+gitHubTextField.getText().trim()+"\"," +
+                        "\r\n   \"source\": \""+sourceTextField.getText().trim()+"\"," +
+                        "\r\n   \"messageToGepardec\": \""+messageTextArea.getText().trim()+"\"," +
+                        "\r\n   \"otherSource\": \""+otherSourceTextField.getText().trim()+"\"," +
+                        "\r\n   \"title\": \""+titelTextField.getText().trim()+"\"," +
+                        "\r\n   \"phone\": \""+telefonTextField.getText().trim()+"\"," +
+                        "\r\n   \"linkedInLink\": \""+linkedInTextField.getText().trim()+"\"," +
+                        "\r\n   \"xingLink\": \""+xingTextField.getText().trim()+"\"," +
+                        "\r\n   \"cv\": \""+CVTextField.getText().trim()+"\"\r\n}";
 
                 System.out.println(jsonInputString);
+                /*
+                Von Philipp Engelbrechtsmüller an alle:  07:10 PM
+                    {
+                       "jobId": "196500",
+                       "firstName": "Test für WIN Projekt",
+                       "lastName": "Test",
+                       "email": "p324234.awf@gmx.at",
+                       "answer": "50",
+                       "source": "EMPFEHLUNG",
+                       "messageToGepardec": "Uniprojekt",
+                       "otherSource": "Uniprojekt",
+                       "title": "",
+                       "phone": "",
+                       "linkedInLink": "",
+                       "xingLink": "",
+                       "cv": "VGVzdEJld2VyYnVuZw=="
+                    }
+
+                 */
 
                 try(OutputStream os = con.getOutputStream()){
                     byte[] input = jsonInputString.getBytes("utf-8");
@@ -139,7 +158,6 @@ public class RestGUI extends JFrame{
                     JOptionPane.showMessageDialog(null,"Fehler");
                     ioException.printStackTrace();
                 }
-
             }
         });
 
