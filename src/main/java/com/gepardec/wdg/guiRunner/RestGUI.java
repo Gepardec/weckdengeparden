@@ -1,8 +1,11 @@
 package com.gepardec.wdg.guiRunner;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -12,7 +15,7 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 
-public class RestGUI {
+public class RestGUI extends JFrame{
     private JPanel Basic;
     private JLabel jobIdLabel;
     private JLabel vornameLabel;
@@ -31,7 +34,6 @@ public class RestGUI {
     private JTextField emailTextField;
     private JTextField gitHubTextField;
     private JTextField sourceTextField;
-    private JTextField messageToGepardecTextField;
     private JTextField titelTextField;
     private JTextField otherSourceTextField;
     private JTextField telefonTextField;
@@ -41,12 +43,33 @@ public class RestGUI {
     private JLabel CVLabel;
     private JLabel xingLabel;
     private JButton submitButton;
+    private JTextArea messageTextArea;
 
-    public RestGUI() {
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Bewerbung Formular");
+
+        /*JLabel background;
+        ImageIcon img = new ImageIcon("gepardec_icon.jpg");
+        background = new JLabel("",img,JLabel.CENTER);
+        background.setBounds(0,0,330,500);
+        frame.add(background);*/
+
+        ImageIcon pic = new ImageIcon("gepardec_icon.jpg");
+        frame.setIconImage(pic.getImage());
+        frame.setContentPane(new RestGUI().Basic);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setSize(400,500);
+        frame.setResizable(false);
+        frame.setVisible(true);
+
+    }
+
+    public RestGUI(){
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
 
                 URL url = null;
                 try {
@@ -72,48 +95,21 @@ public class RestGUI {
 
                 con.setDoOutput(true);
 
-                //JSON String need to be constructed for the specific resource.
-                //We may construct complex JSON using any third-party JSON libraries such as jackson or org.json
-                /* Funktioniert nicht =>
-                String jsonInputStringGetText = "{\r\n   \"jobId\": " +
-                        jobIDTextField.getText()+"," +
-                        "\r\n   \"firstName\": " +
-                        vornameTextField.getText()+"," +
-                        "\r\n   \"lastName\": " +
-                        nachnameTextField.getText()+"," +
-                        "\r\n   \"email\": " +
-                        emailTextField.getText()+"," +
-                        "\r\n   \"answer\": " +
-                        gitHubTextField.getText()+"," +
-                        "\r\n   \"source\": " +
-                        sourceTextField.getText()+"," +
-                        "\r\n   \"messageToGepardec\": " +
-                        messageToGepardecTextField.getText()+"," +
-                        "\r\n   \"otherSource\": " +
-                        otherSourceTextField.getText()+"," +
-                        "\r\n   \"title\": " +
-                        titelTextField.getText()+"," +
-                        "\r\n   \"phone\": " +
-                        telefonTextField.getText()+"," +
-                        "\r\n   \"linkedInLink\": " +
-                        linkedInTextField.getText()+"," +
-                        "\r\n   \"xingLink\": " +
-                        xingTextField.getText()+"," +
-                        "\r\n   \"cv\": " +
-                        CVTextField.getText()+"\r\n}";
-                    */
-                String jsonInputString = "{\r\n   \"jobId\": \"196500\","+
-                        "\r\n   \"firstName\": \"Test für WIN Projekt\"," +
-                        "\r\n   \"lastName\": \"Test\"," +
-                        "\r\n   \"email\": \"p.testasdf@gmx.at\"," +
-                        "\r\n   \"answer\": \"50\"," +
-                        "\r\n   \"source\": \"EMPFEHLUNG\"," +
-                        "\r\n   \"messageToGepardec\": \"Uniprojekt\"," +
-                        "\r\n   \"otherSource\": \"Uniprojekt\"," +
-                        "\r\n   \"title\": \"\",\r\n   \"phone\": \"\"," +
-                        "\r\n   \"linkedInLink\": \"\"," +
-                        "\r\n   \"xingLink\": \"\"," +
-                        "\r\n   \"cv\": \"VGVzdEJld2VyYnVuZw==\"\r\n}";
+                String jsonInputString = "{\r\n   \"jobId\": \""+jobIdTextField.getText()+"\","+
+                        "\r\n   \"firstName\": \""+vornameTextField.getText()+"\"," +
+                        "\r\n   \"lastName\": \""+nachnameTextField.getText()+"\"," +
+                        "\r\n   \"email\": \""+emailTextField.getText()+"\"," +
+                        "\r\n   \"answer\": \""+gitHubTextField.getText()+"\"," +
+                        "\r\n   \"source\": \""+sourceTextField.getText()+"\"," +
+                        "\r\n   \"messageToGepardec\": \""+messageTextArea.getText()+"\"," +
+                        "\r\n   \"otherSource\": \""+otherSourceTextField.getText()+"\"," +
+                        "\r\n   \"title\": \""+titelTextField.getText()+"\"," +
+                        "\r\n   \"phone\": \""+telefonTextField.getText()+"\"," +
+                        "\r\n   \"linkedInLink\": \""+linkedInTextField.getText()+"\"," +
+                        "\r\n   \"xingLink\": \""+xingTextField.getText()+"\"," +
+                        "\r\n   \"cv\": \""+CVTextField.getText()+"\"\r\n}";
+
+                System.out.println(jsonInputString);
 
                 try(OutputStream os = con.getOutputStream()){
                     byte[] input = jsonInputString.getBytes("utf-8");
@@ -131,8 +127,6 @@ public class RestGUI {
                 }
                 System.out.println(code);
 
-
-
                 try(BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(), "utf-8"))){
                     StringBuilder response = new StringBuilder();
                     String responseLine = null;
@@ -148,12 +142,148 @@ public class RestGUI {
 
             }
         });
-    }
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Bewerbung");
-        frame.setContentPane(new RestGUI().Basic);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
+
+        jobIdTextField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                super.focusGained(e);
+                if(jobIdTextField.getText().equalsIgnoreCase("<JobId der Website>"))
+                {
+                    jobIdTextField.setText("");
+                }
+            }
+        });
+
+        vornameTextField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                super.focusGained(e);
+                if(vornameTextField.getText().equalsIgnoreCase("<Vorname>"))
+                {
+                    vornameTextField.setText("");
+                }
+            }
+        });
+
+        nachnameTextField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                super.focusGained(e);
+                if(nachnameTextField.getText().equalsIgnoreCase("<Nachname>"))
+                {
+                    nachnameTextField.setText("");
+                }
+            }
+        });
+
+        emailTextField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                super.focusGained(e);
+                if(emailTextField.getText().equalsIgnoreCase("<E-Mail Adresse>"))
+                {
+                    emailTextField.setText("");
+                }
+            }
+        });
+
+        gitHubTextField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                super.focusGained(e);
+                if(gitHubTextField.getText().equalsIgnoreCase("<Github-Link>"))
+                {
+                    gitHubTextField.setText("");
+                }
+            }
+        });
+
+        sourceTextField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                super.focusGained(e);
+                if(sourceTextField.getText().equalsIgnoreCase("<Woher hast du von uns erfahren; siehe Source.java>"))
+                {
+                    sourceTextField.setText("");
+                }
+            }
+        });
+
+        titelTextField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                super.focusGained(e);
+                if(titelTextField.getText().equalsIgnoreCase("<Titel vorangestellt>"))
+                {
+                    titelTextField.setText("");
+                }
+            }
+        });
+
+        messageTextArea.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                super.focusGained(e);
+                if(messageTextArea.getText().equalsIgnoreCase("<Was kann dein Beitrag zur Umsetzung der Vision von gepardec sein?>"))
+                {
+                    messageTextArea.setText("");
+                }
+            }
+        });
+
+        otherSourceTextField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                super.focusGained(e);
+                if(otherSourceTextField.getText().equalsIgnoreCase("<Wenn Source auf EMPFEHLUNG oder SONSTIGES gesetzt ist, dann hier Details angeben>"))
+                {
+                    otherSourceTextField.setText("");
+                }
+            }
+        });
+
+        telefonTextField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                super.focusGained(e);
+                if(telefonTextField.getText().equalsIgnoreCase("<Telefonnummer>"))
+                {
+                    telefonTextField.setText("");
+                }
+            }
+        });
+
+        linkedInTextField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                super.focusGained(e);
+                if(linkedInTextField.getText().equalsIgnoreCase("<LinkedIn Profil URL>"))
+                {
+                    linkedInTextField.setText("");
+                }
+            }
+        });
+
+        xingTextField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                super.focusGained(e);
+                if(xingTextField.getText().equalsIgnoreCase("<Xing Profil URL>"))
+                {
+                    xingTextField.setText("");
+                }
+            }
+        });
+
+        CVTextField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                super.focusGained(e);
+                if(CVTextField.getText().equalsIgnoreCase("<Lebenslauf in Base64 encodiert>"))
+                {
+                    CVTextField.setText("");
+                }
+            }
+        });
     }
 }
