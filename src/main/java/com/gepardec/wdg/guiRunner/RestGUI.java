@@ -6,10 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
@@ -48,19 +45,13 @@ public class RestGUI extends JFrame{
     public static void main(String[] args) {
         JFrame frame = new JFrame("Bewerbung Formular");
 
-        /*JLabel background;
-        ImageIcon img = new ImageIcon("gepardec_icon.jpg");
-        background = new JLabel("",img,JLabel.CENTER);
-        background.setBounds(0,0,330,500);
-        frame.add(background);*/
-
         ImageIcon pic = new ImageIcon("gepardec_icon.jpg");
         frame.setIconImage(pic.getImage());
         frame.setContentPane(new RestGUI().Basic);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setLocationRelativeTo(null);
-        frame.setSize(400,500);
+        frame.setSize(475,500);
         frame.setResizable(false);
         frame.setVisible(true);
 
@@ -73,7 +64,7 @@ public class RestGUI extends JFrame{
 
                 URL url = null;
                 try {
-                    url = new URL("https://weckdengeparden-57-services.cloud.itandtel.at/challenge/1/answer");
+                    url = new URL("https://weckdengeparden-57-services.cloud.itandtel.at/challenge/1/answer/");
                 } catch (MalformedURLException malformedURLException) {
                     malformedURLException.printStackTrace();
                 }
@@ -109,7 +100,6 @@ public class RestGUI extends JFrame{
                         "\r\n   \"xingLink\": \""+xingTextField.getText().trim()+"\"," +
                         "\r\n   \"cv\": \""+CVTextField.getText().trim()+"\"\r\n}";
 
-                System.out.println(jsonInputString);
                 /*
                 Von Philipp Engelbrechtsmüller an alle:  07:10 PM
                     {
@@ -127,8 +117,7 @@ public class RestGUI extends JFrame{
                        "xingLink": "",
                        "cv": "VGVzdEJld2VyYnVuZw=="
                     }
-
-                 */
+                     */
 
                 try(OutputStream os = con.getOutputStream()){
                     byte[] input = jsonInputString.getBytes("utf-8");
@@ -138,25 +127,42 @@ public class RestGUI extends JFrame{
                 }
 
                 int code = 0;
+
                 try {
                     code = con.getResponseCode();
-
-                } catch (IOException ioException) {
+                } catch (IOException ioException)
+                {
                     ioException.printStackTrace();
                 }
-                System.out.println(code);
 
-                try(BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(), "utf-8"))){
-                    StringBuilder response = new StringBuilder();
+                StringBuilder response = new StringBuilder();
+
+                try(BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(), "utf-8")))
+                {
+
                     String responseLine = null;
-                    while ((responseLine = br.readLine()) != null) {
+                    while ((responseLine = br.readLine()) != null)
+                    {
                         response.append(responseLine.trim());
                     }
-                    System.out.println(response.toString());
                     JOptionPane.showMessageDialog(null,response.toString());
-                } catch (IOException ioException) {
-                    JOptionPane.showMessageDialog(null,"Fehler");
-                    ioException.printStackTrace();
+                } catch (IOException ioException)
+                {
+                    try {
+                        String inputLine;
+                        BufferedReader br = new BufferedReader(new InputStreamReader(con.getErrorStream(), "utf-8"));
+                        while ((inputLine = br.readLine()) != null) {
+                            response.append(inputLine);
+                        }
+                        br.close();
+                        System.out.println("Response Body:");
+                        System.out.println(response.toString());
+                        JOptionPane.showMessageDialog(null,response.toString());
+                    } catch (UnsupportedEncodingException unsupportedEncodingException) {
+                        unsupportedEncodingException.printStackTrace();
+                    } catch (IOException exception) {
+                        exception.printStackTrace();
+                    }
                 }
             }
         });
