@@ -41,6 +41,7 @@ public class RestGUI extends JFrame{
     private JLabel xingLabel;
     private JButton submitButton;
     private JTextArea messageTextArea;
+    private JComboBox source_comboBox;
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("Bewerbung Formular");
@@ -91,7 +92,7 @@ public class RestGUI extends JFrame{
                         "\r\n   \"lastName\": \""+nachnameTextField.getText().trim()+"\"," +
                         "\r\n   \"email\": \""+emailTextField.getText().trim()+"\"," +
                         "\r\n   \"answer\": \""+gitHubTextField.getText().trim()+"\"," +
-                        "\r\n   \"source\": \""+sourceTextField.getText().trim()+"\"," +
+                        "\r\n   \"source\": \""+source_comboBox.getSelectedItem()+"\"," +
                         "\r\n   \"messageToGepardec\": \""+messageTextArea.getText().trim()+"\"," +
                         "\r\n   \"otherSource\": \""+otherSourceTextField.getText().trim()+"\"," +
                         "\r\n   \"title\": \""+titelTextField.getText().trim()+"\"," +
@@ -100,26 +101,8 @@ public class RestGUI extends JFrame{
                         "\r\n   \"xingLink\": \""+xingTextField.getText().trim()+"\"," +
                         "\r\n   \"cv\": \""+CVTextField.getText().trim()+"\"\r\n}";
 
-                /*
-                Von Philipp Engelbrechtsmüller an alle:  07:10 PM
-                    {
-                       "jobId": "196500",
-                       "firstName": "Test für WIN Projekt",
-                       "lastName": "Test",
-                       "email": "p324234.awf@gmx.at",
-                       "answer": "50",
-                       "source": "EMPFEHLUNG",
-                       "messageToGepardec": "Uniprojekt",
-                       "otherSource": "Uniprojekt",
-                       "title": "",
-                       "phone": "",
-                       "linkedInLink": "",
-                       "xingLink": "",
-                       "cv": "VGVzdEJld2VyYnVuZw=="
-                    }
-                     */
-
-                try(OutputStream os = con.getOutputStream()){
+                try(OutputStream os = con.getOutputStream())
+                {
                     byte[] input = jsonInputString.getBytes("utf-8");
                     os.write(input, 0, input.length);
                 } catch (IOException ioException) {
@@ -218,17 +201,6 @@ public class RestGUI extends JFrame{
                 if(gitHubTextField.getText().equalsIgnoreCase("<Github-Link>"))
                 {
                     gitHubTextField.setText("");
-                }
-            }
-        });
-
-        sourceTextField.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                super.focusGained(e);
-                if(sourceTextField.getText().equalsIgnoreCase("<Woher hast du von uns erfahren; siehe Source.java>"))
-                {
-                    sourceTextField.setText("");
                 }
             }
         });

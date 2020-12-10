@@ -152,16 +152,6 @@
           <text value="&lt;Github-Link&gt;"/>
         </properties>
       </component>
-      <component id="9fd7d" class="javax.swing.JTextField" binding="sourceTextField" default-binding="true">
-        <constraints>
-          <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
-            <preferred-size width="150" height="-1"/>
-          </grid>
-        </constraints>
-        <properties>
-          <text value="&lt;Woher hast du von uns erfahren; siehe Source.java&gt;"/>
-        </properties>
-      </component>
       <component id="69b85" class="javax.swing.JTextField" binding="titelTextField" default-binding="true">
         <constraints>
           <grid row="7" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
@@ -208,7 +198,7 @@
         </constraints>
         <properties>
           <foreground color="-10240"/>
-          <text value="XingLing: (optional)"/>
+          <text value="XingLink: (optional)"/>
         </properties>
       </component>
       <component id="6208" class="javax.swing.JLabel" binding="CVLabel">
@@ -275,6 +265,27 @@
           </component>
         </children>
       </scrollpane>
+      <component id="370ee" class="javax.swing.JComboBox" binding="source_comboBox">
+        <constraints>
+          <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <model>
+            <item value="GOOGLE"/>
+            <item value="FACEBOOK"/>
+            <item value="INSTAGRAM"/>
+            <item value="LINKEDIN"/>
+            <item value="XING"/>
+            <item value="KUNUNU"/>
+            <item value="STACKOVERFLOW"/>
+            <item value="KARRIEREAT"/>
+            <item value="EMPFEHLUNG"/>
+            <item value="MESSEN"/>
+            <item value="MEETUPS"/>
+            <item value="SONSTIGES"/>
+          </model>
+        </properties>
+      </component>
     </children>
   </grid>
 </form>
