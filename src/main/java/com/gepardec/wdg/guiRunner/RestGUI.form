@@ -237,7 +237,7 @@
         <properties>
           <background color="-12828863"/>
           <foreground color="-10240"/>
-          <text value="Submit"/>
+          <text resource-bundle="ValidationMessages" key="submit1"/>
         </properties>
       </component>
       <component id="d7829" class="javax.swing.JTextField" binding="emailTextField" default-binding="true">
