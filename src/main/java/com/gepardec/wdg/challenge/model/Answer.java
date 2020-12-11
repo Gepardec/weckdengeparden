@@ -17,9 +17,6 @@ public class Answer {
     @Size(min = 6, max = 6, message = "{AnswerModel.jobId.wrongSize}")
     private String jobId;
 
-    @NotEmpty(message = "{AnswerModel.answer.notEmpty}")
-    private String answer;
-
     @NotBlank(message = "{AnswerModel.firstName.notEmpty}")
     private String firstName;
 
@@ -64,14 +61,6 @@ public class Answer {
 
     public void setJobId(String jobId) {
         this.jobId = jobId;
-    }
-
-    public String getAnswer() {
-        return answer;
-    }
-
-    public void setAnswer(String answer) {
-        this.answer = answer;
     }
 
     public String getFirstName() {

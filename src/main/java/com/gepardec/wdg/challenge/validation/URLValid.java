@@ -1,4 +1,4 @@
-package com.gepardec.wdg.application.validation;
+package com.gepardec.wdg.challenge.validation;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -9,11 +9,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Documented
-@Constraint(validatedBy = SourceSelectionValidator.class)
-@Target({ElementType.FIELD, ElementType.PARAMETER})
+@Constraint(validatedBy = URLValidator.class)
+@Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface URL {
-    String message() default "{null}";
+public @interface URLValid {
+
+    String message() default "{AnswerModel.invalid}";
 
     Class<?>[] groups() default {};
 

@@ -7,7 +7,6 @@ public class Consts {
     public static final String INFO_003 = " INFO-003";
     public static final String INFO_004 = " INFO-004";
     public static final String INFO_005 = " INFO-005";
-    public static final String INFO_006 = " INFO-006";
 
     public static final String WARN_001 = " WARN-001";
     public static final String WARN_002 = " WARN-002";

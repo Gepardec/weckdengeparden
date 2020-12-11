@@ -1,11 +1,7 @@
 package com.gepardec.wdg.challenge;
 
 import com.gepardec.wdg.application.configuration.Consts;
-import com.gepardec.wdg.application.validation.URLValidator;
-import com.gepardec.wdg.challenge.model.Answer;
-import com.gepardec.wdg.challenge.model.BaseResponse;
-import com.gepardec.wdg.challenge.model.Challenge;
-import com.gepardec.wdg.challenge.model.Challenges;
+import com.gepardec.wdg.challenge.model.*;
 import org.apache.http.HttpStatus;
 import org.eclipse.microprofile.faulttolerance.Retry;
 import org.jboss.logging.Logger;
@@ -13,7 +9,7 @@ import org.jboss.logging.Logger;
 import javax.enterprise.context.RequestScoped;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -62,7 +58,7 @@ public class ChallengesResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Retry()
     public Response answer(@PathParam("id") @Min(value = 1, message = "{AnswerModel.id.min}") Integer id,
-            @NotEmpty(message = "{AnswerModel.notNull}") @Valid final Answer answer) {
+            @NotNull(message = "{AnswerModel.notNull}") @Valid final AnswerChallenge1 answer) {
         log.info(String.format(Consts.INFO_003+" Provided Answer for challengeId='%s' with jobId='%s'", id, answer.getJobId()));
 
         final Challenges challenge = getChallengeForId(id);
@@ -71,18 +67,39 @@ public class ChallengesResource {
             return buildChallengeNotFoundResponse(id);
         }
 
-        boolean correctAnswer;
-        URLValidator urlval = new URLValidator();
+        boolean correctAnswer = challenge.getAnswer().trim().equalsIgnoreCase(answer.getAnswer().trim());
 
-        if (challenge.getId() == 2){
-            String urlPullRQ = answer.getAnswer().replace(" ", "");
-            log.info(String.format(Consts.INFO_006+" URL provided: url='%s''", urlPullRQ));
-            correctAnswer = urlPullRQ.substring(0, challenge.getAnswer().length()).matches(Challenges.CHALLENGE2.getAnswer()) && urlval.isValid(urlPullRQ, null) && urlPullRQ.substring(challenge.getAnswer().length()).matches(".*\\d.*");
-        } else {
-            correctAnswer = challenge.getAnswer().trim().equalsIgnoreCase(answer.getAnswer().trim());
-        }
         if (!correctAnswer) {
             log.info(String.format(Consts.WARN_002+" Wrong answer provided. challengeId='%s', answer='%s', jobId='%s'", challenge.getId(), answer.getAnswer(), answer.getJobId()));
+            return Response.status(HttpStatus.SC_BAD_REQUEST).entity(BaseResponse.error(WRONG_ANSWER)).build();
+        }
+
+        log.info(String.format(Consts.INFO_004+" Correct answer `provided`. challengeId='%s' jobId='%s'", challenge.getId(), answer.getJobId()));
+
+        return Response.ok(BaseResponse.success(CORRECT_ANSWER)).build();
+    }
+
+    @POST
+    @Path("/{id}/url")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Retry()
+    public Response url(@PathParam("id") @Min(value = 1, message = "{AnswerModel.id.min}") Integer id,
+                           @NotNull(message = "{AnswerModel.notNull}")  @Valid final AnswerChallenge2 answer) {
+        log.info(String.format(Consts.INFO_003+" Provided Answer for challengeId='%s' with jobId='%s'", id, answer.getJobId()));
+
+        final Challenges challenge = getChallengeForId(id);
+        if (challenge == null) {
+            log.warn(String.format(Consts.WARN_001+" Challenge with id='%s' with jobId='%s' not found!", id, answer.getJobId()));
+            return buildChallengeNotFoundResponse(id);
+        }
+
+        String urlPullRQ = answer.getUrl().replace(" ", "");
+        log.info(String.format(" URL provided: url='%s'", urlPullRQ));
+        boolean correctAnswer = urlPullRQ.substring(0, challenge.getAnswer().length()).matches(Challenges.CHALLENGE2.getAnswer()) && urlPullRQ.substring(challenge.getAnswer().length()).matches(".*\\d.*");
+
+        if (!correctAnswer) {
+            log.info(String.format(Consts.WARN_002+" Wrong answer provided. challengeId='%s', answer='%s', jobId='%s'", challenge.getId(), answer.getUrl(), answer.getJobId()));
             return Response.status(HttpStatus.SC_BAD_REQUEST).entity(BaseResponse.error(WRONG_ANSWER)).build();
         }
 
