@@ -19,11 +19,6 @@ public class URLValidator implements ConstraintValidator<URL, String> {
 
     @Override
     public boolean isValid(String url, ConstraintValidatorContext context) {
-
-        if (url == null) {
-            return false;
-        }
-
         Matcher matcher = URL_PATTERN.matcher(url);
         return matcher.matches();
     }
