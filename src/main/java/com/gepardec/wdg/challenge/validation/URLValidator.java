@@ -18,21 +18,17 @@ public class URLValidator implements ConstraintValidator<URLValid, AnswerChallen
 
     @Override
     public boolean isValid(AnswerChallenge2 answer, ConstraintValidatorContext context) {
-        boolean valid = true;
-
-        if (answer == null) {
-            valid = false;
-        } else if (answer.getUrl() == null) {
-            valid = false;
+        if (answer == null || answer.getUrl() == null) {
+            return false;
         }else{
             Matcher matcher = URL_PATTERN.matcher(answer.getUrl());
             if (!matcher.matches()) {
                 context.buildConstraintViolationWithTemplate("{AnswerModel.url.invalid}")
                         .addPropertyNode("url")
                         .addConstraintViolation();
-                valid = false;
+                return false;
             }
+            return true;
         }
-        return valid;
     }
 }
