@@ -10,8 +10,7 @@ import java.util.regex.Pattern;
 
 public class URLValidator implements ConstraintValidator<URLValid, AnswerChallenge2> {
 
-    private static final String URL_REGEX = "^(https?|http)://" +
-            "github.com/Gepardec/weckdengeparden/pull/" + ".*\\d.*";
+    private static final String URL_REGEX = "^(https|http)://github.com/Gepardec/weckdengeparden/pull/[0-9]{1,}";
 
     private static final Pattern URL_PATTERN = Pattern.compile(URL_REGEX);
 
