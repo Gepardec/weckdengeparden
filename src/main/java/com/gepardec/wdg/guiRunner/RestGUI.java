@@ -10,10 +10,7 @@ import org.jboss.logging.Logger;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
+import java.awt.event.*;
 import java.io.*;
 import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
@@ -65,7 +62,6 @@ public class RestGUI extends JFrame {
         frame.setSize(475, 500);
         frame.setResizable(false);
         frame.setVisible(true);
-
     }
 
     public RestGUI() {
@@ -175,6 +171,7 @@ public class RestGUI extends JFrame {
             public void focusGained(FocusEvent e) {
                 super.focusGained(e);
                 if (jobIdTextField.getText().equalsIgnoreCase("<JobId der Website>")) {
+                    sourceComboBox.setModel(new DefaultComboBoxModel(Source.values()));
                     jobIdTextField.setText("");
                 }
             }
@@ -284,6 +281,7 @@ public class RestGUI extends JFrame {
             @Override
             public void focusGained(FocusEvent e) {
                 super.focusGained(e);
+
                 if (cvTextField.getText().equalsIgnoreCase("<Lebenslauf in Base64 encodiert>")) {
                     cvTextField.setText("");
                 }
