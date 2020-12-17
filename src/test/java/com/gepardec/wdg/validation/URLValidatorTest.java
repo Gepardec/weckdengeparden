@@ -51,19 +51,25 @@ public class URLValidatorTest {
         final AnswerChallenge2 given = new AnswerChallenge2();
         given.setUrl("https://github.com/Gepardec/weckdengeparden/pull/21");
         Assertions.assertTrue(validator.isValid(given, context));
+        given.setUrl("http://github.com/Gepardec/weckdengeparden/pull/01");
+        Assertions.assertTrue(validator.isValid(given, context));
     }
 
     @Test
-    void isValid_withUrlUngueltig_thenFalse() {
+    void isValid_withWrongUrl_thenFalse() {
         when(constraintViolationBuilder.addPropertyNode(anyString())).thenReturn(nodeBuilderCustomizableContext);
         when(context.buildConstraintViolationWithTemplate(anyString())).thenReturn(constraintViolationBuilder);
         final AnswerChallenge2 given = new AnswerChallenge2();
-        given.setUrl("https111222://github.com/Gepardec/weckdengeparden/pull/21");
+        given.setUrl("https111222://githubabuba.com/Gepardec/weckdengeparden/pull/21");
+        Assertions.assertFalse(validator.isValid(given, context));
+        given.setUrl("www.github.com/Gepardec/weckdengeparden/pull/21");
+        Assertions.assertFalse(validator.isValid(given, context));
+        given.setUrl("https://www.youtube.com/watch?v=otCpCn0l4Wo");
         Assertions.assertFalse(validator.isValid(given, context));
 
-        verify(context, times(1)).buildConstraintViolationWithTemplate(anyString());
-        verify(constraintViolationBuilder, times(1)).addPropertyNode(anyString());
-        verify(nodeBuilderCustomizableContext, times(1)).addConstraintViolation();
+        verify(context, times(3)).buildConstraintViolationWithTemplate(anyString());
+        verify(constraintViolationBuilder, times(3)).addPropertyNode(anyString());
+        verify(nodeBuilderCustomizableContext, times(3)).addConstraintViolation();
     }
 
 }

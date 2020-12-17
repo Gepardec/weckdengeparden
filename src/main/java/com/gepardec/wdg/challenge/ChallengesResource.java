@@ -90,16 +90,7 @@ public class ChallengesResource {
             return buildChallengeNotFoundResponse(id);
         }
 
-        String urlPullRQ = answer.getUrl().replace(" ", "");
-        log.info(String.format(" URL provided: url='%s'", urlPullRQ));
-        boolean correctAnswer = urlPullRQ.substring(0, getChallengeForId(id).getAnswer().length()).matches(Challenges.CHALLENGE2.getAnswer()) && urlPullRQ.substring(getChallengeForId(id).getAnswer().length()).matches(".*\\d.*");
-
-        if (!correctAnswer) {
-            log.info(String.format(Consts.WARN_002+" Wrong answer provided. challengeId='%s', answer='%s', jobId='%s'", id, answer.getUrl(), answer.getJobId()));
-            return Response.status(HttpStatus.SC_BAD_REQUEST).entity(BaseResponse.error(WRONG_ANSWER)).build();
-        }
-
-        log.info(String.format(Consts.INFO_004+" Correct answer `provided`. challengeId='%s' jobId='%s'", id, answer.getJobId()));
+        log.info(String.format(Consts.INFO_004+" Valid URL provided:  url='%s' challengeId='%s' jobId='%s'", answer.getUrl(), id, answer.getJobId()));
 
         return Response.ok(BaseResponse.success(CORRECT_ANSWER)).build();
     }
