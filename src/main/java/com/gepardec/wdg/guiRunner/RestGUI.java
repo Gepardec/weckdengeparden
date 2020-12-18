@@ -1,23 +1,17 @@
 package com.gepardec.wdg.guiRunner;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gepardec.wdg.application.filter.RequestInputFilter;
 import com.gepardec.wdg.challenge.model.ConstraintViolationResponse;
 import com.gepardec.wdg.client.personio.Source;
 import org.jboss.logging.Logger;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
-import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
-import java.util.List;
 
 public class RestGUI extends JFrame {
     private JPanel basic;
@@ -49,7 +43,7 @@ public class RestGUI extends JFrame {
     private JButton submitButton;
     private JTextArea messageTextArea;
     private JComboBox sourceComboBox;
-    private static final Logger logger = Logger.getLogger(RestGUI.class.getName());
+    private static final org.jboss.logging.Logger log = Logger.getLogger(RestGUI.class.getName());
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("Bewerbung Formular");
@@ -73,29 +67,20 @@ public class RestGUI extends JFrame {
                 try {
                     url = new URL("https://weckdengeparden-57-services.cloud.itandtel.at/challenge/1/answer/");
                 } catch (MalformedURLException malformedURLException) {
-                    logger.error(malformedURLException.getMessage(), malformedURLException);
-                    System.out.println(malformedURLException.getMessage());
-                    System.out.println(malformedURLException.getCause());
-                    malformedURLException.printStackTrace();
+                    log.error("Error while assign the URL." + malformedURLException.getMessage(), malformedURLException);
                 }
 
                 HttpURLConnection con = null;
                 try {
                     con = (HttpURLConnection) url.openConnection();
                 } catch (IOException ioException) {
-                    logger.error(ioException.getMessage(), ioException);
-                    System.out.println(ioException.getMessage());
-                    System.out.println(ioException.getCause());
-                    ioException.printStackTrace();
+                    log.error("Error while opening the HttpURLConnection." + ioException.getMessage(), ioException);
                 }
 
                 try {
                     con.setRequestMethod("POST");
                 } catch (ProtocolException protocolException) {
-                    logger.error(protocolException.getMessage(), protocolException);
-                    System.out.println(protocolException.getMessage());
-                    System.out.println(protocolException.getCause());
-                    protocolException.printStackTrace();
+                    log.error("Error while setting the request Method of the HttpURLConnection to 'POST'." + protocolException.getMessage(), protocolException);
                 }
 
                 con.setRequestProperty("Content-Type", "application/json; utf-8");
@@ -120,10 +105,7 @@ public class RestGUI extends JFrame {
                     byte[] input = jsonInputString.getBytes("utf-8");
                     os.write(input, 0, input.length);
                 } catch (IOException ioException) {
-                    logger.error(ioException.getMessage(), ioException);
-                    System.out.println(ioException.getMessage());
-                    System.out.println(ioException.getCause());
-                    ioException.printStackTrace();
+                    log.error("Error while trying to get the OutputStream from the HttpURLConnection." + ioException.getMessage(), ioException);
                 }
 
                 String response = "";
@@ -133,7 +115,6 @@ public class RestGUI extends JFrame {
                     while ((responseLine = br.readLine()) != null) {
                         response = response + responseLine.trim();
                     }
-                    System.out.println(response);
                     JOptionPane.showMessageDialog(null, response.toString());
                 } catch (IOException ioException) {
                     String errorResponse = "";
@@ -149,18 +130,11 @@ public class RestGUI extends JFrame {
                         for (String message : constraintViolationResponse.getViolations()) {
                             errorResponse = errorResponse + message + "\n";
                         }
-                        System.out.println(errorResponse);
                         JOptionPane.showMessageDialog(null, errorResponse);
                     } catch (UnsupportedEncodingException unsupportedEncodingException) {
-                        logger.error(unsupportedEncodingException.getMessage(), unsupportedEncodingException);
-                        System.out.println(unsupportedEncodingException.getMessage());
-                        System.out.println(unsupportedEncodingException.getCause());
-                        unsupportedEncodingException.printStackTrace();
+                        log.error("Error while trying to get the ErrorStream." + unsupportedEncodingException.getMessage(), unsupportedEncodingException);
                     } catch (IOException exception) {
-                        logger.error(exception.getMessage(), exception);
-                        System.out.println(exception.getMessage());
-                        System.out.println(exception.getCause());
-                        exception.printStackTrace();
+                        log.error("Error while trying to get the ErrorStream." + exception.getMessage(), exception);
                     }
                 }
             }
