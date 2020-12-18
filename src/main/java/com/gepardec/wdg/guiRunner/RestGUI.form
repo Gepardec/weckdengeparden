@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.gepardec.wdg.guiRunner.RestGUI">
+  <grid id="27dc6" binding="basic" layout-manager="GridLayoutManager" row-count="14" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="10" left="10" bottom="10" right="10"/>
+    <constraints>
+      <xy x="46" y="98" width="402" height="579"/>
+    </constraints>
+    <properties>
+      <alignmentX value="1.0"/>
+      <alignmentY value="1.0"/>
+      <background color="-14606047"/>
+      <maximumSize width="297" height="579"/>
+    </properties>
+    <border type="none"/>
+    <children>
+      <component id="a7810" class="javax.swing.JLabel" binding="jobIdLabel">
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <foreground color="-10240"/>
+          <text value="JobId:"/>
+        </properties>
+      </component>
+      <component id="1ffc6" class="javax.swing.JLabel" binding="vornameLabel">
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <foreground color="-10240"/>
+          <text value="Vorname:"/>
+        </properties>
+      </component>
+      <component id="dfbc9" class="javax.swing.JLabel" binding="nachnameLabel">
+        <constraints>
+          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <foreground color="-10240"/>
+          <text value="Nachname:"/>
+        </properties>
+      </component>
+      <component id="6ecce" class="javax.swing.JLabel" binding="emailLabel">
+        <constraints>
+          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <foreground color="-10240"/>
+          <text value="Email:"/>
+        </properties>
+      </component>
+      <component id="8ede7" class="javax.swing.JLabel" binding="gitHubLinkLabel">
+        <constraints>
+          <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <foreground color="-10240"/>
+          <text value="GitHub-Link:"/>
+        </properties>
+      </component>
+      <component id="d5930" class="javax.swing.JLabel" binding="sourceLabel">
+        <constraints>
+          <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <foreground color="-10240"/>
+          <text value="Source:"/>
+        </properties>
+      </component>
+      <component id="612a3" class="javax.swing.JLabel" binding="messageToGepardecLabel">
+        <constraints>
+          <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <foreground color="-10240"/>
+          <text value="MessageToGepardec:"/>
+        </properties>
+      </component>
+      <component id="f33ba" class="javax.swing.JLabel" binding="titelLabel">
+        <constraints>
+          <grid row="7" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <foreground color="-10240"/>
+          <text value="Titel: (optional)"/>
+        </properties>
+      </component>
+      <component id="5eac0" class="javax.swing.JLabel" binding="otherSourceLabel">
+        <constraints>
+          <grid row="8" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <foreground color="-10240"/>
+          <text value="otherSource:"/>
+        </properties>
+      </component>
+      <component id="a4123" class="javax.swing.JLabel" binding="telefonLabel">
+        <constraints>
+          <grid row="9" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <foreground color="-10240"/>
+          <text value="Telefon: (optional)"/>
+        </properties>
+      </component>
+      <component id="5616" class="javax.swing.JLabel" binding="linkedInLabel">
+        <constraints>
+          <grid row="10" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <foreground color="-10240"/>
+          <text value="LinkedIn: (optional)"/>
+        </properties>
+      </component>
+      <component id="feeaf" class="javax.swing.JTextField" binding="jobIdTextField" default-binding="true">
+        <constraints>
+          <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+        </constraints>
+        <properties>
+          <text value="&lt;JobId der Website&gt;"/>
+        </properties>
+      </component>
+      <component id="b397c" class="javax.swing.JTextField" binding="vornameTextField" default-binding="true">
+        <constraints>
+          <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+        </constraints>
+        <properties>
+          <text value="&lt;Vorname&gt;"/>
+        </properties>
+      </component>
+      <component id="5bd03" class="javax.swing.JTextField" binding="nachnameTextField" default-binding="true">
+        <constraints>
+          <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+        </constraints>
+        <properties>
+          <text value="&lt;Nachname&gt;"/>
+        </properties>
+      </component>
+      <component id="cea6b" class="javax.swing.JTextField" binding="gitHubTextField" default-binding="true">
+        <constraints>
+          <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+        </constraints>
+        <properties>
+          <text value="&lt;Github-Link&gt;"/>
+        </properties>
+      </component>
+      <component id="69b85" class="javax.swing.JTextField" binding="titelTextField" default-binding="true">
+        <constraints>
+          <grid row="7" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+        </constraints>
+        <properties>
+          <text value="&lt;Titel vorangestellt&gt;"/>
+        </properties>
+      </component>
+      <component id="2a9d5" class="javax.swing.JTextField" binding="otherSourceTextField" default-binding="true">
+        <constraints>
+          <grid row="8" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+        </constraints>
+        <properties>
+          <text value="&lt;Wenn Source auf EMPFEHLUNG oder SONSTIGES gesetzt ist, dann hier Details angeben&gt;"/>
+        </properties>
+      </component>
+      <component id="9bb6e" class="javax.swing.JTextField" binding="telefonTextField" default-binding="true">
+        <constraints>
+          <grid row="9" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+        </constraints>
+        <properties>
+          <text value="&lt;Telefonnummer&gt;"/>
+        </properties>
+      </component>
+      <component id="b1d2d" class="javax.swing.JTextField" binding="linkedInTextField" default-binding="true">
+        <constraints>
+          <grid row="10" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+        </constraints>
+        <properties>
+          <text value="&lt;LinkedIn Profil URL&gt;"/>
+        </properties>
+      </component>
+      <component id="b2476" class="javax.swing.JLabel" binding="xingLabel">
+        <constraints>
+          <grid row="11" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <foreground color="-10240"/>
+          <text value="XingLink: (optional)"/>
+        </properties>
+      </component>
+      <component id="6208" class="javax.swing.JLabel" binding="cvLabel">
+        <constraints>
+          <grid row="12" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <foreground color="-10240"/>
+          <text value="CV (Base64 encodiert):"/>
+        </properties>
+      </component>
+      <component id="b2265" class="javax.swing.JTextField" binding="xingTextField" default-binding="true">
+        <constraints>
+          <grid row="11" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+        </constraints>
+        <properties>
+          <text value="&lt;Xing Profil URL&gt;"/>
+        </properties>
+      </component>
+      <component id="67884" class="javax.swing.JTextField" binding="cvTextField">
+        <constraints>
+          <grid row="12" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+        </constraints>
+        <properties>
+          <text value="&lt;Lebenslauf in Base64 encodiert&gt;"/>
+        </properties>
+      </component>
+      <component id="febba" class="javax.swing.JButton" binding="submitButton">
+        <constraints>
+          <grid row="13" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <background color="-12828863"/>
+          <foreground color="-10240"/>
+          <text resource-bundle="ValidationMessages" key="submit1"/>
+        </properties>
+      </component>
+      <component id="d7829" class="javax.swing.JTextField" binding="emailTextField" default-binding="true">
+        <constraints>
+          <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+        </constraints>
+        <properties>
+          <text value="&lt;E-Mail Adresse&gt;"/>
+        </properties>
+      </component>
+      <scrollpane id="e2311">
+        <constraints>
+          <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="cb2d9" class="javax.swing.JTextArea" binding="messageTextArea">
+            <constraints/>
+            <properties>
+              <text value="&lt;Was kann dein Beitrag zur Umsetzung der Vision von gepardec sein?&gt;"/>
+            </properties>
+          </component>
+        </children>
+      </scrollpane>
+      <component id="370ee" class="javax.swing.JComboBox" binding="sourceComboBox">
+        <constraints>
+          <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <model/>
+        </properties>
+      </component>
+    </children>
+  </grid>
+</form>
