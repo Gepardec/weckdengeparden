@@ -7,7 +7,6 @@ import com.gepardec.wdg.client.personio.Source;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
 import org.apache.http.HttpStatus;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import javax.json.bind.Jsonb;
@@ -22,7 +21,6 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 
 @QuarkusTest
-@Disabled
 class ChallengeResourceTest {
 
     // use this malformed answers to test the request filters and intercept bad json body messages and avoid that json deserializer throws any error
