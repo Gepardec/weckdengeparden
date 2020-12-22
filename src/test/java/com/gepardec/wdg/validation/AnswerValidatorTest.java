@@ -39,7 +39,7 @@ class AnswerValidatorTest {
     }
 
     @ParameterizedTest
-    //@WINStage3: Ist dein Name auch dabei? ;)
+    //@WINStage3: Ist Dein Name auch dabei? ;)
     @EnumSource(value = Source.class, names = {"ANNA", "JULIAN", "THOMAS", "LENA"})
     void isValid_withValidSourcesEmptyOtherSource_thenFalse(final Source source) {
         when(constraintViolationBuilder.addPropertyNode(anyString())).thenReturn(nodeBuilderCustomizableContext);

@@ -47,7 +47,7 @@
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-resteasy</artifactId>
         </dependency>
-        <!-- @WINStage1 Ohne Jason wirds nix. -->
+        <!-- @WINStage2 Ohne Jason wirds nix. -->
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-rest-client</artifactId>
