@@ -1,12 +1,17 @@
 package com.gepardec.wdg.challenge;
 
 import com.gepardec.wdg.application.configuration.Consts;
+import com.gepardec.wdg.application.configuration.PersonioConfiguration;
 import com.gepardec.wdg.challenge.model.*;
+import com.gepardec.wdg.client.personio.ApplicationForm;
+import com.gepardec.wdg.client.personio.RecruitingApi;
 import org.apache.http.HttpStatus;
 import org.eclipse.microprofile.faulttolerance.Retry;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.logging.Logger;
 
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -26,6 +31,13 @@ public class ChallengesResource {
 
     private static final String WRONG_ANSWER = "Sorry, die Antwort ist falsch. Denk' nochmal in Ruhe darüber nach und versuch es noch einmal.";
     private static final String CORRECT_ANSWER = "Danke! Du hast den Geparden in dir erweckt und wir melden uns in den nächsten Tagen bei dir! Lg, Michael Sollberger";
+
+    @Inject
+    @RestClient
+    RecruitingApi recruitingApi;
+
+    @Inject
+    PersonioConfiguration personioConfiguration;
 
     @GET
     @Path("/")
@@ -74,6 +86,10 @@ public class ChallengesResource {
 
         log.info(String.format(Consts.INFO_004 + " Correct answer `provided`. challengeId='%s' jobId='%s'", getChallengeForId(id).getId(), answer.getJobId()));
 
+        final String personioResponse = createApplicationFormAndSendToPersonio(personioConfiguration, answer);
+
+        log.info(String.format(Consts.INFO_005 + " ApplicationForm for challengeId='%s', jobId='%s' submitted. '%s'", getChallengeForId(id).getId(), answer.getJobId(), personioResponse));
+
         return Response.ok(BaseResponse.success(CORRECT_ANSWER)).build();
     }
 
@@ -92,7 +108,16 @@ public class ChallengesResource {
 
         log.info(String.format(Consts.INFO_004 + " Valid URL provided:  url='%s' challengeId='%s' jobId='%s'", answer.getUrl(), id, answer.getJobId()));
 
+        final String personioResponse = createApplicationFormAndSendToPersonio(personioConfiguration, answer);
+
+        log.info(String.format(Consts.INFO_005 + " ApplicationForm for challengeId='%s', jobId='%s' submitted. '%s'", getChallengeForId(id).getId(), answer.getJobId(), personioResponse));
+
         return Response.ok(BaseResponse.success(CORRECT_ANSWER)).build();
+    }
+
+    private String createApplicationFormAndSendToPersonio(PersonioConfiguration personioConfiguration, Answer answer) {
+        final ApplicationForm applicationForm = ApplicationFormTranslator.answerToApplicationForm(personioConfiguration, answer);
+        return recruitingApi.createApplicant(applicationForm);
     }
 
     private Response buildChallengeNotFoundResponse(final Integer id) {
