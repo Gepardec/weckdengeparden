@@ -6,7 +6,10 @@ import com.gepardec.wdg.client.personio.Source;
 import org.jboss.logging.Logger;
 
 import javax.swing.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -43,6 +46,8 @@ public class RestGUI extends JFrame {
     private JButton submitButton;
     private JTextArea messageTextArea;
     private JComboBox sourceComboBox;
+
+    final static String WDG_ITANDTEL = "https://weckdengeparden-57-services.cloud.itandtel.at";
     private static final org.jboss.logging.Logger log = Logger.getLogger(RestGUI.class.getName());
 
     public static void main(String[] args) {
@@ -65,7 +70,7 @@ public class RestGUI extends JFrame {
 
                 URL url = null;
                 try {
-                    url = new URL("https://weckdengeparden-57-services.cloud.itandtel.at/challenge/1/answer/");
+                    url = new URL(WDG_ITANDTEL+"/challenge/2/url/");
                 } catch (MalformedURLException malformedURLException) {
                     log.error("Error while assign the URL." + malformedURLException.getMessage(), malformedURLException);
                 }
