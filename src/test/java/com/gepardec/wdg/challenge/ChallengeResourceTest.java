@@ -1,6 +1,7 @@
 package com.gepardec.wdg.challenge;
 
 import com.gepardec.wdg.challenge.model.Answer;
+import com.gepardec.wdg.challenge.model.AnswerChallenge1;
 import com.gepardec.wdg.challenge.model.Challenge;
 import com.gepardec.wdg.challenge.model.Challenges;
 import com.gepardec.wdg.client.personio.Source;
@@ -106,7 +107,7 @@ class ChallengeResourceTest {
 
     @Test
     void answer_withInvalidAnswer_then400Returned() {
-        final Answer answer = buildValidAnswer(Challenges.CHALLENGE1.getId());
+        final AnswerChallenge1 answer = buildValidAnswer(Challenges.CHALLENGE1.getId());
         answer.setAnswer("Invalid answer");
         given().contentType(ContentType.JSON)
                 .body(answer)
@@ -149,10 +150,10 @@ class ChallengeResourceTest {
                 .body("message", equalTo("Bitte überprüfe das Format vom Request-Body, hier stimmt irgendetwas nicht ganz! :-)"));
     }
 
-    private Answer buildValidAnswer(final int challengeId) {
+    private AnswerChallenge1 buildValidAnswer(final int challengeId) {
         final Challenges challenges = Challenges.forId(challengeId)
                 .orElseThrow(() -> new IllegalArgumentException(String.format("No challenge with id '%d' found", challengeId)));
-        final Answer answer = new Answer();
+        final AnswerChallenge1 answer = new AnswerChallenge1();
         answer.setJobId("155555");
         answer.setFirstName("Thomas");
         answer.setLastName("Herzog");
