@@ -27,7 +27,7 @@ class ChallengeResourceTest {
             "{\"jobId\": \"196500\"\"firstName\": \"Philipp\",\"lastName\": \"Wurm\",\"email\": \"philipp.wurm@gepardec.com\",\"answer\": \"50\",\"source\": \"xing\",\"messageToGepardec\": \"Test\",\"otherSource\": \"\",\"title\": \"\",\"phone\": \"\",\"linkedInLink\": \"\",\"xingLink\": \"\",\"cv\": \"\"}",
             "{\"jobId\": \"196500\",\"firstName\": \"Philipp\",\"lastName\": \"Wurm\",\"email\": \"philipp.wurm@gepardec.com\",\"answer\": \"50\",\"source\": \"xing\",\"messageToGepardec\": \"Test\",\"otherSource\": \"\",\"title\": \"\",\"phone\": \"\",\"linkedInLink\": \"\",\"xingLink\": \"\",\"cv\": \"\"",
             "{\"jobId\": \"196500\"\"firstName\": \"Philipp\",\"lastName\": \"Wurm\",\"email\": \"philipp.wurm@gepardec.com\",\"url\": \"https://github.com/Gepardec/weckdengeparden/pull/21\",\"source\": \"xing\",\"messageToGepardec\": \"Test\",\"otherSource\": \"\",\"title\": \"\",\"phone\": \"\",\"linkedInLink\": \"\",\"xingLink\": \"\",\"cv\": \"\"}"
-            );
+    );
 
     @Test
     void list_withPOST_then404Returned() {
@@ -156,13 +156,13 @@ class ChallengeResourceTest {
     @Test
     void answerChallenge2_withInvalidUrl_then400Returned() {
         final AnswerChallenge2 answer = buildValidAnswerChallenge2();
-        answer.setUrl("Wrong url!");
+        answer.setUrl("Ivalid url");
         given().contentType(ContentType.JSON)
                 .body(answer)
                 .post("/challenge/2/url")
                 .then().statusCode(HttpStatus.SC_BAD_REQUEST)
                 .body("success", equalTo(false))
-                .body("message", equalTo("Die Pull Request URL ist ungueltig!"));
+                .body("message", equalTo("The request was invalid due to constraint violations"));
     }
 
     @Test
@@ -221,9 +221,7 @@ class ChallengeResourceTest {
                 .body("message", equalTo("Bitte überprüfe das Format vom Request-Body, hier stimmt irgendetwas nicht ganz! :-)"));
     }
 
-    private Answer buildValidBaseAnswer() {
-        Answer answer = new Answer();
-
+    private static void setCommonData(Answer answer) {
         answer.setJobId("155555");
         answer.setFirstName("Thomas");
         answer.setLastName("Herzog");
@@ -233,24 +231,24 @@ class ChallengeResourceTest {
         answer.setSource(Source.LINKEDIN);
         answer.setCv(Base64.getEncoder().encodeToString("This is my CV".getBytes()));
 
-        return answer;
+
     }
 
-    private AnswerChallenge1 buildValidAnswerChallenge1() {
+    private static AnswerChallenge1 buildValidAnswerChallenge1() {
         final Challenges challenge = Challenges.forId(1)
                 .orElseThrow(() -> new IllegalArgumentException(String.format("No challenge with id '%d' found", 1)));
-        AnswerChallenge1 answer = (AnswerChallenge1)buildValidBaseAnswer();
-
+        AnswerChallenge1 answer = new AnswerChallenge1();
+        setCommonData(answer);
         answer.setAnswer(challenge.getAnswer());
 
         return answer;
     }
 
-    private AnswerChallenge2 buildValidAnswerChallenge2() {
+    private static AnswerChallenge2 buildValidAnswerChallenge2() {
         final Challenges challenge = Challenges.forId(2)
                 .orElseThrow(() -> new IllegalArgumentException(String.format("No challenge with id '%d' found", 2)));
-        AnswerChallenge2 answer = (AnswerChallenge2)buildValidBaseAnswer();
-
+        AnswerChallenge2 answer = new AnswerChallenge2();
+        setCommonData(answer);
         answer.setUrl(challenge.getAnswer()+"21");
 
         return answer;
