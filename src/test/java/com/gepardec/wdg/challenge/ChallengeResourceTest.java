@@ -5,6 +5,7 @@ import com.gepardec.wdg.client.personio.Source;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
 import org.apache.http.HttpStatus;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import javax.json.bind.Jsonb;
@@ -24,7 +25,8 @@ class ChallengeResourceTest {
     // use this malformed answers to test the request filters and intercept bad json body messages and avoid that json deserializer throws any error
     private static final List<String> MALFORMED_ANSWERS_LIST = List.of(
             "{\"jobId\": \"196500\"\"firstName\": \"Philipp\",\"lastName\": \"Wurm\",\"email\": \"philipp.wurm@gepardec.com\",\"answer\": \"50\",\"source\": \"xing\",\"messageToGepardec\": \"Test\",\"otherSource\": \"\",\"title\": \"\",\"phone\": \"\",\"linkedInLink\": \"\",\"xingLink\": \"\",\"cv\": \"\"}",
-            "{\"jobId\": \"196500\",\"firstName\": \"Philipp\",\"lastName\": \"Wurm\",\"email\": \"philipp.wurm@gepardec.com\",\"answer\": \"50\",\"source\": \"xing\",\"messageToGepardec\": \"Test\",\"otherSource\": \"\",\"title\": \"\",\"phone\": \"\",\"linkedInLink\": \"\",\"xingLink\": \"\",\"cv\": \"\""
+            "{\"jobId\": \"196500\",\"firstName\": \"Philipp\",\"lastName\": \"Wurm\",\"email\": \"philipp.wurm@gepardec.com\",\"answer\": \"50\",\"source\": \"xing\",\"messageToGepardec\": \"Test\",\"otherSource\": \"\",\"title\": \"\",\"phone\": \"\",\"linkedInLink\": \"\",\"xingLink\": \"\",\"cv\": \"\"",
+            "{\"jobId\": \"196500\"\"firstName\": \"Philipp\",\"lastName\": \"Wurm\",\"email\": \"philipp.wurm@gepardec.com\",\"url\": \"https://github.com/Gepardec/weckdengeparden/pull/21\",\"source\": \"xing\",\"messageToGepardec\": \"Test\",\"otherSource\": \"\",\"title\": \"\",\"phone\": \"\",\"linkedInLink\": \"\",\"xingLink\": \"\",\"cv\": \"\"}"
     );
 
     @Test
@@ -55,45 +57,32 @@ class ChallengeResourceTest {
     }
 
     @Test
-    void byId_withGETAndValidId_thenChallenge1Returned() {
+    void byId_withGETAndValidId_thenChallengeReturned() {
         Challenges.forId(1).ifPresent(challenge -> {
-            final Challenge expectedChallenge1 = Challenge.of(challenge.getId(), challenge.getQuestion());
+            final Challenge expectedChallenge = Challenge.of(challenge.getId(), challenge.getQuestion());
             given().get("/challenge/1")
                     .then()
                     .statusCode(HttpStatus.SC_OK)
-                    .assertThat().body(equalTo(toJson(expectedChallenge1)));
+                    .assertThat().body(equalTo(toJson(expectedChallenge)));
         });
     }
 
     @Test
-    void byId_withGETAndValidId_thenChallenge2Returned() {
-        Challenges.forId(1).ifPresent(challenge -> {
-            final Challenge expectedChallenge2 = Challenge.of(challenge.getId(), challenge.getQuestion());
-            given().get("/challenge/2")
-                    .then()
-                    .statusCode(HttpStatus.SC_OK)
-                    .assertThat().body(equalTo(toJson(expectedChallenge2)));
-        });
-    }
-
-
-
-    @Test
-    void answer1_withInvalidContentTypeTEXT_then400Returned() {
+    void answerChallenge1_withInvalidContentTypeTEXT_then400Returned() {
         given().contentType(ContentType.TEXT)
                 .post("/challenge/-1/answer")
                 .then().statusCode(HttpStatus.SC_UNSUPPORTED_MEDIA_TYPE);
     }
 
     @Test
-    void answer2_withInvalidContentTypeTEXT_then400Returned() {
+    void answerChallenge2_withInvalidContentTypeTEXT_then400Returned() {
         given().contentType(ContentType.TEXT)
-                .post("/challenge/-2/answer")
+                .post("/challenge/-1/url")
                 .then().statusCode(HttpStatus.SC_UNSUPPORTED_MEDIA_TYPE);
     }
 
     @Test
-    void answer1_withInvalidId_then400Returned() {
+    void answerChallenge1_withInvalidId_then400Returned() {
         given().contentType(ContentType.JSON)
                 .post("/challenge/-1/answer")
                 .then().statusCode(HttpStatus.SC_BAD_REQUEST)
@@ -102,16 +91,16 @@ class ChallengeResourceTest {
     }
 
     @Test
-    void answer2_withInvalidId_then400Returned() {
+    void answerChallenge2_withInvalidId_then400Returned() {
         given().contentType(ContentType.JSON)
-                .post("/challenge/-2/answer")
+                .post("/challenge/-1/url")
                 .then().statusCode(HttpStatus.SC_BAD_REQUEST)
                 .body("success", equalTo(false))
                 .body("message", equalTo("The request was invalid due to constraint violations"));
     }
 
     @Test
-    void answer1_withEmptyBody_then400Returned() {
+    void answerChallenge1_withEmptyBody_then400Returned() {
         given().contentType(ContentType.JSON)
                 .post("/challenge/1/answer")
                 .then().statusCode(HttpStatus.SC_BAD_REQUEST)
@@ -120,17 +109,17 @@ class ChallengeResourceTest {
     }
 
     @Test
-    void answer2_withEmptyBody_then400Returned() {
+    void answerChallenge2_withEmptyBody_then400Returned() {
         given().contentType(ContentType.JSON)
-                .post("/challenge/2/answer")
+                .post("/challenge/2/url")
                 .then().statusCode(HttpStatus.SC_BAD_REQUEST)
                 .body("success", equalTo(false))
                 .body("message", equalTo("Bitte überprüfe das Format vom Request-Body, hier stimmt irgendetwas nicht ganz! :-)"));
     }
 
     @Test
-    void answer1_withInvalidBody_then400Returned() {
-        final Answer answer = buildValidAnswer1(Challenges.CHALLENGE1.getId());
+    void answerChallenge1_withInvalidBody_then400Returned() {
+        final AnswerChallenge1 answer = buildValidAnswerChallenge1();
         answer.setEmail(null);
         given().contentType(ContentType.JSON)
                 .body(answer)
@@ -141,20 +130,20 @@ class ChallengeResourceTest {
     }
 
     @Test
-    void answer2_withInvalidBody_then400Returned() {
-        final Answer answer = buildValidAnswer2(Challenges.CHALLENGE2.getId());
+    void answerChallenge2_withInvalidBody_then400Returned() {
+        final AnswerChallenge2 answer = buildValidAnswerChallenge2();
         answer.setEmail(null);
         given().contentType(ContentType.JSON)
                 .body(answer)
-                .post("/challenge/2/answer")
+                .post("/challenge/1/answer")
                 .then().statusCode(HttpStatus.SC_BAD_REQUEST)
                 .body("success", equalTo(false))
                 .body("message", equalTo("The request was invalid due to constraint violations"));
     }
 
     @Test
-    void answer1_withInvalidAnswer_then400Returned() {
-        final AnswerChallenge1 answer = buildValidAnswer1(Challenges.CHALLENGE1.getId());
+    void answerChallenge1_withInvalidAnswer_then400Returned() {
+        final AnswerChallenge1 answer = buildValidAnswerChallenge1();
         answer.setAnswer("Invalid answer");
         given().contentType(ContentType.JSON)
                 .body(answer)
@@ -165,20 +154,20 @@ class ChallengeResourceTest {
     }
 
     @Test
-    void answer2_withInvalidAnswer_then400Returned() {
-        final AnswerChallenge2 answer = buildValidAnswer2(Challenges.CHALLENGE2.getId());
-        answer.setAnswer("Invalid answer");
+    void answerChallenge2_withInvalidUrl_then400Returned() {
+        final AnswerChallenge2 answer = buildValidAnswerChallenge2();
+        answer.setUrl("Ivalid url");
         given().contentType(ContentType.JSON)
                 .body(answer)
-                .post("/challenge/2/answer")
+                .post("/challenge/2/url")
                 .then().statusCode(HttpStatus.SC_BAD_REQUEST)
                 .body("success", equalTo(false))
-                .body("message", equalTo("Sorry, die Antwort ist falsch. Denk' nochmal in Ruhe darüber nach und versuch es noch einmal."));
+                .body("message", equalTo("The request was invalid due to constraint violations"));
     }
 
     @Test
-    void answer1_withValidAnswer_then200Returned() {
-        final Answer answer = buildValidAnswer1(Challenges.CHALLENGE1.getId());
+    void answerChallenge1_withValidAnswer_then200Returned() {
+        final AnswerChallenge1 answer = buildValidAnswerChallenge1();
         answer.setSource(Source.SONSTIGES);
         answer.setOtherSource("My friend");
         given().contentType(ContentType.JSON)
@@ -190,20 +179,20 @@ class ChallengeResourceTest {
     }
 
     @Test
-    void answer2_withValidAnswer_then200Returned() {
-        final Answer answer = buildValidAnswer2(Challenges.CHALLENGE2.getId());
-        answer.setSource(Source.SONSTIGES);
+    void answerChallenge2_withValidUrl_then200Returned() {
+        final AnswerChallenge2 answer = buildValidAnswerChallenge2();
+        answer.setSource(Source.EMPFEHLUNG);
         answer.setOtherSource("My friend");
         given().contentType(ContentType.JSON)
                 .body(answer)
-                .post("/challenge/2/answer")
+                .post("/challenge/2/url")
                 .then().statusCode(HttpStatus.SC_OK)
                 .body("success", equalTo(true))
                 .body("message", equalTo("Danke! Du hast den Geparden in dir erweckt und wir melden uns in den nächsten Tagen bei dir! Lg, Michael Sollberger"));
     }
 
     @Test
-    void answer1_withMalformedJsonBody1_then400Returned() {
+    void answerChallenge1_withMalformedJsonBody1_then400Returned() {
         given().contentType(ContentType.JSON)
                 .body(MALFORMED_ANSWERS_LIST.get(0))
                 .post("/challenge/1/answer")
@@ -213,17 +202,7 @@ class ChallengeResourceTest {
     }
 
     @Test
-    void answer2_withMalformedJsonBody1_then400Returned() {
-        given().contentType(ContentType.JSON)
-                .body(MALFORMED_ANSWERS_LIST.get(0))
-                .post("/challenge/2/answer")
-                .then().statusCode(HttpStatus.SC_BAD_REQUEST)
-                .body("success", equalTo(false))
-                .body("message", equalTo("Bitte überprüfe das Format vom Request-Body, hier stimmt irgendetwas nicht ganz! :-)"));
-    }
-
-    @Test
-    void answer1_withMalformedJsonBody2_then400Returned() {
+    void answerChallenge1_withMalformedJsonBody2_then400Returned() {
         given().contentType(ContentType.JSON)
                 .body(MALFORMED_ANSWERS_LIST.get(1))
                 .post("/challenge/1/answer")
@@ -233,19 +212,16 @@ class ChallengeResourceTest {
     }
 
     @Test
-    void answer2_withMalformedJsonBody2_then400Returned() {
+    void answerChallenge2_withMalformedJsonBody_then400Returned() {
         given().contentType(ContentType.JSON)
-                .body(MALFORMED_ANSWERS_LIST.get(1))
-                .post("/challenge/2/answer")
+                .body(MALFORMED_ANSWERS_LIST.get(2))
+                .post("/challenge/2/url")
                 .then().statusCode(HttpStatus.SC_BAD_REQUEST)
                 .body("success", equalTo(false))
                 .body("message", equalTo("Bitte überprüfe das Format vom Request-Body, hier stimmt irgendetwas nicht ganz! :-)"));
     }
 
-    private AnswerChallenge1 buildValidAnswer1(final int challengeId) {
-        final Challenges challenges = Challenges.forId(challengeId)
-                .orElseThrow(() -> new IllegalArgumentException(String.format("No challenge with id '%d' found", challengeId)));
-        final AnswerChallenge1 answer = new AnswerChallenge1();
+    private static void setCommonData(Answer answer) {
         answer.setJobId("155555");
         answer.setFirstName("Thomas");
         answer.setLastName("Herzog");
@@ -253,28 +229,32 @@ class ChallengeResourceTest {
         answer.setPhone("+43123456789");
         answer.setMessageToGepardec("This is my message");
         answer.setSource(Source.LINKEDIN);
-        answer.setAnswer(challenges.getAnswer());
         answer.setCv(Base64.getEncoder().encodeToString("This is my CV".getBytes()));
+
+
+    }
+
+    private static AnswerChallenge1 buildValidAnswerChallenge1() {
+        final Challenges challenge = Challenges.forId(1)
+                .orElseThrow(() -> new IllegalArgumentException(String.format("No challenge with id '%d' found", 1)));
+        AnswerChallenge1 answer = new AnswerChallenge1();
+        setCommonData(answer);
+        answer.setAnswer(challenge.getAnswer());
 
         return answer;
     }
 
-    private AnswerChallenge2 buildValidAnswer2(final int challengeId) {
-        final Challenges challenges = Challenges.forId(challengeId)
-                .orElseThrow(() -> new IllegalArgumentException(String.format("No challenge with id '%d' found", challengeId)));
-        final AnswerChallenge2 answer = new AnswerChallenge2();
-        answer.setJobId("155555");
-        answer.setFirstName("Thomas");
-        answer.setLastName("Herzog");
-        answer.setEmail("thomas.herzog@gepardec.om");
-        answer.setPhone("+43123456789");
-        answer.setMessageToGepardec("This is my message");
-        answer.setSource(Source.LINKEDIN);
-        answer.setAnswer(challenges.getAnswer() + "67");
-        answer.setCv(Base64.getEncoder().encodeToString("This is my CV".getBytes()));
+    private static AnswerChallenge2 buildValidAnswerChallenge2() {
+        final Challenges challenge = Challenges.forId(2)
+                .orElseThrow(() -> new IllegalArgumentException(String.format("No challenge with id '%d' found", 2)));
+        AnswerChallenge2 answer = new AnswerChallenge2();
+        setCommonData(answer);
+        answer.setUrl(challenge.getAnswer()+"21");
 
         return answer;
     }
+
+
 
     private String toJson(final Object value) {
         try (final Jsonb jsonb = JsonbBuilder.create()) {

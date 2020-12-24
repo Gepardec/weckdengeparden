@@ -21,8 +21,4 @@ public class AnswerChallenge2 extends Answer{
         this.url = url;
     }
 
-    public void setAnswer(String answer) {
-        this.url = answer;
-    }
-
 }
