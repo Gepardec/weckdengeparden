@@ -5,7 +5,6 @@ import com.gepardec.wdg.client.personio.Source;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
 import org.apache.http.HttpStatus;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import javax.json.bind.Jsonb;
@@ -156,7 +155,7 @@ class ChallengeResourceTest {
     @Test
     void answerChallenge2_withInvalidUrl_then400Returned() {
         final AnswerChallenge2 answer = buildValidAnswerChallenge2();
-        answer.setUrl("Ivalid url");
+        answer.setUrl("Invalid url");
         given().contentType(ContentType.JSON)
                 .body(answer)
                 .post("/challenge/2/url")
