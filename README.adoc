@@ -8,7 +8,7 @@ Deshalb haben wir eine kleine technische Herausforderung für dich – unser Pra
 
 Lade dir unser Projekt von GitHub runter und versuche die Fehler zu beheben. Mit dem ScriptFortschritt.sh kannst du laufend deinen Fortschritt kontrollieren. Keine Bange – für einen Profi wie dich wird das im Handumdrehen zu lösen sein.
 
-Du kannst nicht alle Bugs fixen? Kein Problem. Über unsere guiRunner/RestGUI kannst du jederzeit deine Bewerbung abschicken! Damit wir uns dein Projekt anschauen können erstellst du vorher einen Pull-Request. Schick uns den Link dazu einfach im Bewerbungsformular mit.
+Du kannst nicht alle Bugs fixen? Kein Problem. Über unser resources/RunMain.jar  kannst du jederzeit deine Bewerbung abschicken! Damit wir uns dein Projekt anschauen können erstellst du vorher einen Pull-Request. Schick uns den Link dazu einfach im Bewerbungsformular mit.
 
 
 Wichtig für uns: Was kann dein Beitrag zur Umsetzung der link:https://www.gepardec.com/arbeit-kultur/werte-und-kultur/[Vision] von Gepardec sein? 
