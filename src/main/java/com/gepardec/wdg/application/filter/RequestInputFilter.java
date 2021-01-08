@@ -34,13 +34,13 @@ public class RequestInputFilter implements ContainerRequestFilter {
 
     private static final Jsonb jsonb = JsonbBuilder.create();
 
-    private static final Pattern ANSWER_PATH_REGEX_PATTER = Pattern.compile("(/challenge/)\\d+(/answer)");
+    private static final Pattern ANSWER_AND_URL_PATH_REGEX_PATTER = Pattern.compile("(/challenge/)\\d+(/(answer|url))");
 
     @Override
     public void filter(ContainerRequestContext ctx) throws IOException {
 
         String path = info.getPath();
-        Matcher pathMatcher = ANSWER_PATH_REGEX_PATTER.matcher(path);
+        Matcher pathMatcher = ANSWER_AND_URL_PATH_REGEX_PATTER.matcher(path);
 
         if(pathMatcher.matches()) {
             String input;
