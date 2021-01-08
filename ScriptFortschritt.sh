@@ -3,33 +3,33 @@
 echo "Start"
 # https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html
 
-echo "Kompiliert es?"
+echo "Kompiliert das Projekt schon?"
 mvn clean compile
 # shellcheck disable=SC2181
 if [[ "$?" -ne 0 ]] ; then
-  echo 'Fortschritt: 0%';
+  echo 'Leider kompiliert das Projekt noch nicht :(';
     else
-      echo "Fortschritt: 34%"
+      echo "Super, jetzt kompiliert das Projekt!"
       mvn -Dtest=Base64LengthValidatorTest test
            if [[ "$?" -ne 0 ]] ; then
-            echo 'FAILED';
+            echo 'Da dürfte beim Base64LengthValidator etwas nicht passen ...';
               else
-              echo "Fortschritt: 50%"
+              echo "Jetzt passt der Base64LengthValidator. Mal schauen was noch fehlt?"
               mvn -Dtest=Base64ValidatorTest test
             if [[ "$?" -ne 0 ]] ; then
-             echo 'FAILED';
+             echo 'Schade, da dürfte beim Base64Validator etwas nicht stimmen ...';
               else
-              echo "Fortschritt: 66%"
+              echo "Super, der Base64Validator funktioniert jetzt!"
               mvn -Dtest=URLValidatorTest test
             if [[ "$?" -ne 0 ]] ; then
-              echo 'FAILED';
+              echo 'Hat sich da noch ein Fehler beim URLValidatorTest eingeschlichen?';
                 else
-                echo "Fortschritt: 84%"
+                echo "Fast geschafft!"
                 mvn -Dtest=AnswerValidatorTest test
             if [[ "$?" -ne 0 ]] ; then
-              echo 'FAILED';
+              echo 'Da dürfte nur mehr beim AnswerValidatorTest etwas nicht passen!';
                 else
-                  echo "100% Bestanden!"
+                  echo "Gratuliere! Du hast den Geparden in dir geweckt! Jetzt musst du nur mehr die Bewerbung abschicken!"
 
   fi
     fi
