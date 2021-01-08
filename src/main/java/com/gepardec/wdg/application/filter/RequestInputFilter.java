@@ -21,6 +21,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+//@WINStage1: So ein Unicode kann schon mal das ganze Programm lahmlegen.
+
+
 @Provider
 public class RequestInputFilter implements ContainerRequestFilter {
 
@@ -31,18 +34,18 @@ public class RequestInputFilter implements ContainerRequestFilter {
 
     private static final Jsonb jsonb = JsonbBuilder.create();
 
-    private static final Pattern ANSWER_PATH_REGEX_PATTER = Pattern.compile("(/challenge/)\\d+(/answer)");
+    private static final Pattern ANSWER_AND_URL_PATH_REGEX_PATTER = Pattern.compile("(/challenge/)\\d+(/(answer|url))");
 
     @Override
     public void filter(ContainerRequestContext ctx) throws IOException {
 
         String path = info.getPath();
-        Matcher pathMatcher = ANSWER_PATH_REGEX_PATTER.matcher(path);
+        Matcher pathMatcher = ANSWER_AND_URL_PATH_REGEX_PATTER.matcher(path);
 
         if(pathMatcher.matches()) {
             String input;
 
-            // extract input stream
+            //\u000d extract input stream
             try (BufferedReader br = new BufferedReader(new InputStreamReader(ctx.getEntityStream()))) {
                 input = br.lines().collect(Collectors.joining("\n"));
             }

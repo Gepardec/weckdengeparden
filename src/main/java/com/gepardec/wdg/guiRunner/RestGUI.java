@@ -16,6 +16,8 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 
+import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
+
 public class RestGUI extends JFrame {
     private JPanel basic;
     private JLabel jobIdLabel;
@@ -46,8 +48,9 @@ public class RestGUI extends JFrame {
     private JButton submitButton;
     private JTextArea messageTextArea;
     private JComboBox sourceComboBox;
-
+    final static String utf8 = "utf-8";
     final static String WDG_ITANDTEL = "https://weckdengeparden-57-services.cloud.itandtel.at";
+
     private static final org.jboss.logging.Logger log = Logger.getLogger(RestGUI.class.getName());
 
     public static void main(String[] args) {
@@ -55,7 +58,7 @@ public class RestGUI extends JFrame {
         ImageIcon pic = new ImageIcon("gepardec_icon.jpg");
         frame.setIconImage(pic.getImage());
         frame.setContentPane(new RestGUI().basic);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setSize(475, 500);
@@ -64,83 +67,91 @@ public class RestGUI extends JFrame {
     }
 
     public RestGUI() {
-        submitButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        sourceComboBox.setModel(new DefaultComboBoxModel(Source.values()));
+        submitButton.addActionListener(e -> {
 
-                URL url = null;
+
+                URL url;
                 try {
                     url = new URL(WDG_ITANDTEL+"/challenge/2/url/");
                 } catch (MalformedURLException malformedURLException) {
                     log.error("Error while assign the URL." + malformedURLException.getMessage(), malformedURLException);
+                    JOptionPane.showMessageDialog(null, "Es ist ein Fehler beim Verbindungsaufbau aufgetreten\n"+malformedURLException.getMessage());
+                    return;
                 }
 
-                HttpURLConnection con = null;
+
+            HttpURLConnection con;
+            try {
+                con = (HttpURLConnection) url.openConnection();
+            } catch (IOException ioException) {
+                log.error("Error while opening the HttpURLConnection." + ioException.getMessage(), ioException);
+                JOptionPane.showMessageDialog(null, "Es ist ein Fehler beim Verbindungsaufbau aufgetreten\n"+ioException.getMessage());
+                return;
+            }
+
+            try {
+                con.setRequestMethod("POST");
+            } catch (ProtocolException protocolException) {
+                log.error("Error while setting the request Method of the HttpURLConnection to 'POST'." + protocolException.getMessage(), protocolException);
+                return;
+            }
+
+            con.setRequestProperty("Content-Type", "application/json; utf-8");
+            con.setRequestProperty("Accept", "application/json");
+            con.setDoOutput(true);
+
+            String jsonInputString = "{\r\n   \"jobId\": \"" + jobIdTextField.getText().trim() + "\"," +
+                    "\r\n   \"firstName\": \"" + vornameTextField.getText().trim() + "\"," +
+                    "\r\n   \"lastName\": \"" + nachnameTextField.getText().trim() + "\"," +
+                    "\r\n   \"email\": \"" + emailTextField.getText().trim() + "\"," +
+                    "\r\n   \"answer\": \"" + gitHubTextField.getText().trim() + "\"," +
+                    "\r\n   \"source\": \"" + sourceComboBox.getSelectedItem() + "\"," +
+                    "\r\n   \"messageToGepardec\": \"" + messageTextArea.getText().trim() + "\"," +
+                    "\r\n   \"otherSource\": \"" + otherSourceTextField.getText().trim() + "\"," +
+                    "\r\n   \"title\": \"" + titelTextField.getText().trim() + "\"," +
+                    "\r\n   \"phone\": \"" + telefonTextField.getText().trim() + "\"," +
+                    "\r\n   \"linkedInLink\": \"" + linkedInTextField.getText().trim() + "\"," +
+                    "\r\n   \"xingLink\": \"" + xingTextField.getText().trim() + "\"," +
+                    "\r\n   \"cv\": \"" + cvTextField.getText().trim() + "\"\r\n}";
+
+            try (OutputStream os = con.getOutputStream()) {
+                byte[] input = jsonInputString.getBytes(utf8);
+                os.write(input, 0, input.length);
+            } catch (IOException ioException) {
+                log.error("Error while trying to get the OutputStream from the HttpURLConnection." + ioException.getMessage(), ioException);
+                return;
+            }
+
+            String response = "";
+
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(), utf8))) {
+                String responseLine;
+                while ((responseLine = br.readLine()) != null) {
+                    response = response + responseLine.trim();
+                }
+                JOptionPane.showMessageDialog(null, response.toString());
+            } catch (IOException ioException) {
+                String errorResponse = "";
                 try {
-                    con = (HttpURLConnection) url.openConnection();
-                } catch (IOException ioException) {
-                    log.error("Error while opening the HttpURLConnection." + ioException.getMessage(), ioException);
-                }
-
-                try {
-                    con.setRequestMethod("POST");
-                } catch (ProtocolException protocolException) {
-                    log.error("Error while setting the request Method of the HttpURLConnection to 'POST'." + protocolException.getMessage(), protocolException);
-                }
-
-                con.setRequestProperty("Content-Type", "application/json; utf-8");
-                con.setRequestProperty("Accept", "application/json");
-                con.setDoOutput(true);
-
-                String jsonInputString = "{\r\n   \"jobId\": \"" + jobIdTextField.getText().trim() + "\"," +
-                        "\r\n   \"firstName\": \"" + vornameTextField.getText().trim() + "\"," +
-                        "\r\n   \"lastName\": \"" + nachnameTextField.getText().trim() + "\"," +
-                        "\r\n   \"email\": \"" + emailTextField.getText().trim() + "\"," +
-                        "\r\n   \"answer\": \"" + gitHubTextField.getText().trim() + "\"," +
-                        "\r\n   \"source\": \"" + sourceComboBox.getSelectedItem() + "\"," +
-                        "\r\n   \"messageToGepardec\": \"" + messageTextArea.getText().trim() + "\"," +
-                        "\r\n   \"otherSource\": \"" + otherSourceTextField.getText().trim() + "\"," +
-                        "\r\n   \"title\": \"" + titelTextField.getText().trim() + "\"," +
-                        "\r\n   \"phone\": \"" + telefonTextField.getText().trim() + "\"," +
-                        "\r\n   \"linkedInLink\": \"" + linkedInTextField.getText().trim() + "\"," +
-                        "\r\n   \"xingLink\": \"" + xingTextField.getText().trim() + "\"," +
-                        "\r\n   \"cv\": \"" + cvTextField.getText().trim() + "\"\r\n}";
-
-                try (OutputStream os = con.getOutputStream()) {
-                    byte[] input = jsonInputString.getBytes("utf-8");
-                    os.write(input, 0, input.length);
-                } catch (IOException ioException) {
-                    log.error("Error while trying to get the OutputStream from the HttpURLConnection." + ioException.getMessage(), ioException);
-                }
-
-                String response = "";
-
-                try (BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(), "utf-8"))) {
-                    String responseLine;
-                    while ((responseLine = br.readLine()) != null) {
-                        response = response + responseLine.trim();
+                    String inputLine;
+                    BufferedReader br = new BufferedReader(new InputStreamReader(con.getErrorStream(), utf8));
+                    while ((inputLine = br.readLine()) != null) {
+                        response = response + inputLine;
                     }
-                    JOptionPane.showMessageDialog(null, response.toString());
-                } catch (IOException ioException) {
-                    String errorResponse = "";
-                    try {
-                        String inputLine;
-                        BufferedReader br = new BufferedReader(new InputStreamReader(con.getErrorStream(), "utf-8"));
-                        while ((inputLine = br.readLine()) != null) {
-                            response = response + inputLine;
-                        }
-                        br.close();
-                        ObjectMapper objectMapper = new ObjectMapper();
-                        ConstraintViolationResponse constraintViolationResponse = objectMapper.readValue(response, ConstraintViolationResponse.class);
-                        for (String message : constraintViolationResponse.getViolations()) {
-                            errorResponse = errorResponse + message + "\n";
-                        }
-                        JOptionPane.showMessageDialog(null, errorResponse);
-                    } catch (UnsupportedEncodingException unsupportedEncodingException) {
-                        log.error("Error while trying to get the ErrorStream." + unsupportedEncodingException.getMessage(), unsupportedEncodingException);
-                    } catch (IOException exception) {
-                        log.error("Error while trying to get the ErrorStream." + exception.getMessage(), exception);
+                    br.close();
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    ConstraintViolationResponse constraintViolationResponse = objectMapper.readValue(response, ConstraintViolationResponse.class);
+                    for (String message : constraintViolationResponse.getViolations()) {
+                        errorResponse = errorResponse + message + "\n";
                     }
+                    JOptionPane.showMessageDialog(null, errorResponse);
+                } catch (UnsupportedEncodingException unsupportedEncodingException) {
+                    log.error("Error while trying to get the ErrorStream." + unsupportedEncodingException.getMessage(), unsupportedEncodingException);
+                    return;
+                } catch (IOException exception) {
+                    log.error("Error while trying to get the ErrorStream." + exception.getMessage(), exception);
+                    return;
                 }
             }
         });
@@ -150,7 +161,6 @@ public class RestGUI extends JFrame {
             public void focusGained(FocusEvent e) {
                 super.focusGained(e);
                 if (jobIdTextField.getText().equalsIgnoreCase("<JobId der Website>")) {
-                    sourceComboBox.setModel(new DefaultComboBoxModel(Source.values()));
                     jobIdTextField.setText("");
                 }
             }
