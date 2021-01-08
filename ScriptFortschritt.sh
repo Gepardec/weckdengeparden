@@ -9,7 +9,7 @@ mvn clean compile
 if [[ "$?" -ne 0 ]] ; then
   echo 'Leider kompiliert das Projekt noch nicht :(';
     else
-      echo "Super, jetzt kompiliert das Projek!"
+      echo "Super, jetzt kompiliert das Projekt!"
       mvn -Dtest=Base64LengthValidatorTest test
            if [[ "$?" -ne 0 ]] ; then
             echo 'Da dürfte beim Base64LengthValidator etwas nicht passen ...';
