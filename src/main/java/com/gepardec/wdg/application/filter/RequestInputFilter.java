@@ -21,7 +21,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-//@WINStage1: So ein Unicode kann schon mal ds ganze Programm lahmlegen.
+//@WINStage1: So ein Unicode kann schon mal das ganze Programm lahmlegen.
 
 
 @Provider
