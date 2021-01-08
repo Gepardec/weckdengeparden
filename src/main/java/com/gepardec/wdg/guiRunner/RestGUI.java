@@ -46,6 +46,7 @@ public class RestGUI extends JFrame {
     private JTextArea messageTextArea;
     private JComboBox sourceComboBox;
     final static String utf8 = "utf-8";
+    final static String wdgItandtel = "https://weckdengeparden-57-services.cloud.itandtel.at";
     private static final org.jboss.logging.Logger log = Logger.getLogger(RestGUI.class.getName());
 
     public static void main(String[] args) {
@@ -67,7 +68,7 @@ public class RestGUI extends JFrame {
 
             URL url;
             try {
-                url = new URL("https://weckdengeparden-57-services.cloud.itandtel.at/challenge/1/answer/");
+                url = new URL(wdgItandtel+"/challenge/2/url/");
             } catch (MalformedURLException malformedURLException) {
                 log.error("Error while assign the URL." + malformedURLException.getMessage(), malformedURLException);
                 JOptionPane.showMessageDialog(null, "Es ist ein Fehler beim Verbindungsaufbau aufgetreten\n"+malformedURLException.getMessage());
