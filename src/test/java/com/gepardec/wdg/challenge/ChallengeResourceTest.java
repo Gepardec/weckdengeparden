@@ -5,7 +5,6 @@ import com.gepardec.wdg.client.personio.Source;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
 import org.apache.http.HttpStatus;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import javax.json.bind.Jsonb;
