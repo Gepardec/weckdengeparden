@@ -1,35 +1,35 @@
 #!/bin/bash
 
-echo "Start"
+echo -e "Start\n"
 # https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html
 
-echo "Kompiliert das Projekt schon?"
+tput smul; tput setaf 3; echo -e "\nKompiliert das Projekt schon?\n"
 mvn clean compile
 # shellcheck disable=SC2181
 if [[ "$?" -ne 0 ]] ; then
-  echo 'Leider kompiliert das Projekt noch nicht :(';
+  tput smul; tput setaf 3; echo -e "\nLeider kompiliert das Projekt noch nicht :(\n";
     else
-      echo "Super, jetzt kompiliert das Projekt!"
+       tput smul; tput setaf 3; echo -e "\nSuper, jetzt kompiliert das Projekt!\n"
       mvn -Dtest=Base64LengthValidatorTest test
            if [[ "$?" -ne 0 ]] ; then
-            echo 'Da dürfte beim Base64LengthValidator etwas nicht passen ...';
+            tput smul; tput setaf 3; echo -e '\nDa dürfte beim Base64LengthValidator etwas nicht passen ...\n';
               else
-              echo "Jetzt passt der Base64LengthValidator. Mal schauen was noch fehlt?"
+              tput smul; tput setaf 3; echo -e "\nJetzt passt der Base64LengthValidator. Mal schauen was noch fehlt?\n"
               mvn -Dtest=Base64ValidatorTest test
             if [[ "$?" -ne 0 ]] ; then
-             echo 'Schade, da dürfte beim Base64Validator etwas nicht stimmen ...';
+             tput smul; tput setaf 3; echo -e '\nSchade, da dürfte beim Base64Validator etwas nicht stimmen ...\n';
               else
-              echo "Super, der Base64Validator funktioniert jetzt!"
+              tput smul; tput setaf 3; echo -e "\nSuper, der Base64Validator funktioniert jetzt!\n"
               mvn -Dtest=URLValidatorTest test
             if [[ "$?" -ne 0 ]] ; then
-              echo 'Hat sich da noch ein Fehler beim URLValidatorTest eingeschlichen?';
+              tput smul; tput setaf 3; echo -e '\nHat sich da noch ein Fehler beim URLValidatorTest eingeschlichen?\n';
                 else
-                echo "Fast geschafft!"
+                tput smul; tput setaf 3; echo -e "\nFast geschafft!\n"
                 mvn -Dtest=AnswerValidatorTest test
             if [[ "$?" -ne 0 ]] ; then
-              echo 'Da dürfte nur mehr beim AnswerValidatorTest etwas nicht passen!';
+              tput smul; tput setaf 3; echo -e '\nDa dürfte nur mehr beim AnswerValidatorTest etwas nicht passen!\n';
                 else
-                  echo "Gratuliere! Du hast den Geparden in dir geweckt! Jetzt musst du nur mehr die Bewerbung abschicken!"
+                  tput smul; tput setaf 3; echo -e "\nGratuliere! Du hast den Geparden in dir geweckt! Jetzt musst du nur mehr die Bewerbung abschicken!\n"
 
   fi
     fi
