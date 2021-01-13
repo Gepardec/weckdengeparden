@@ -8,6 +8,8 @@ Wir suchen DICH, wenn du deine Komfortzone verlassen und unser Rudel verstärken
 
 Deshalb haben wir zwei Challenges für dich! Wähle eine Challenge aus und bewirb dich bei uns.
 
+---
+
 *Challenge 1 - Einsteigerchallenge*
 
 Schick uns deine Bewerbung mittels REST-Call. Hier ein paar Infos für dich die nützlich sein könnten:
@@ -61,6 +63,8 @@ Content-Type: application/json
 }
 ----
 Wir freuen uns schon auf deinen REST-Call!
+
+---
 
 *Challenge 2 - Broken Project Challenge für Developer*
 
