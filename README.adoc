@@ -6,26 +6,13 @@ Lieber zukünftiger Developer-Gepard!
 Als Software-Developer ist es ja zu einfach, einfach nur ein Bewerbungs-Formular auszufüllen.
 Wir suchen DICH, wenn du deine Komfortzone verlassen und unser Rudel verstärken willst.
 
-Deshalb haben wir eine kleine technische Herausforderung für dich - ein REST Service, über das du uns deine Bewerbung schickst.
+Deshalb haben wir zwei Challenges für dich! Wähle eine Challenge aus und bewirb dich bei uns.
 
-Wichtig für uns: Was kann dein Beitrag zur Umsetzung der link:https://www.gepardec.com/arbeit-kultur/werte-und-kultur/[Vision] von Gepardec sein? 
-Bitte beantworte das in der "messageToGepardec".
+*Challenge 1 - Einsteigerchallenge*
 
-Ich freue mich auf deinen REST-Call ;)
+Schick uns deine Bewerbung mittels REST-Call. Hier ein paar Infos für dich die nützlich sein könnten:
 
-LG, *Michael*
-
-Deine abgesendeten Daten werden nur zum Zweck der Bearbeitung deiner Bewerbung verarbeitet. Weitere Informationen findest du in unserer link:https://www.gepardec.com/datenschutz[Datenschutzerklärung].
-
-Wenn du uns zu technischen Fragen kontaktieren willst, check unsere link:https://github.com/Gepardec/weckdengeparden/wiki/Home[Support] Seite.
-
-
-== REST Endpoints
-
-=== List available challenges
-
-`GET https://weckdengeparden-57-services.cloud.itandtel.at/challenge` +
-
+`GET https://weckdengeparden-57-services.cloud.itandtel.at/1` +
 
 ==== Success Response
 
@@ -45,48 +32,6 @@ Content-Type: application/json
   }
 ]
 ----
-
-=== Challenge by id
-
-`GET https://weckdengeparden-57-services.cloud.itandtel.at/challenge/<CHALLENGE_ID>` +
-
-
-==== Success Response
-
-.Response-Headers
-[source]
-----
-Content-Type: application/json
-----
-
-.Response-Body
-[source,json]
-----
-{
-   "id": 1,
-   "question": "1 Notebook und eine ..."
-}
-----
-
-==== Error Response
-
-.Response-Headers
-[source]
-----
-Content-Type: application/json
-----
-
-.Response-Body
-[source,json]
-----
-{
-   "message": "...",
-   "success": false
-}
-----
-
-=== Answer challenge
-
 `POST https://weckdengeparden-57-services.cloud.itandtel.at/challenge/<CHALLENGE_ID>/answer` +
 
 .Request-Headers
@@ -115,171 +60,26 @@ Content-Type: application/json
    "cv": "<Lebenslauf in Base64 encodiert>"
 }
 ----
+Wir freuen uns schon auf deinen REST-Call!
 
-==== Success Response
+*Challenge 2 - Broken Project Challenge für Developer*
 
-.Response-Headers
-[source]
-----
-Content-Type: application/json
-----
+Diese Challenge ist schon etwas herausfordernder! In unserem Projekt haben sich einige Fehler eingeschlichen. Kannst du sie alle finden?
 
-.Success Response-Body
-[source]
-----
-{
-   "message": "Danke! Du hast den Geparden in dir erweckt und wir melden uns in den nächsten Tagen bei dir! Lg, Michael Sollberger",
-   "success": true
-}
-----
+Hol dir den brokenproject Branch dieses Repositories und probier es!
+Genauere Angaben findest du in der Beschreibung des Branches.
 
-==== Constraint Violation Response
+====
 
-.Response-Headers
-[source]
-----
-Content-Type: application/json
-----
+Wichtig für uns: Was kann dein Beitrag zur Umsetzung der link:https://www.gepardec.com/arbeit-kultur/werte-und-kultur/[Vision] von Gepardec sein? 
+Bitte beantworte das in der "messageToGepardec".
 
-.Success Response-Body
-[source]
-----
-{
-   "message": "The request was invalid due to constraint violations",
-   "success": false,
-   "violations" : [
-        "..."
-   ]
-}
-----
 
-==== E-Mail already used for an application
+LG, *Michael*
 
-.Response-Headers
-[source]
-----
-Content-Type: application/json
-----
+Deine abgesendeten Daten werden nur zum Zweck der Bearbeitung deiner Bewerbung verarbeitet. Weitere Informationen findest du in unserer link:https://www.gepardec.com/datenschutz[Datenschutzerklärung].
 
-.Success Response-Body
-[source]
-----
-{
-   "message": "The used email address has already been used for an application",
-   "success": false
-}
-----
+Wenn du uns zu technischen Fragen kontaktieren willst, check unsere link:https://github.com/Gepardec/weckdengeparden/wiki/Home[Support] Seite.
 
-==== Invalid Answer Response
 
-.Response-Headers
-[source]
-----
-Content-Type: application/json
-----
-
-.Success Response-Body
-[source]
-----
-{
-   "message": "Sorry, die Antwort ist falsch. Denk' nochmal in Ruhe darüber nach und versuch es noch einmal.",
-   "success": false
-}
-----
-== Developer documentation for setting up this project itself (not necessary for applicants)
-
-=== Preparations
-
-Sensitive configurations have been externalized and must be added before starting the development. +
-Place the following configuration file in the ``/config`` directory additionally to a truststore.jks which holds personio related trusted certificates.
-
-.application.properties
-[source,yaml]
-----
-quarkus:
-  log:
-    console:
-      enable: true
-      level: ALL
-  jaeger:
-    enabled: false
-    service-name: "weckdengeparden"
-    agent-host-port: "AGENT_HOST_PORT"
-    reporter-log-spans: false
-    sampler-type: "const"
-    sampler-parameter: 1
-    reporter-flush-interval: 1.500S
-    reporter-max-queue-size: 200
-  mailer:
-    from: MAILER_EMAIL
-    host: MAILER_HOST
-    port: PORT
-    ssl: true
-    username: USER_NAME
-    password: PASSWORD
-    # If set to "true" no actual emails will be sent only printed to stdout and collected within a MockMailbox
-    mock: false
-personio:
-  company_id: "COMPANY_ID"
-  access_token: "ACCESS_TOKEN"
-personio/mp-rest/url: "https://api.personio.de"
-personio/mp-rest/trustStorePassword: "PWD_OF_TRUSTSTORE_FILE"
-personio/mp-rest/trustStoreType: "TRUSTSTORE_TYPE"
-personio/mp-rest/trustStore: "FQN_OF_TRUSTSTORE_FILE"
-personio/mp-rest/scope: "javax.enterprise.context.RequestScoped"
-ApplicationMailer:
-  Default: "ADD_DEFAULT_ADDRESS"
-----
-
-TIP: See link:https://quarkus.io/guides/opentracing[quarkus-opentracing]
-
-=== Build the application
-
-Build the application with the following command
-
-.Build the uber jar
-[source,bash]
-----
-mvn clean install -Dpackage.uber.jar=true
-----
-
-== Openshift
-
-In this section you see how to setup an Openshift project which hosts the ``weckdengeparden`` service.
-
-=== Preparations
-
-. Ensure you have setup up your development environment and that you have built the application.
-. Ensure that you have an valid ``config/application.yml`` file
-. Ensure you have a ``config/truststore.jks`` file which contains personio related trusted certificates
-
-=== Setup
-
-Execute all commands in the root directory of this project. Ensure that your are logged into the proper Openshift project.
-
-.Jaeger Services
-[source,bash]
-----
-# Create jaeger services
-oc process -f templates/jaeger.yaml -o yaml  | oc apply -f -
-# Delete jaeger services
-oc process -f templates/jaeger.yaml -o yaml  | oc delete -f -
-----
-
-.Secrets
-[source,bash]
-----
-# Create secret for weckdengeparden, if the secret already exists add "-o yaml --dry-run | oc apply -f -"
-oc create secret generic weckdengeparden \
-   --from-file=application.yml=config/application-ocp.yml \
-   --from-file=truststore.jks=config/truststore.jks
-----
-
-.New-App
-[source,bash]
-----
-# Creates a new application by using the openjdk-11 image stream to build the sources from the Github repository. The new-app command also constructs a build configuration which builds sources into a new application image, deployment configuration that deploys the image, and a service which provide load balanced access to the deployment that is running your image
-oc new-app registry.access.redhat.com/ubi8/openjdk-11:latest~https://github.com/Gepardec/weckdengeparden.git --name=weckdengeparden
-
-----
 
