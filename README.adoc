@@ -32,7 +32,7 @@ Content-Type: application/json
   }
 ]
 ----
-`POST https://weckdengeparden-57-services.cloud.itandtel.at/challenge/<CHALLENGE_ID>/answer` +
+`POST https://weckdengeparden-57-services.cloud.itandtel.at/challenge/1/answer` +
 
 .Request-Headers
 
@@ -70,6 +70,9 @@ Hol dir den brokenproject Branch dieses Repositories und probier es!
 Genauere Angaben findest du in der Beschreibung des Branches.
 
 ====
+
+
+---
 
 Wichtig für uns: Was kann dein Beitrag zur Umsetzung der link:https://www.gepardec.com/arbeit-kultur/werte-und-kultur/[Vision] von Gepardec sein? 
 Bitte beantworte das in der "messageToGepardec".
