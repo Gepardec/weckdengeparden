@@ -6,7 +6,7 @@ Lieber zukünftiger Developer-Gepard!
 Als Software-Developer ist es ja zu einfach, einfach nur ein Bewerbungs-Formular auszufüllen.
 Wir suchen DICH, wenn du deine Komfortzone verlassen und unser Rudel verstärken willst.
 
-Deshalb haben wir zwei Challenges für dich! Wähle eine Challenge aus und bewirb dich bei uns.
+Deshalb haben wir zwei Challenges für dich - wähle eine Challenge aus und bewirb dich bei uns.
 ====
 ---
 
@@ -18,11 +18,6 @@ Schick uns deine Bewerbung mittels REST-Call. Hier ein paar Infos für dich die 
 
 ==== Success Response
 
-.Response-Headers
-[source]
-----
-Content-Type: application/json
-----
 
 .Response-Body
 [source,json]
@@ -35,13 +30,6 @@ Content-Type: application/json
 ]
 ----
 `POST https://weckdengeparden-57-services.cloud.itandtel.at/challenge/1/answer` +
-
-.Request-Headers
-
-[source]
-----
-Content-Type: application/json
-----
 
 .Request-Body
 [source,json]
@@ -69,9 +57,9 @@ Wir freuen uns schon auf deinen REST-Call!
 
 *Challenge 2 - Broken Project Challenge für Developer*
 
-Diese Challenge ist schon etwas herausfordernder! In unserem Projekt haben sich einige Fehler eingeschlichen. Kannst du sie alle finden?
+Diese Challenge ist schon etwas herausfordernder. In unserem Projekt haben sich einige Fehler eingeschlichen - kannst du sie alle finden?
 
-Hol dir den brokenproject Branch dieses Repositories und probier es!
+Hol dir den 'brokenproject' Branch dieses Repositories und stell' dich der Herausforderung.
 Genauere Angaben findest du in der Beschreibung des Branches.
 
 ====
