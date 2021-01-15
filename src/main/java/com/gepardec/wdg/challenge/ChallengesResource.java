@@ -73,7 +73,7 @@ public class ChallengesResource {
                            @NotNull(message = "{AnswerModel.notNull}") @Valid final AnswerChallenge1 answer) {
         log.info(String.format(Consts.INFO_003 + " Provided Answer for challengeId='%s' with jobId='%s'", id, answer.getJobId()));
 
-        if (!checkChallenge(id, answer.getJobId())) {
+        if (challengeNotValid(id, answer.getJobId())) {
             return buildChallengeNotFoundResponse(id);
         }
 
@@ -102,7 +102,7 @@ public class ChallengesResource {
                         @NotNull(message = "{AnswerModel.notNull}") @Valid final AnswerChallenge2 answer) {
         log.info(String.format(Consts.INFO_003 + " Provided Answer for challengeId='%s' with jobId='%s'", id, answer.getJobId()));
 
-        if (!checkChallenge(id, answer.getJobId())) {
+        if (challengeNotValid(id, answer.getJobId())) {
             return buildChallengeNotFoundResponse(id);
         }
 
@@ -130,12 +130,12 @@ public class ChallengesResource {
         return Challenges.forId(id).orElse(null);
     }
 
-    private boolean checkChallenge(final Integer id, final String jobId) {
+    private boolean challengeNotValid(final Integer id, final String jobId) {
         final Challenges challenge = getChallengeForId(id);
         if (challenge == null) {
             log.warn(String.format(Consts.WARN_001 + " Challenge with id='%s' with jobId='%s' not found!", id, jobId));
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 }
