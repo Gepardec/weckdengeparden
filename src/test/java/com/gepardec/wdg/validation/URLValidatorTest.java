@@ -1,6 +1,7 @@
 package com.gepardec.wdg.validation;
 
 import com.gepardec.wdg.challenge.model.AnswerChallenge2;
+import com.gepardec.wdg.challenge.model.AnswerChallenge3;
 import com.gepardec.wdg.challenge.validation.URLValidator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,7 +36,7 @@ public class URLValidatorTest {
 
     @Test
     void isValid_answerNull_thenFalse() {
-        Assertions.assertFalse(validator.isValid(null, context));
+        Assertions.assertFalse(validator.isValid((AnswerChallenge2) null, context));
     }
 
     @Test
@@ -72,6 +73,50 @@ public class URLValidatorTest {
         Assertions.assertFalse(validator.isValid(given, context));
 
         given.setUrl("https://github.com/Gepardec/weckdengeparden/pull/");
+        Assertions.assertFalse(validator.isValid(given, context));
+
+        given.setUrl("https://www.youtube.com/watch?v=otCpCn0l4Wo");
+        Assertions.assertFalse(validator.isValid(given, context));
+
+        verify(context, times(6)).buildConstraintViolationWithTemplate(anyString());
+        verify(constraintViolationBuilder, times(6)).addPropertyNode(anyString());
+        verify(nodeBuilderCustomizableContext, times(6)).addConstraintViolation();
+    }
+
+    @Test
+    void isValid_withNullUrl_thenFalse_Challenge3() {
+        final AnswerChallenge3 given = new AnswerChallenge3();
+        given.setUrl(null);
+        Assertions.assertFalse(validator.isValid(given, context));
+    }
+
+    @Test
+    void isValid_withPullRqUrl_thenTrue_Challenge3() {
+        final AnswerChallenge3 given = new AnswerChallenge3();
+        given.setUrl("https://github.com/Gepardec/weckdengeparden-securitychallenge/pull/21");
+        Assertions.assertTrue(validator.isValid(given, context));
+        given.setUrl("https://github.com/Gepardec/weckdengeparden-securitychallenge/pull/01");
+        Assertions.assertTrue(validator.isValid(given, context));
+    }
+
+    @Test
+    void isValid_withWrongUrl_thenFalse_Challenge3() {
+        when(constraintViolationBuilder.addPropertyNode(anyString())).thenReturn(nodeBuilderCustomizableContext);
+        when(context.buildConstraintViolationWithTemplate(anyString())).thenReturn(constraintViolationBuilder);
+        final AnswerChallenge3 given = new AnswerChallenge3();
+        given.setUrl("https111222://github.com/Gepardec/weckdengeparden-securitychallenge/pull/21");
+        Assertions.assertFalse(validator.isValid(given, context));
+
+        given.setUrl("www.github.com/Gepardec/weckdengeparden-securitychallenge/pull//21");
+        Assertions.assertFalse(validator.isValid(given, context));
+
+        given.setUrl("https://github.com/Gepardec/weckdengeparden-securitychallenge/pull/   21");
+        Assertions.assertFalse(validator.isValid(given, context));
+
+        given.setUrl("https://github.com/Gepardec/weckdengeparden-securitychallenge/pull/21aaa");
+        Assertions.assertFalse(validator.isValid(given, context));
+
+        given.setUrl("https://github.com/Gepardec/weckdengeparden-securitychallenge/pull/");
         Assertions.assertFalse(validator.isValid(given, context));
 
         given.setUrl("https://www.youtube.com/watch?v=otCpCn0l4Wo");

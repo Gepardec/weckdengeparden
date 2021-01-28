@@ -7,6 +7,9 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public enum Challenges {
+    CHALLENGE3(3, "IT-Security Schnitzeljagd: Deine Aufgabe besteht darin, die Aufgaben, " +
+            "welche sich vor allem um Verschlüsselungen und Sicherheitsfragen drehen, " +
+            "eine nach der anderen zu lösen, um am Ende die Bewerbung abschicken zu können. Hol dir die beste IT-Security Schnitzeljagd ever jetzt unter: https://github.com/Gepardec/weckdengeparden-securitychallenge", "https://github.com/Gepardec/weckdengeparden-securitychallenge/pull/"),
     CHALLENGE2(2, "Broken Project: Deine Aufgabe besteht darin, das Projekt, " +
             "welches unser Praktikant leider nicht so ganz hinbekommen hat, " +
             "wieder zum Laufen zu bringen. Hol dir das beste Broken Project ever jetzt unter: https://github.com/Gepardec/weckdengeparden", "https://github.com/Gepardec/weckdengeparden/pull/"),
