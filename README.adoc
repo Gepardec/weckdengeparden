@@ -66,13 +66,13 @@ Genauere Angaben findest du in der Beschreibung des Branches.
 ====
 ---
 
-*Challenge 3 -Securitychallenge für Developer*
+*Challenge 3 - Securitychallenge für Developer*
 
-Passwörter finden, SQL Injections und noch vieles mehr wartet auf dich bei der Securitychallenge!
+Passwörter knacken, SQL Injections und noch vieles mehr wartet auf dich bei der Securitychallenge!
 
 Nähere Infos findest du hier:
 
-link:https://github.com/Gepardec/weckdengeparden-securitychallenge
+https://github.com/Gepardec/weckdengeparden-securitychallenge
 
 Viel Spaß!
 
