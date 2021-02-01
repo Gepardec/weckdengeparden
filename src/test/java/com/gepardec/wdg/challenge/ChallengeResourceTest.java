@@ -191,6 +191,19 @@ class ChallengeResourceTest {
     }
 
     @Test
+    void answerChallenge3_withValidUrl_then200Returned() {
+        final AnswerChallenge3 answer = buildValidAnswerChallenge3();
+        answer.setSource(Source.EMPFEHLUNG);
+        answer.setOtherSource("My friend");
+        given().contentType(ContentType.JSON)
+                .body(answer)
+                .post("/challenge/3/url")
+                .then().statusCode(HttpStatus.SC_OK)
+                .body("success", equalTo(true))
+                .body("message", equalTo("Danke! Du hast den Geparden in dir erweckt und wir melden uns in den nächsten Tagen bei dir! Lg, Michael Sollberger"));
+    }
+
+    @Test
     void answerChallenge1_withMalformedJsonBody1_then400Returned() {
         given().contentType(ContentType.JSON)
                 .body(MALFORMED_ANSWERS_LIST.get(0))
@@ -253,7 +266,15 @@ class ChallengeResourceTest {
         return answer;
     }
 
+    private static AnswerChallenge3 buildValidAnswerChallenge3() {
+        final Challenges challenge = Challenges.forId(3)
+                .orElseThrow(() -> new IllegalArgumentException(String.format("No challenge with id '%d' found", 2)));
+        AnswerChallenge3 answer = new AnswerChallenge3();
+        setCommonData(answer);
+        answer.setUrl(challenge.getAnswer()+"31");
 
+        return answer;
+    }
 
     private String toJson(final Object value) {
         try (final Jsonb jsonb = JsonbBuilder.create()) {
