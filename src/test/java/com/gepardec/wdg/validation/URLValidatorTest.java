@@ -129,9 +129,9 @@ public class URLValidatorTest {
         given.setUrl("https://github.com/Gepardec/weckdengeparden-securitychallenge/pull/");
         Assertions.assertFalse(validator.isValid(given, context));
 
-        verify(context, times(5)).buildConstraintViolationWithTemplate(anyString());
-        verify(constraintViolationBuilder, times(5)).addPropertyNode(anyString());
-        verify(nodeBuilderCustomizableContext, times(5)).addConstraintViolation();
+        verify(context, times(8)).buildConstraintViolationWithTemplate(anyString());
+        verify(constraintViolationBuilder, times(8)).addPropertyNode(anyString());
+        verify(nodeBuilderCustomizableContext, times(8)).addConstraintViolation();
     }
 
 }
