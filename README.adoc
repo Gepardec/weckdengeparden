@@ -63,7 +63,20 @@ Hol dir den 'brokenproject' Branch dieses Repositories und stell' dich der Herau
 Genauere Angaben findest du in der Beschreibung des Branches.
 
 ====
+====
+---
 
+*Challenge 3 - Securitychallenge für Developer*
+
+Passwörter knacken, SQL Injections und noch vieles mehr wartet auf dich bei der Securitychallenge!
+
+Nähere Infos findest du hier:
+
+https://github.com/Gepardec/weckdengeparden-securitychallenge
+
+Viel Spaß!
+
+====
 
 ---
 
