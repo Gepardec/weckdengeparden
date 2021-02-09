@@ -105,7 +105,7 @@ public class RestGUI extends JFrame {
                     "\r\n   \"firstName\": \"" + vornameTextField.getText().trim() + "\"," +
                     "\r\n   \"lastName\": \"" + nachnameTextField.getText().trim() + "\"," +
                     "\r\n   \"email\": \"" + emailTextField.getText().trim() + "\"," +
-                    "\r\n   \"answer\": \"" + gitHubTextField.getText().trim() + "\"," +
+                    "\r\n   \"url\": \"" + gitHubTextField.getText().trim() + "\"," +
                     "\r\n   \"source\": \"" + sourceComboBox.getSelectedItem() + "\"," +
                     "\r\n   \"messageToGepardec\": \"" + messageTextArea.getText().trim() + "\"," +
                     "\r\n   \"otherSource\": \"" + otherSourceTextField.getText().trim() + "\"," +
