@@ -3,10 +3,10 @@ image::https://raw.githubusercontent.com/Gepardec/weckdengeparden/master/weckden
 = Bewirb dich!
 
 Lieber zukünftiger Developer-Gepard!
-Als Software-Developer ist es ja zu einfach, einfach nur ein Bewerbungs-Formular auszufüllen.
+Als Software-Developer*in ist es ja zu einfach, einfach nur ein Bewerbungs-Formular auszufüllen.
 Wir suchen DICH, wenn du deine Komfortzone verlassen und unser Rudel verstärken willst.
 
-Deshalb haben wir zwei Challenges für dich - wähle eine Challenge aus und bewirb dich bei uns.
+Deshalb haben wir drei Challenges für dich - wähle eine Challenge aus und bewirb dich bei uns.
 ====
 ---
 
