@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -39,8 +40,8 @@ class AnswerValidatorTest {
     }
 
     @ParameterizedTest
-    //@WINStage3: Ist Dein Name auch dabei? ;)
-    @EnumSource(value = Source.class, names = {"ANNA", "JULIAN", "THOMAS", "LENA"})
+	//@WINStage3: Ist Dein Name auch dabei? ;)
+	@EnumSource(value = Source.class, names = { "SONSTIGES", "MESSEN", "MEETUPS", "EMPFEHLUNG" })
     void isValid_withValidSourcesEmptyOtherSource_thenFalse(final Source source) {
         when(constraintViolationBuilder.addPropertyNode(anyString())).thenReturn(nodeBuilderCustomizableContext);
         when(context.buildConstraintViolationWithTemplate(anyString())).thenReturn(constraintViolationBuilder);
@@ -77,11 +78,11 @@ class AnswerValidatorTest {
 
     @ParameterizedTest
     //@WINStage3: Na, deinen Namen schon gefunden? Eine Chance gibts noch. ;)
-    @EnumSource(value = Source.class, names = {"Josef", "Heinz", "Ilse", "Heidi"})
-    void isValid_withValidSourceAndOtherSource_thenTrue(final Source source) {
+	@ValueSource(strings = { "Josef", "Heinz", "Ilse", "Heidi" })
+	void isValid_withValidSourceAndOtherSource_thenTrue(final String name) {
         final Answer given = new Answer();
-        given.setSource(source);
-        given.setOtherSource("My friend");
+		given.setSource(Source.EMPFEHLUNG);
+		given.setOtherSource("My friend " + name);
         Assertions.assertTrue(validator.isValid(given, context));
     }
 }
