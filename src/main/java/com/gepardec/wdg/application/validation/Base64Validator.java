@@ -12,7 +12,7 @@ public class Base64Validator implements ConstraintValidator<Base64, String> {
     /**
      * Base64 validation regular expression.
      */
-    private static final Pattern BASE64_PATTERN = Pattern.compile("^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{4}|[A-Ga-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$");
+	private static final Pattern BASE64_PATTERN = Pattern.compile("^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{4}|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$");
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {

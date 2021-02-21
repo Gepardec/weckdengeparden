@@ -47,7 +47,11 @@
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-resteasy</artifactId>
         </dependency>
-        <!-- @WINStage2 Ohne jsonb wirds nix. -->
+        <!-- @WINStage2 Ohne jsonb wirds nix. -->       
+		<dependency>
+		  <groupId>io.quarkus</groupId>
+		  <artifactId>quarkus-resteasy-jsonb</artifactId>
+		</dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-rest-client</artifactId>
