@@ -1,13 +1,12 @@
-package com.gepardec.wdg.guiRunner;
+package com.gepardec.wdg.gui;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gepardec.wdg.challenge.model.ConstraintViolationResponse;
 import com.gepardec.wdg.client.personio.Source;
+import com.gepardec.wdg.gui.model.Application;
 import org.jboss.logging.Logger;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.io.*;
@@ -15,78 +14,47 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
-
-import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
+import java.nio.charset.StandardCharsets;
 
 public class RestGUI extends JFrame {
+
+    private static final String WDG_ITANDTEL = "https://weckdengeparden-57-services.cloud.itandtel.at";
+    private static final org.jboss.logging.Logger log = Logger.getLogger(RestGUI.class.getName());
     private JPanel basic;
-    private JLabel jobIdLabel;
-    private JLabel vornameLabel;
-    private JLabel nachnameLabel;
-    private JLabel emailLabel;
-    private JLabel gitHubLinkLabel;
-    private JLabel sourceLabel;
-    private JLabel messageToGepardecLabel;
-    private JLabel titelLabel;
-    private JLabel otherSourceLabel;
-    private JLabel telefonLabel;
-    private JLabel linkedInLabel;
     private JTextField jobIdTextField;
     private JTextField vornameTextField;
     private JTextField nachnameTextField;
     private JTextField emailTextField;
     private JTextField gitHubTextField;
-    private JTextField sourceTextField;
     private JTextField titelTextField;
     private JTextField otherSourceTextField;
     private JTextField telefonTextField;
     private JTextField linkedInTextField;
     private JTextField xingTextField;
     private JTextField cvTextField;
-    private JLabel cvLabel;
-    private JLabel xingLabel;
     private JButton submitButton;
     private JTextArea messageTextArea;
     private JComboBox sourceComboBox;
-    final static String utf8 = "utf-8";
-    final static String WDG_ITANDTEL = "https://weckdengeparden-57-services.cloud.itandtel.at";
-
-    private static final org.jboss.logging.Logger log = Logger.getLogger(RestGUI.class.getName());
-
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Bewerbung Formular");
-        ImageIcon pic = new ImageIcon("gepardec_icon.jpg");
-        frame.setIconImage(pic.getImage());
-        frame.setContentPane(new RestGUI().basic);
-        frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setLocationRelativeTo(null);
-        frame.setSize(475, 500);
-        frame.setResizable(false);
-        frame.setVisible(true);
-    }
 
     public RestGUI() {
         sourceComboBox.setModel(new DefaultComboBoxModel(Source.values()));
         submitButton.addActionListener(e -> {
 
-
-                URL url;
-                try {
-                    url = new URL(WDG_ITANDTEL+"/challenge/2/url/");
-                } catch (MalformedURLException malformedURLException) {
-                    log.error("Error while assign the URL." + malformedURLException.getMessage(), malformedURLException);
-                    JOptionPane.showMessageDialog(null, "Es ist ein Fehler beim Verbindungsaufbau aufgetreten\n"+malformedURLException.getMessage());
-                    return;
-                }
-
+            URL url;
+            try {
+                url = new URL(WDG_ITANDTEL + "/challenge/2/url/");
+            } catch (MalformedURLException malformedURLException) {
+                log.error("Error while assign the URL." + malformedURLException.getMessage(), malformedURLException);
+                JOptionPane.showMessageDialog(null, "Es ist ein Fehler beim Verbindungsaufbau aufgetreten\n" + malformedURLException.getMessage());
+                return;
+            }
 
             HttpURLConnection con;
             try {
                 con = (HttpURLConnection) url.openConnection();
             } catch (IOException ioException) {
                 log.error("Error while opening the HttpURLConnection." + ioException.getMessage(), ioException);
-                JOptionPane.showMessageDialog(null, "Es ist ein Fehler beim Verbindungsaufbau aufgetreten\n"+ioException.getMessage());
+                JOptionPane.showMessageDialog(null, "Es ist ein Fehler beim Verbindungsaufbau aufgetreten\n" + ioException.getMessage());
                 return;
             }
 
@@ -101,22 +69,24 @@ public class RestGUI extends JFrame {
             con.setRequestProperty("Accept", "application/json");
             con.setDoOutput(true);
 
-            String jsonInputString = "{\r\n   \"jobId\": \"" + jobIdTextField.getText().trim() + "\"," +
-                    "\r\n   \"firstName\": \"" + vornameTextField.getText().trim() + "\"," +
-                    "\r\n   \"lastName\": \"" + nachnameTextField.getText().trim() + "\"," +
-                    "\r\n   \"email\": \"" + emailTextField.getText().trim() + "\"," +
-                    "\r\n   \"url\": \"" + gitHubTextField.getText().trim() + "\"," +
-                    "\r\n   \"source\": \"" + sourceComboBox.getSelectedItem() + "\"," +
-                    "\r\n   \"messageToGepardec\": \"" + messageTextArea.getText().trim() + "\"," +
-                    "\r\n   \"otherSource\": \"" + otherSourceTextField.getText().trim() + "\"," +
-                    "\r\n   \"title\": \"" + titelTextField.getText().trim() + "\"," +
-                    "\r\n   \"phone\": \"" + telefonTextField.getText().trim() + "\"," +
-                    "\r\n   \"linkedInLink\": \"" + linkedInTextField.getText().trim() + "\"," +
-                    "\r\n   \"xingLink\": \"" + xingTextField.getText().trim() + "\"," +
-                    "\r\n   \"cv\": \"" + cvTextField.getText().trim() + "\"\r\n}";
+            Application application = new Application();
+            application.setJobId(jobIdTextField.getText().trim());
+            application.setJobId(vornameTextField.getText().trim());
+            application.setJobId(nachnameTextField.getText().trim());
+            application.setJobId(emailTextField.getText().trim());
+            // TODO change based on master changes
+            application.setJobId(gitHubTextField.getText().trim());
+            application.setJobId(sourceComboBox.getSelectedItem().toString());
+            application.setJobId(messageTextArea.getText().trim());
+            application.setJobId(otherSourceTextField.getText().trim());
+            application.setJobId(titelTextField.getText().trim());
+            application.setJobId(telefonTextField.getText().trim());
+            application.setJobId(linkedInTextField.getText().trim());
+            application.setJobId(xingTextField.getText().trim());
+            application.setJobId(cvTextField.getText().trim());
 
             try (OutputStream os = con.getOutputStream()) {
-                byte[] input = jsonInputString.getBytes(utf8);
+                byte[] input = application.toString().getBytes(StandardCharsets.UTF_8);
                 os.write(input, 0, input.length);
             } catch (IOException ioException) {
                 log.error("Error while trying to get the OutputStream from the HttpURLConnection." + ioException.getMessage(), ioException);
@@ -125,7 +95,7 @@ public class RestGUI extends JFrame {
 
             String response = "";
 
-            try (BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(), utf8))) {
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(), StandardCharsets.UTF_8))) {
                 String responseLine;
                 while ((responseLine = br.readLine()) != null) {
                     response = response + responseLine.trim();
@@ -135,7 +105,7 @@ public class RestGUI extends JFrame {
                 String errorResponse = "";
                 try {
                     String inputLine;
-                    BufferedReader br = new BufferedReader(new InputStreamReader(con.getErrorStream(), utf8));
+                    BufferedReader br = new BufferedReader(new InputStreamReader(con.getErrorStream(), StandardCharsets.UTF_8));
                     while ((inputLine = br.readLine()) != null) {
                         response = response + inputLine;
                     }
@@ -276,6 +246,19 @@ public class RestGUI extends JFrame {
                 }
             }
         });
+    }
+
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Bewerbung Formular");
+        ImageIcon pic = new ImageIcon("gepardec_icon.jpg");
+        frame.setIconImage(pic.getImage());
+        frame.setContentPane(new RestGUI().basic);
+        frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setSize(475, 500);
+        frame.setResizable(false);
+        frame.setVisible(true);
     }
 
 }

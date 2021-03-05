@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.gepardec.wdg.guiRunner.RestGUI">
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.gepardec.wdg.gui.RestGUI">
   <grid id="27dc6" binding="basic" layout-manager="GridLayoutManager" row-count="14" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="10" left="10" bottom="10" right="10"/>
     <constraints>
@@ -55,7 +55,7 @@
         </constraints>
         <properties>
           <foreground color="-10240"/>
-          <text value="GitHub-Link:"/>
+          <text value="GitHub PullRequest URL:"/>
         </properties>
       </component>
       <component id="d5930" class="javax.swing.JLabel" binding="sourceLabel">
