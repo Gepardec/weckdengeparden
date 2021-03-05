@@ -67,6 +67,11 @@ public class ApplicationForm implements Serializable {
     @PartType(MediaType.APPLICATION_OCTET_STREAM)
     private InputStream document;
 
+    // TODO create custom attribute on personio cfg side
+    @FormParam("custom_attribute_????")
+    @PartType(MediaType.TEXT_PLAIN)
+    private String gitHubPullRequestUrl;
+
     public ApplicationForm() {
     }
 
@@ -180,5 +185,13 @@ public class ApplicationForm implements Serializable {
 
     public void setDocument(InputStream document) {
         this.document = document;
+    }
+
+    public String getGitHubPullRequestUrl() {
+        return gitHubPullRequestUrl;
+    }
+
+    public void setGitHubPullRequestUrl(String gitHubPullRequestUrl) {
+        this.gitHubPullRequestUrl = gitHubPullRequestUrl;
     }
 }
