@@ -61,7 +61,9 @@ class ApplicationFormTranslatorTest {
                 () -> Assertions.assertEquals(given.getLinkedInLink(), translated.getLinkedInLink(), "linkedInLink"),
                 () -> Assertions.assertEquals(given.getXingLink(), translated.getXingLink(), "xingLink"),
                 () -> Assertions.assertEquals(given.getMessageToGepardec(), translated.getMessage(), "message"),
+                () -> Assertions.assertEquals(given.getGitHubPullRequestUrl(), translated.getGitHubPullRequestUrl(), ""),
                 () -> Assertions.assertEquals(given.getOtherSource(), translated.getEmpfehlung(), "empfehlung"));
+
 
         if (given.getSource() != null) {
             Assertions.assertEquals(given.getSource().idStr, translated.getRecrutingChannel(), "recrutingChannel");

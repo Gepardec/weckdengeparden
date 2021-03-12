@@ -67,8 +67,7 @@ public class ApplicationForm implements Serializable {
     @PartType(MediaType.APPLICATION_OCTET_STREAM)
     private InputStream document;
 
-    // TODO create custom attribute on personio cfg side
-    @FormParam("custom_attribute_????")
+    @FormParam("custom_attribute_532736")
     @PartType(MediaType.TEXT_PLAIN)
     private String gitHubPullRequestUrl;
 
