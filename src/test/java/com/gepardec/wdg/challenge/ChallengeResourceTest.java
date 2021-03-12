@@ -155,7 +155,7 @@ class ChallengeResourceTest {
     @Test
     void answerChallenge2_withInvalidUrl_then400Returned() {
         final AnswerChallenge2 answer = buildValidAnswerChallenge2();
-        answer.setUrl("Invalid url");
+        answer.setGitHubPullRequestUrl("Invalid url");
         given().contentType(ContentType.JSON)
                 .body(answer)
                 .post("/challenge/2/url")
@@ -261,7 +261,7 @@ class ChallengeResourceTest {
                 .orElseThrow(() -> new IllegalArgumentException(String.format("No challenge with id '%d' found", 2)));
         AnswerChallenge2 answer = new AnswerChallenge2();
         setCommonData(answer);
-        answer.setUrl(challenge.getAnswer()+"21");
+        answer.setGitHubPullRequestUrl(challenge.getAnswer()+"21");
 
         return answer;
     }
@@ -271,7 +271,7 @@ class ChallengeResourceTest {
                 .orElseThrow(() -> new IllegalArgumentException(String.format("No challenge with id '%d' found", 2)));
         AnswerChallenge3 answer = new AnswerChallenge3();
         setCommonData(answer);
-        answer.setUrl(challenge.getAnswer()+"31");
+        answer.setGitHubPullRequestUrl(challenge.getAnswer()+"31");
 
         return answer;
     }

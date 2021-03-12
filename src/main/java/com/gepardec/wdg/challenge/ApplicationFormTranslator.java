@@ -34,7 +34,6 @@ public class ApplicationFormTranslator {
         if (model.getCv() != null && !model.getCv().isBlank()) {
             form.setDocument(new ByteArrayInputStream(Base64.getDecoder().decode(model.getCv())));
         }
-        form.setGitHubPullRequestUrl(model.getGitHubPullRequestUrl());
 
         return form;
     }

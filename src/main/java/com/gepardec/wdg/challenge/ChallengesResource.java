@@ -106,7 +106,7 @@ public class ChallengesResource {
             return buildChallengeNotFoundResponse(id);
         }
 
-        log.info(String.format(Consts.INFO_004 + " Valid URL provided:  url='%s' challengeId='%s' jobId='%s'", answer.getUrl(), id, answer.getJobId()));
+        log.info(String.format(Consts.INFO_004 + " Valid URL provided:  url='%s' challengeId='%s' jobId='%s'", answer.getGitHubPullRequestUrl(), id, answer.getJobId()));
 
         final String personioResponse = createApplicationFormAndSendToPersonio(personioConfiguration, answer);
 

@@ -8,17 +8,17 @@ import javax.validation.constraints.NotEmpty;
 public class AnswerChallenge2 extends Answer {
 
     @NotEmpty(message = "{AnswerModel.url.notEmpty}")
-    private String url;
+    private String gitHubPullRequestUrl;
+
 
     public AnswerChallenge2() {
     }
 
-    public String getUrl() {
-        return url;
+    public String getGitHubPullRequestUrl() {
+        return gitHubPullRequestUrl;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setGitHubPullRequestUrl(String gitHubPullRequestUrl) {
+        this.gitHubPullRequestUrl = gitHubPullRequestUrl;
     }
-
 }
