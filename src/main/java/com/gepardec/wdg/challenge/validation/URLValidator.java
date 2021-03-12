@@ -16,10 +16,10 @@ public class URLValidator implements ConstraintValidator<URLValid, AnswerChallen
 
     @Override
     public boolean isValid(AnswerChallenge2 answer, ConstraintValidatorContext context) {
-        if (answer == null || answer.getUrl() == null) {
+        if (answer == null || answer.getGitHubPullRequestUrl() == null) {
             return false;
         }else{
-            Matcher matcher = URL_PATTERN.matcher(answer.getUrl());
+            Matcher matcher = URL_PATTERN.matcher(answer.getGitHubPullRequestUrl());
             if (!matcher.matches()) {
                 context.buildConstraintViolationWithTemplate("{AnswerModel.url.invalid}")
                         .addPropertyNode("url")
