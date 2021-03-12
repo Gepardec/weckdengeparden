@@ -52,8 +52,6 @@ public class Answer {
 
     private String phone = "";
 
-    private String gitHubPullRequestUrl;
-
     public Answer() {
     }
 
@@ -151,13 +149,5 @@ public class Answer {
 
     public void setMessageToGepardec(String messageToGepardec) {
         this.messageToGepardec = messageToGepardec;
-    }
-
-    public String getGitHubPullRequestUrl() {
-        return gitHubPullRequestUrl;
-    }
-
-    public void setGitHubPullRequestUrl(String gitHubPullRequestUrl) {
-        this.gitHubPullRequestUrl = gitHubPullRequestUrl;
     }
 }
