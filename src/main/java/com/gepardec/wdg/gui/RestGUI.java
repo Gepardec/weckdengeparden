@@ -3,7 +3,7 @@ package com.gepardec.wdg.gui;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gepardec.wdg.challenge.model.ConstraintViolationResponse;
 import com.gepardec.wdg.client.personio.Source;
-import com.gepardec.wdg.gui.model.Application;
+import com.gepardec.wdg.gui.model.ApplicationForm;
 import org.jboss.logging.Logger;
 
 import javax.swing.*;
@@ -17,10 +17,29 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
 public class RestGUI extends JFrame {
+    private static final String OPTIONAL_TEXT_TITLE = "<Titel vorangestellt>";
+    private static final String OPTIONAL_OTHER_SOURCE = "<Wenn Source auf EMPFEHLUNG oder SONSTIGES gesetzt ist, dann hier Details angeben>";
+    private static final String OPTIONAL_TEXT_PHONE = "<Telefonnummer>";
+    private static final String OPTIONAL_TEXT_LINKEDIN = "<LinkedIn Profil URL>";
+    private static final String OPTIONAL_TEXT_XING = "<Xing Profil URL>";
 
     private static final String WDG_ITANDTEL = "https://weckdengeparden-57-services.cloud.itandtel.at";
-    private static final org.jboss.logging.Logger log = Logger.getLogger(RestGUI.class.getName());
+
+    private static final Logger log = Logger.getLogger(RestGUI.class.getName());
     private JPanel basic;
+    private JLabel jobIdLabel;
+    private JLabel vornameLabel;
+    private JLabel nachnameLabel;
+    private JLabel emailLabel;
+    private JLabel gitHubLinkLabel;
+    private JLabel sourceLabel;
+    private JLabel messageToGepardecLabel;
+    private JLabel titelLabel;
+    private JLabel otherSourceLabel;
+    private JLabel telefonLabel;
+    private JLabel linkedInLabel;
+    private JLabel xingLabel;
+    private JLabel cvLabel;
     private JTextField jobIdTextField;
     private JTextField vornameTextField;
     private JTextField nachnameTextField;
@@ -69,21 +88,20 @@ public class RestGUI extends JFrame {
             con.setRequestProperty("Accept", "application/json");
             con.setDoOutput(true);
 
-            Application application = new Application();
+            ApplicationForm application = new ApplicationForm();
             application.setJobId(jobIdTextField.getText().trim());
-            application.setJobId(vornameTextField.getText().trim());
-            application.setJobId(nachnameTextField.getText().trim());
-            application.setJobId(emailTextField.getText().trim());
-            // TODO change based on master changes
-            application.setJobId(gitHubTextField.getText().trim());
-            application.setJobId(sourceComboBox.getSelectedItem().toString());
-            application.setJobId(messageTextArea.getText().trim());
-            application.setJobId(otherSourceTextField.getText().trim());
-            application.setJobId(titelTextField.getText().trim());
-            application.setJobId(telefonTextField.getText().trim());
-            application.setJobId(linkedInTextField.getText().trim());
-            application.setJobId(xingTextField.getText().trim());
-            application.setJobId(cvTextField.getText().trim());
+            application.setFirstName(vornameTextField.getText().trim());
+            application.setLastName(nachnameTextField.getText().trim());
+            application.setEmail(emailTextField.getText().trim());
+            application.setGitHubPullRequestUrl(gitHubTextField.getText().trim());
+            application.setSource(sourceComboBox.getSelectedItem().toString());
+            application.setMessageToGepardec(messageTextArea.getText().trim());
+            application.setCv(cvTextField.getText().trim());
+            application.setOtherSource(otherSourceTextField.getText().equals(OPTIONAL_OTHER_SOURCE) ? "" : otherSourceTextField.getText().trim());
+            application.setTitle(titelTextField.getText().equals(OPTIONAL_TEXT_TITLE) ? "" : titelTextField.getText().trim());
+            application.setPhone(telefonTextField.getText().equals(OPTIONAL_TEXT_PHONE) ? "" : telefonTextField.getText().trim());
+            application.setLinkedInLink(linkedInTextField.getText().equals(OPTIONAL_TEXT_LINKEDIN) ? "" : linkedInTextField.getText().trim());
+            application.setXingLink(xingTextField.getText().equals(OPTIONAL_TEXT_XING) ? "" : xingTextField.getText().trim());
 
             try (OutputStream os = con.getOutputStream()) {
                 byte[] input = application.toString().getBytes(StandardCharsets.UTF_8);
@@ -180,7 +198,7 @@ public class RestGUI extends JFrame {
             @Override
             public void focusGained(FocusEvent e) {
                 super.focusGained(e);
-                if (titelTextField.getText().equalsIgnoreCase("<Titel vorangestellt>")) {
+                if (titelTextField.getText().equalsIgnoreCase(OPTIONAL_TEXT_TITLE)) {
                     titelTextField.setText("");
                 }
             }
@@ -200,7 +218,7 @@ public class RestGUI extends JFrame {
             @Override
             public void focusGained(FocusEvent e) {
                 super.focusGained(e);
-                if (otherSourceTextField.getText().equalsIgnoreCase("<Wenn Source auf EMPFEHLUNG oder SONSTIGES gesetzt ist, dann hier Details angeben>")) {
+                if (otherSourceTextField.getText().equalsIgnoreCase(OPTIONAL_OTHER_SOURCE)) {
                     otherSourceTextField.setText("");
                 }
             }
@@ -210,7 +228,7 @@ public class RestGUI extends JFrame {
             @Override
             public void focusGained(FocusEvent e) {
                 super.focusGained(e);
-                if (telefonTextField.getText().equalsIgnoreCase("<Telefonnummer>")) {
+                if (telefonTextField.getText().equalsIgnoreCase(OPTIONAL_TEXT_PHONE)) {
                     telefonTextField.setText("");
                 }
             }
@@ -220,7 +238,7 @@ public class RestGUI extends JFrame {
             @Override
             public void focusGained(FocusEvent e) {
                 super.focusGained(e);
-                if (linkedInTextField.getText().equalsIgnoreCase("<LinkedIn Profil URL>")) {
+                if (linkedInTextField.getText().equalsIgnoreCase(OPTIONAL_TEXT_LINKEDIN)) {
                     linkedInTextField.setText("");
                 }
             }
@@ -230,7 +248,7 @@ public class RestGUI extends JFrame {
             @Override
             public void focusGained(FocusEvent e) {
                 super.focusGained(e);
-                if (xingTextField.getText().equalsIgnoreCase("<Xing Profil URL>")) {
+                if (xingTextField.getText().equalsIgnoreCase(OPTIONAL_TEXT_XING)) {
                     xingTextField.setText("");
                 }
             }
@@ -249,7 +267,7 @@ public class RestGUI extends JFrame {
     }
 
     public static void main(String[] args) {
-        JFrame frame = new JFrame("Bewerbung Formular");
+        JFrame frame = new JFrame("Bewerbungsformular");
         ImageIcon pic = new ImageIcon("gepardec_icon.jpg");
         frame.setIconImage(pic.getImage());
         frame.setContentPane(new RestGUI().basic);

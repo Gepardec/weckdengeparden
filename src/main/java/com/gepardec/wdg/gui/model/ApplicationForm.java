@@ -1,13 +1,12 @@
 package com.gepardec.wdg.gui.model;
 
-public class Application {
+public class ApplicationForm {
 
     private String jobId;
     private String firstName;
     private String lastName;
     private String email;
-    // TODO to be renamed depending on master
-    private String url;
+    private String gitHubPullRequestUrl;
     private String source;
     private String messageToGepardec;
     private String otherSource;
@@ -49,12 +48,12 @@ public class Application {
         this.email = email;
     }
 
-    public String getUrl() {
-        return url;
+    public String getGitHubPullRequestUrl() {
+        return gitHubPullRequestUrl;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setGitHubPullRequestUrl(String gitHubPullRequestUrl) {
+        this.gitHubPullRequestUrl = gitHubPullRequestUrl;
     }
 
     public String getSource() {
@@ -128,7 +127,7 @@ public class Application {
                 "\r\n   \"firstName\": \"" + firstName + "\"," +
                 "\r\n   \"lastName\": \"" + lastName + "\"," +
                 "\r\n   \"email\": \"" + email + "\"," +
-                "\r\n   \"url\": \"" + url + "\"," +
+                "\r\n   \"gitHubPullRequestUrl\": \"" + gitHubPullRequestUrl + "\"," +
                 "\r\n   \"source\": \"" + source + "\"," +
                 "\r\n   \"messageToGepardec\": \"" + messageToGepardec + "\"," +
                 "\r\n   \"otherSource\": \"" + otherSource + "\"," +
