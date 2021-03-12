@@ -42,16 +42,16 @@ public class URLValidatorTest {
     @Test
     void isValid_withNullUrl_thenFalse() {
         final AnswerChallenge2 given = new AnswerChallenge2();
-        given.setGitHubPullRequestUrl(null);
+        given.setUrl(null);
         Assertions.assertFalse(validator.isValid(given, context));
     }
 
     @Test
     void isValid_withPullRqUrl_thenTrue() {
         final AnswerChallenge2 given = new AnswerChallenge2();
-        given.setGitHubPullRequestUrl("https://github.com/Gepardec/weckdengeparden/pull/21");
+        given.setUrl("https://github.com/Gepardec/weckdengeparden/pull/21");
         Assertions.assertTrue(validator.isValid(given, context));
-        given.setGitHubPullRequestUrl("http://github.com/Gepardec/weckdengeparden/pull/01");
+        given.setUrl("http://github.com/Gepardec/weckdengeparden/pull/01");
         Assertions.assertTrue(validator.isValid(given, context));
     }
 
@@ -60,22 +60,22 @@ public class URLValidatorTest {
         when(constraintViolationBuilder.addPropertyNode(anyString())).thenReturn(nodeBuilderCustomizableContext);
         when(context.buildConstraintViolationWithTemplate(anyString())).thenReturn(constraintViolationBuilder);
         final AnswerChallenge2 given = new AnswerChallenge2();
-        given.setGitHubPullRequestUrl("https111222://githubabuba.com/Gepardec/weckdengeparden/pull/21");
+        given.setUrl("https111222://githubabuba.com/Gepardec/weckdengeparden/pull/21");
         Assertions.assertFalse(validator.isValid(given, context));
 
-        given.setGitHubPullRequestUrl("www.github.com/Gepardec/weckdengeparden/pull/21");
+        given.setUrl("www.github.com/Gepardec/weckdengeparden/pull/21");
         Assertions.assertFalse(validator.isValid(given, context));
 
-        given.setGitHubPullRequestUrl("https://github.com/Gepardec/weckdengeparden/pull/   21");
+        given.setUrl("https://github.com/Gepardec/weckdengeparden/pull/   21");
         Assertions.assertFalse(validator.isValid(given, context));
 
-        given.setGitHubPullRequestUrl("https://github.com/Gepardec/weckdengeparden/pull/21aaa");
+        given.setUrl("https://github.com/Gepardec/weckdengeparden/pull/21aaa");
         Assertions.assertFalse(validator.isValid(given, context));
 
-        given.setGitHubPullRequestUrl("https://github.com/Gepardec/weckdengeparden/pull/");
+        given.setUrl("https://github.com/Gepardec/weckdengeparden/pull/");
         Assertions.assertFalse(validator.isValid(given, context));
 
-        given.setGitHubPullRequestUrl("https://www.youtube.com/watch?v=otCpCn0l4Wo");
+        given.setUrl("https://www.youtube.com/watch?v=otCpCn0l4Wo");
         Assertions.assertFalse(validator.isValid(given, context));
 
         verify(context, times(6)).buildConstraintViolationWithTemplate(anyString());
@@ -86,16 +86,16 @@ public class URLValidatorTest {
     @Test
     void isValid_withNullUrl_thenFalse_Challenge3() {
         final AnswerChallenge3 given = new AnswerChallenge3();
-        given.setGitHubPullRequestUrl(null);
+        given.setUrl(null);
         Assertions.assertFalse(validator.isValid(given, context));
     }
 
     @Test
     void isValid_withPullRqUrl_thenTrue_Challenge3() {
         final AnswerChallenge3 given = new AnswerChallenge3();
-        given.setGitHubPullRequestUrl("https://github.com/Gepardec/weckdengeparden-securitychallenge/pull/21");
+        given.setUrl("https://github.com/Gepardec/weckdengeparden-securitychallenge/pull/21");
         Assertions.assertTrue(validator.isValid(given, context));
-        given.setGitHubPullRequestUrl("https://github.com/Gepardec/weckdengeparden-securitychallenge/pull/01");
+        given.setUrl("https://github.com/Gepardec/weckdengeparden-securitychallenge/pull/01");
         Assertions.assertTrue(validator.isValid(given, context));
     }
 
@@ -105,28 +105,28 @@ public class URLValidatorTest {
         when(context.buildConstraintViolationWithTemplate(anyString())).thenReturn(constraintViolationBuilder);
         final AnswerChallenge3 given = new AnswerChallenge3();
 
-        given.setGitHubPullRequestUrl("https://github.com/Gepardec/weckdengepardensecuritychallenge/pull/31");
+        given.setUrl("https://github.com/Gepardec/weckdengepardensecuritychallenge/pull/31");
         Assertions.assertFalse(validator.isValid(given, context));
 
-        given.setGitHubPullRequestUrl("https://github.com/Gepardec/-securitychallenge/pull/31");
+        given.setUrl("https://github.com/Gepardec/-securitychallenge/pull/31");
         Assertions.assertFalse(validator.isValid(given, context));
 
-        given.setGitHubPullRequestUrl("https://github.com/Gepardec/-/pull/31");
+        given.setUrl("https://github.com/Gepardec/-/pull/31");
         Assertions.assertFalse(validator.isValid(given, context));
 
-        given.setGitHubPullRequestUrl("https111222://github.com/Gepardec/weckdengeparden-securitychallenge/pull/21");
+        given.setUrl("https111222://github.com/Gepardec/weckdengeparden-securitychallenge/pull/21");
         Assertions.assertFalse(validator.isValid(given, context));
 
-        given.setGitHubPullRequestUrl("www.github.com/Gepardec/weckdengeparden-securitychallenge/pull//21");
+        given.setUrl("www.github.com/Gepardec/weckdengeparden-securitychallenge/pull//21");
         Assertions.assertFalse(validator.isValid(given, context));
 
-        given.setGitHubPullRequestUrl("https://github.com/Gepardec/weckdengeparden-securitychallenge/pull/   21");
+        given.setUrl("https://github.com/Gepardec/weckdengeparden-securitychallenge/pull/   21");
         Assertions.assertFalse(validator.isValid(given, context));
 
-        given.setGitHubPullRequestUrl("https://github.com/Gepardec/weckdengeparden-securitychallenge/pull/21aaa");
+        given.setUrl("https://github.com/Gepardec/weckdengeparden-securitychallenge/pull/21aaa");
         Assertions.assertFalse(validator.isValid(given, context));
 
-        given.setGitHubPullRequestUrl("https://github.com/Gepardec/weckdengeparden-securitychallenge/pull/");
+        given.setUrl("https://github.com/Gepardec/weckdengeparden-securitychallenge/pull/");
         Assertions.assertFalse(validator.isValid(given, context));
 
         verify(context, times(8)).buildConstraintViolationWithTemplate(anyString());
