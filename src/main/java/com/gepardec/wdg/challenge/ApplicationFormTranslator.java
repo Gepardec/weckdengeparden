@@ -2,6 +2,7 @@ package com.gepardec.wdg.challenge;
 
 import com.gepardec.wdg.application.configuration.PersonioConfiguration;
 import com.gepardec.wdg.challenge.model.Answer;
+import com.gepardec.wdg.challenge.model.AnswerChallenge2;
 import com.gepardec.wdg.client.personio.ApplicationForm;
 
 import java.io.ByteArrayInputStream;
@@ -34,7 +35,12 @@ public class ApplicationFormTranslator {
         if (model.getCv() != null && !model.getCv().isBlank()) {
             form.setDocument(new ByteArrayInputStream(Base64.getDecoder().decode(model.getCv())));
         }
+        if (model instanceof AnswerChallenge2) {
 
+            if (((AnswerChallenge2) model).getUrl() != null) {
+                form.setGitHubPullRequestUrl(((AnswerChallenge2) model).getUrl());
+            }
+        }
         return form;
     }
 }

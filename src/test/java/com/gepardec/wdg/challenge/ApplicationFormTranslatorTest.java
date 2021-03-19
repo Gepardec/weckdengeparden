@@ -2,6 +2,7 @@ package com.gepardec.wdg.challenge;
 
 import com.gepardec.wdg.application.configuration.PersonioConfiguration;
 import com.gepardec.wdg.challenge.model.Answer;
+import com.gepardec.wdg.challenge.model.AnswerChallenge2;
 import com.gepardec.wdg.client.personio.ApplicationForm;
 import com.gepardec.wdg.client.personio.Source;
 import org.apache.commons.io.IOUtils;
@@ -19,12 +20,11 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class ApplicationFormTranslatorTest {
 
-    @Mock
-    private PersonioConfiguration personioConfiguration;
-
     private static final String ACCESS_TOKEN = "ACCESS_TOKEN";
     private static final String COMPANY_ID = "COMPANY_ID";
     private static final String JOB_ID = "JOB_ID";
+    @Mock
+    private PersonioConfiguration personioConfiguration;
 
     @BeforeEach
     void beforeEach() {
@@ -77,6 +77,54 @@ class ApplicationFormTranslatorTest {
         }
     }
 
+
+    private void assertTranslationChallenge2(final AnswerChallenge2 given, final ApplicationForm translated) throws Exception {
+        Assertions.assertAll(
+                () -> Assertions.assertEquals(ACCESS_TOKEN, translated.getAccessToken(), "accessToken"),
+                () -> Assertions.assertEquals(COMPANY_ID, translated.getCompanyId(), "companyId"),
+                () -> Assertions.assertEquals(given.getJobId(), translated.getJobPositionId(), "jobPositionId"),
+                () -> Assertions.assertEquals(given.getFirstName(), translated.getFirstName(), "firstName"),
+                () -> Assertions.assertEquals(given.getLastName(), translated.getLastName(), "lastName"),
+                () -> Assertions.assertEquals(given.getEmail(), translated.getEmail(), "email"),
+                () -> Assertions.assertEquals(given.getTitle(), translated.getTitle(), "title"),
+                () -> Assertions.assertEquals(given.getPhone(), translated.getPhone(), "phone"),
+                () -> Assertions.assertEquals(given.getLinkedInLink(), translated.getLinkedInLink(), "linkedInLink"),
+                () -> Assertions.assertEquals(given.getXingLink(), translated.getXingLink(), "xingLink"),
+                () -> Assertions.assertEquals(given.getMessageToGepardec(), translated.getMessage(), "message"),
+                () -> Assertions.assertEquals(given.getOtherSource(), translated.getEmpfehlung(), "empfehlung"),
+                () -> Assertions.assertEquals(given.getUrl(), translated.getGitHubPullRequestUrl(), "https://github.com/Gepardec/weckdengeparden/pull/1337"));
+
+
+        if (given.getSource() != null) {
+            Assertions.assertEquals(given.getSource().idStr, translated.getRecrutingChannel(), "recrutingChannel");
+        } else {
+            Assertions.assertNull(translated.getRecrutingChannel());
+        }
+        if (given.getCv() != null) {
+            final byte[] expectedCvData = Base64.getDecoder().decode(given.getCv().getBytes());
+            final String expectedCv = new String(expectedCvData);
+            final byte[] cvData = IOUtils.toByteArray(translated.getDocument());
+            final String cv = new String(cvData);
+            Assertions.assertEquals(expectedCv, cv, "documents");
+        }
+    }
+
+    @Test
+    void answerToApplicationFormChallenges_whenSourceNull_thenNoRecrutingchannel() throws Exception {
+        final AnswerChallenge2 given = buildValidAnswerChallenge2();
+        final ApplicationForm form = ApplicationFormTranslator.answerToApplicationForm(personioConfiguration, given);
+        assertTranslationChallenge2(given, form);
+    }
+
+    @Test
+    void answerToApplicationFormChallenges_whenSourceSONSTIGE_thenRecrutingchannelSet() throws Exception {
+        final AnswerChallenge2 given = buildValidAnswerChallenge2();
+        given.setSource(Source.SONSTIGES);
+        given.setOtherSource("My friend");
+        final ApplicationForm form = ApplicationFormTranslator.answerToApplicationForm(personioConfiguration, given);
+        assertTranslation(given, form);
+    }
+
     private Answer buildValidAnswer() {
         final Answer answer = new Answer();
         answer.setJobId("155555");
@@ -88,7 +136,24 @@ class ApplicationFormTranslatorTest {
         answer.setMessageToGepardec("This is my message");
         answer.setXingLink("http://xing.com");
         answer.setLinkedInLink("http://linkedin.com");
-        answer.setCv(Base64.getEncoder().encodeToString("This is my CV".getBytes()));
+        answer.setCv(Base64.getEncoder().encodeToString("This is my CV" .getBytes()));
+
+        return answer;
+    }
+
+    private AnswerChallenge2 buildValidAnswerChallenge2() {
+        final AnswerChallenge2 answer = new AnswerChallenge2();
+        answer.setJobId("155555");
+        answer.setTitle("Ing.");
+        answer.setFirstName("Thomas");
+        answer.setLastName("Herzog");
+        answer.setEmail("thomas.herzog@gepardec.om");
+        answer.setPhone("+43123456789");
+        answer.setMessageToGepardec("This is my message");
+        answer.setXingLink("http://xing.com");
+        answer.setLinkedInLink("http://linkedin.com");
+        answer.setCv(Base64.getEncoder().encodeToString("This is my CV" .getBytes()));
+        answer.setUrl("https://github.com/Gepardec/weckdengeparden/pull/1337");
 
         return answer;
     }
