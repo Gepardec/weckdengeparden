@@ -90,5 +90,82 @@ Deine abgesendeten Daten werden nur zum Zweck der Bearbeitung deiner Bewerbung v
 
 Wenn du uns zu technischen Fragen kontaktieren willst, check unsere link:https://github.com/Gepardec/weckdengeparden/wiki/Home[Support] Seite.
 
+== Developer documentation for setting up this project itself (not necessary for applicants)
+=== Preparations
+Sensitive configurations have been externalized and must be added before starting the development. +
+Place the following configuration file in the ``/config`` directory additionally to a truststore.jks which holds personio related trusted certificates.
+.application.properties
+[source,yaml]
+----
+quarkus:
+  log:
+    console:
+      enable: true
+      level: ALL
+  jaeger:
+    enabled: false
+    service-name: "weckdengeparden"
+    agent-host-port: "AGENT_HOST_PORT"
+    reporter-log-spans: false
+    sampler-type: "const"
+    sampler-parameter: 1
+    reporter-flush-interval: 1.500S
+    reporter-max-queue-size: 200
+  mailer:
+    from: MAILER_EMAIL
+    host: MAILER_HOST
+    port: PORT
+    ssl: true
+    username: USER_NAME
+    password: PASSWORD
+    # If set to "true" no actual emails will be sent only printed to stdout and collected within a MockMailbox
+    mock: false
+personio:
+  company_id: "COMPANY_ID"
+  access_token: "ACCESS_TOKEN"
+personio/mp-rest/url: "https://api.personio.de"
+personio/mp-rest/trustStorePassword: "PWD_OF_TRUSTSTORE_FILE"
+personio/mp-rest/trustStoreType: "TRUSTSTORE_TYPE"
+personio/mp-rest/trustStore: "FQN_OF_TRUSTSTORE_FILE"
+personio/mp-rest/scope: "javax.enterprise.context.RequestScoped"
+ApplicationMailer:
+  Default: "ADD_DEFAULT_ADDRESS"
+----
+TIP: See link:https://quarkus.io/guides/opentracing[quarkus-opentracing]
 
+==== Build the application
+
+Build the application with the following command
+.Build the uber jar
+[source,bash]
+----
+mvn clean install -Dpackage.uber.jar=true
+----
+== Openshift
+In this section you see how to setup the jaeger services and the secrets for the "weckdengeparden" services, the deployment is automated with a GitHub hook after a push into the master branch.
+
+==== Preparations
+. Ensure that the CICD pipeline finished 
+. Ensure that you have an valid ``config/application.yml`` file
+. Ensure you have a ``config/truststore.jks`` file which contains personio related trusted certificates
+
+==== Setup
+Execute all commands in the root directory of this project. Ensure that your are logged into the proper Openshift project.
+.Jaeger Services
+[source,bash]
+----
+# Create jaeger services
+oc process -f templates/jaeger.yaml -o yaml  | oc apply -f -
+# Delete jaeger services
+oc process -f templates/jaeger.yaml -o yaml  | oc delete -f -
+----
+.Secrets
+[source,bash]
+----
+# Create secret for weckdengeparden, if the secret already exists add "-o yaml --dry-run | oc apply -f -" at the end
+oc create secret generic weckdengeparden \
+   --from-file=application.yml=config/application-ocp.yml \
+   --from-file=truststore.jks=config/truststore.jks
+
+----
 
