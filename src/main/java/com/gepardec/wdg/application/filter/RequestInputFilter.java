@@ -21,8 +21,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-//@WINStage1: So ein Unicode kann schon mal das ganze Programm lahmlegen.
-
 
 @Provider
 public class RequestInputFilter implements ContainerRequestFilter {
@@ -45,7 +43,7 @@ public class RequestInputFilter implements ContainerRequestFilter {
         if(pathMatcher.matches()) {
             String input;
 
-            //\u000d extract input stream
+            // extract input stream
             try (BufferedReader br = new BufferedReader(new InputStreamReader(ctx.getEntityStream()))) {
                 input = br.lines().collect(Collectors.joining("\n"));
             }

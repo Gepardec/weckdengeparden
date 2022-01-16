@@ -37,15 +37,15 @@ class Base64ValidatorTest {
         final String base64 = createBase64StringForPadding(0);
         Assertions.assertTrue(validator.isValid(base64, null));
     }
-    //@WINStage3: Der Test ist korrekt, aber wo ist dann der Fehler?
+
     @Test
-    void isValid_withPadding1_thenTruealse() {
+    void isValid_withPadding1_thenTrue() {
         final String base64 = createBase64StringForPadding(1);
         Assertions.assertTrue(validator.isValid(base64, null));
     }
 
     @Test
-    void isValid_withPadding2_thenTruealse() {
+    void isValid_withPadding2_thenTrue() {
         final String base64 = createBase64StringForPadding(2);
         Assertions.assertTrue(validator.isValid(base64, null));
     }

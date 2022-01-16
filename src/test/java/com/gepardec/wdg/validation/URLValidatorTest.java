@@ -19,11 +19,37 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 public class URLValidatorTest {
 
-    //@WINStage3: Irgendwie ein komischer Test für den URL-Validator, findest Du nicht auch?
+    private URLValidator urlValidator;
+
+    @Mock
+    private ConstraintValidatorContext.ConstraintViolationBuilder constraintViolationBuilder;
+
+    @Mock
+    private ConstraintValidatorContext.ConstraintViolationBuilder.NodeBuilderCustomizableContext nodeBuilderCustomizableContext;
+
+    @Mock
+    private ConstraintValidatorContext context;
+
+    @BeforeEach
+    void beforeEach() {
+        urlValidator = new URLValidator();
+    }
+
     @Test
-    void musterTest() {
-        final int x = 5;
-        Assertions.assertTrue(x == 7);
+    void isValid_withValidUrl_thenTrue() {
+        AnswerChallenge2 answer = new AnswerChallenge2();
+        answer.setUrl("https://github.com/Gepardec/weckdengeparden/pull/12345465767");
+        Assertions.assertTrue(urlValidator.isValid(answer, context));
+    }
+
+    @Test
+    void isValid_withValidUrl_thenFalse() {
+        when(constraintViolationBuilder.addPropertyNode(anyString())).thenReturn(nodeBuilderCustomizableContext);
+        when(context.buildConstraintViolationWithTemplate(anyString())).thenReturn(constraintViolationBuilder);
+
+        AnswerChallenge2 answer = new AnswerChallenge2();
+        answer.setUrl("https://github.com/Gepardec/weckdengeparden/pull/123abc");
+        Assertions.assertFalse(urlValidator.isValid(answer, context));
     }
 
 }
