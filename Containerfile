@@ -3,7 +3,7 @@ WORKDIR /work/
 RUN chown :root /work \
     && chmod "g+rwX" /work \
     && chown :root /work
-COPY --chown=:root target/*-runner.jar /work/application
+COPY target/*-runner.jar /work/application && chown :root /work/application
 
 EXPOSE 8080
 
