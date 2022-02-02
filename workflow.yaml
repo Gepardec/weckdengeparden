@@ -11,10 +11,10 @@ spec:
     - name: repo
       value: https://github.com/Gepardec/weckdengeparden.git
     - name: revision
-      value: master
+      value: feature/argo-workflows
   volumeClaimTemplates:
   - metadata:
-      name: blubb
+      name: workspace
     spec:
       resources:
         requests:
@@ -27,6 +27,12 @@ spec:
           template: checkout
       - - name: build-jar
           template: build-jar
+      - - name: image-build-push
+          template: image-build-push
+          arguments:
+            parameters:
+            - name: tag
+              value: "{{ steps.checkout.outputs.parameters.image-tag }}"
   - name: checkout
     metadata:
       labels:
@@ -35,15 +41,16 @@ spec:
       image: alpine/git
       name: git
       command: [sh, -c]
-      args: ["cd /mnt/out/ && git clone {{ workflow.parameters.repo }}"]
+      args: ["cd /mnt/out/ && git clone {{ workflow.parameters.repo }} && cd weckdengeparden && git checkout {{ workflow.parameters.revision }} && git rev-parse --short HEAD > ./git-commit"]
       volumeMounts:
-      - name: blubb
+      - name: workspace
         mountPath: /mnt/out/
+    outputs:
+      parameters:
+      - name: image-tag
+        valueFrom:
+          path: /mnt/out/weckdengeparden/git-commit
   - name: build-jar
-    inputs:
-      repo:
-      - name: source
-        path: /mnt/out/
     metadata:
       labels:
         app: argo
@@ -52,6 +59,30 @@ spec:
       command: [sh, -c]
       args: ["cd /mnt/out/weckdengeparden/ && mvn clean package -DskipTests"]
       volumeMounts:
-      - name: blubb
+      - name: workspace
         mountPath: /mnt/out/
-
+  - name: image-build-push
+    inputs:
+      parameters:
+      - name: tag
+    metadata:
+      labels:
+        app: argo
+    container:
+      image: gcr.io/kaniko-project/executor:latest
+      args:
+      - "--dockerfile=Containerfile"
+      - "--context=/mnt/out/weckdengeparden"
+      - "--destination=fhochleitner/wdg:{{inputs.parameters.tag}}"
+      volumeMounts:
+      - name: workspace
+        mountPath: /mnt/out/
+      - name: dockerconfig
+        mountPath: /kaniko/.docker
+    volumes:
+    - name: dockerconfig
+      secret:
+        secretName: regcred
+        items:
+        - key: .dockerconfigjson
+          path: config.json

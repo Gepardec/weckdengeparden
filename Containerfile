@@ -1,5 +1,6 @@
 FROM registry.access.redhat.com/ubi8/ubi-minimal:8.4
 WORKDIR /work/
+USER 1001
 RUN chown 1001 /work \
     && chmod "g+rwX" /work \
     && chown 1001:root /work
