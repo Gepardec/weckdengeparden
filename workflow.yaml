@@ -1,0 +1,57 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  namespace: argo-workflows
+  generateName: weck-den-geparden-
+spec:
+  serviceAccountName: argo
+  entrypoint: cicd
+  arguments:
+    parameters:
+    - name: repo
+      value: https://github.com/Gepardec/weckdengeparden.git
+    - name: revision
+      value: master
+  volumeClaimTemplates:
+  - metadata:
+      name: blubb
+    spec:
+      resources:
+        requests:
+          storage: 500M
+      accessModes: ["ReadWriteOnce"]
+  templates:
+  - name: cicd
+    steps:
+      - - name: checkout
+          template: checkout
+      - - name: build-jar
+          template: build-jar
+  - name: checkout
+    metadata:
+      labels:
+        app: argo
+    container:
+      image: alpine/git
+      name: git
+      command: [sh, -c]
+      args: ["cd /mnt/out/ && git clone {{ workflow.parameters.repo }}"]
+      volumeMounts:
+      - name: blubb
+        mountPath: /mnt/out/
+  - name: build-jar
+    inputs:
+      repo:
+      - name: source
+        path: /mnt/out/
+    metadata:
+      labels:
+        app: argo
+    container:
+      image: "maven:3.8.4-jdk-11"
+      command: [sh, -c]
+      args: ["cd /mnt/out/weckdengeparden/ && mvn clean package -DskipTests"]
+      volumeMounts:
+      - name: blubb
+        mountPath: /mnt/out/
+
