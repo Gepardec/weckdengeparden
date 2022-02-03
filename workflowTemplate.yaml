@@ -13,9 +13,9 @@ spec:
   arguments:
     parameters:
       - name: repo
-        value: https://github.com/Gepardec/weckdengeparden.git
+        value: comes-from-sensor-trigger
       - name: revision
-        value: feature/argo-workflows
+        value: comes-from-sensor-trigger
   volumeClaimTemplates:
     - metadata:
         name: workspace
