@@ -45,7 +45,7 @@ spec:
         image: alpine/git
         name: git
         command: [sh, -c]
-        args: ["cd /mnt/out/ && git clone {{ workflow.parameters.repo }} && cd weckdengeparden && git checkout {{ workflow.parameters.revision }} && git rev-parse --short HEAD > ./git-commit"]
+        args: ["cd /mnt/out/ && git clone {{ workflow.parameters.repo }} && cd weckdengeparden && git checkout $(echo {{ workflow.parameters.revision }} | cut -d '/' -f3-) && git rev-parse --short HEAD > ./git-commit"]
         volumeMounts:
           - name: workspace
             mountPath: /mnt/out/
