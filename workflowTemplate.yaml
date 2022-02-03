@@ -6,18 +6,16 @@ apiVersion: argoproj.io/v1alpha1
 kind: WorkflowTemplate
 metadata:
   namespace: bewerberservice-ci
-  name: bewerberservice-cicd-workflow-tmp
+  name: bewerberservice-cicd-workflow
 spec:
   serviceAccountName: builder
   entrypoint: cicd
   arguments:
     parameters:
       - name: repo
-        value: 'https://github.com/Gepardec/weckdengeparden.git'
+        value: comes-from-sensor-trigger
       - name: revision
-        value: /HEAD/feature/argo-workflows
-      - name: reponame
-        value: weckdengeparden
+        value: comes-from-sensor-trigger
   volumeClaimTemplates:
     - metadata:
         name: workspace
@@ -109,7 +107,7 @@ spec:
       container:
         image: "maven:3.8.4-jdk-11"
         command: [sh, -c]
-        args: ["cd /mnt/out/{{ workflow.parameters.reponame }}/ && mvn clean package -DskipTests"]
+        args: ["cd /mnt/out/weckdengeparden/ && mvn clean package"]
         volumeMounts:
           - name: workspace
             mountPath: /mnt/out/
