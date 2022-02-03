@@ -1,118 +1,130 @@
+# TODO mit oc!
+# oc adm policy add-scc-to-user anyuid -z builder
+# oc create secret docker-registry builder-dockerconfig --docker-username=serviceaccount --docker-password=$(oc sa get-token builder) --docker-email=builder@example.org --docker-server=image-registry.openshift-image-registry.svc.cluster.local:5000
+
 apiVersion: argoproj.io/v1alpha1
 kind: WorkflowTemplate
 metadata:
-  annotations:
-    workflows.argoproj.io/description: 'Build weckdengeparden applicationa and push image'
-    workflows.argoproj.io/maintainer: '@gepardec'
-    workflows.argoproj.io/tags: java, git
-    workflows.argoproj.io/version: '>= 2.9.0'
-  name: weckdengeparden-build
+  namespace: bewerberservice-ci
+  name: bewerberservice-cicd-workflow
 spec:
+  serviceAccountName: builder
+  entrypoint: cicd
   arguments:
     parameters:
-    - name: repo
-      value: https://github.com/Gepardec/weckdengeparden.git
-    - name: revision
-      value: feature/argo-workflows
-  entrypoint: cicd
-  serviceAccountName: argo
-  templates:
-  - inputs: {}
-    metadata: {}
-    name: cicd
-    outputs: {}
-    steps:
-    - - arguments: {}
-        name: checkout
-        template: checkout
-    - - arguments: {}
-        name: build-jar
-        template: build-jar
-    - - arguments:
-          parameters:
-          - name: tag
-            value: '{{ steps.checkout.outputs.parameters.image-tag }}'
-        name: image-build-push
-        template: image-build-push
-  - container:
-      args:
-      - cd /mnt/out/ && git clone {{ workflow.parameters.repo }} && cd weckdengeparden
-        && git checkout {{ workflow.parameters.revision }} && git rev-parse --short
-        HEAD > ./git-commit
-      command:
-      - sh
-      - -c
-      image: alpine/git
-      name: git
-      resources: {}
-      volumeMounts:
-      - mountPath: /mnt/out/
-        name: workspace
-    inputs: {}
-    metadata:
-      labels:
-        app: argo
-    name: checkout
-    outputs:
-      parameters:
-      - name: image-tag
-        valueFrom:
-          path: /mnt/out/weckdengeparden/git-commit
-  - container:
-      args:
-      - cd /mnt/out/weckdengeparden/ && mvn clean package -DskipTests
-      command:
-      - sh
-      - -c
-      image: maven:3.8.4-jdk-11
-      name: ""
-      resources: {}
-      volumeMounts:
-      - mountPath: /mnt/out/
-        name: workspace
-    inputs: {}
-    metadata:
-      labels:
-        app: argo
-    name: build-jar
-    outputs: {}
-  - container:
-      args:
-      - --dockerfile=Containerfile
-      - --context=/mnt/out/weckdengeparden
-      - --destination=image-registry.openshift-image-registry.svc.cluster.local:5000/argo-workflows/wdg:{{inputs.parameters.tag}}
-      - --skip-tls-verify
-      - -vdebug
-      image: gcr.io/kaniko-project/executor:latest
-      name: ""
-      resources: {}
-      volumeMounts:
-      - mountPath: /mnt/out/
-        name: workspace
-      - mountPath: /kaniko/.docker
-        name: dockerconfig
-    inputs:
-      parameters:
-      - name: tag
-    metadata:
-      labels:
-        app: argo
-    name: image-build-push
-    outputs: {}
-    volumes:
-    - name: dockerconfig
-      secret:
-        items:
-        - key: .dockerconfigjson
-          path: config.json
-        secretName: argo-sa-dockercfg-2
+      - name: repo
+        value: https://github.com/Gepardec/weckdengeparden.git
+      - name: revision
+        value: feature/argo-workflows
   volumeClaimTemplates:
-  - metadata:
-      creationTimestamp: null
-      name: workspace
-    spec:
-      accessModes:
-      - ReadWriteOnce
-      resources:
-        requests:
-          storage: 500M
+    - metadata:
+        name: workspace
+      spec:
+        resources:
+          requests:
+            storage: 500M
+        accessModes: ["ReadWriteOnce"]
+  templates:
+    - name: cicd
+      steps:
+        - - name: checkout
+            template: checkout
+        - - name: build-jar
+            template: build-jar
+        - - name: image-build-push
+            template: image-build-push
+            arguments:
+              parameters:
+                - name: tag
+                  value: "{{ steps.checkout.outputs.parameters.image-tag }}"
+    - name: checkout
+      metadata:
+        labels:
+          app: argo
+      container:
+        image: alpine/git
+        name: git
+        command: [sh, -c]
+        args: ["cd /mnt/out/ && git clone {{ workflow.parameters.repo }} && cd weckdengeparden && git checkout {{ workflow.parameters.revision }} && git rev-parse --short HEAD > ./git-commit"]
+        volumeMounts:
+          - name: workspace
+            mountPath: /mnt/out/
+      outputs:
+        parameters:
+          - name: image-tag
+            valueFrom:
+              path: /mnt/out/weckdengeparden/git-commit
+    - name: build-jar
+      metadata:
+        labels:
+          app: argo
+      container:
+        image: "maven:3.8.4-jdk-11"
+        command: [sh, -c]
+        args: ["cd /mnt/out/weckdengeparden/ && mvn clean package -DskipTests"]
+        volumeMounts:
+          - name: workspace
+            mountPath: /mnt/out/
+    - name: image-build-push
+      inputs:
+        parameters:
+          - name: tag
+      metadata:
+        labels:
+          app: argo
+      container:
+        image: gcr.io/kaniko-project/executor:latest
+        args:
+          - --dockerfile=Containerfile
+          - --context=/mnt/out/weckdengeparden
+          - --destination=image-registry.openshift-image-registry.svc.cluster.local:5000/bewerberservice-ci/wdg:{{inputs.parameters.tag}}
+          - --skip-tls-verify
+        volumeMounts:
+          - name: workspace
+            mountPath: /mnt/out/
+          - name: dockerconfig
+            mountPath: /kaniko/.docker
+      volumes:
+        - name: dockerconfig
+          secret:
+            secretName: builder-dockerconfig
+            items:
+              - key: .dockerconfigjson
+                path: config.json
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: workflow-role
+rules:
+  # pod get/watch is used to identify the container IDs of the current pod
+  # pod patch is used to annotate the step's outputs back to controller (e.g. artifact location)
+  - apiGroups:
+      - ""
+    resources:
+      - pods
+    verbs:
+      - get
+      - watch
+      - patch
+  # logs get/watch are used to get the pods logs for script outputs, and for log archival
+  - apiGroups:
+      - ""
+    resources:
+      - pods/log
+    verbs:
+      - get
+      - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: workflow-binding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: workflow-role
+subjects:
+  - kind: ServiceAccount
+    name: builder
+---
