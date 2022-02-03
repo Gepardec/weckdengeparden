@@ -29,6 +29,20 @@ spec:
         key: secret
       insecure: false
       active: true
+    bewerberservice-ci:
+      owner: "Gepardec"
+      repository: "weckdengeparden-ci"
+      webhook:
+        endpoint: "/create"
+        port: "12000"
+        method: "POST"
+      events:
+        - "create"
+      webhookSecret:
+        name: github-webhook-secret
+        key: secret
+      insecure: false
+      active: true
       contentType: "json"
 ---
 apiVersion: route.openshift.io/v1
@@ -51,7 +65,7 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Sensor
 metadata:
-  name: log
+  name: bewerberservice
 spec:
   template:
     serviceAccountName: operate-workflow-sa
@@ -102,6 +116,56 @@ spec:
                   clusterScope: false
 ---
 apiVersion: argoproj.io/v1alpha1
+kind: Sensor
+metadata:
+  name: bewerberservice-ci
+spec:
+  template:
+    serviceAccountName: create-argo-application-sa
+  dependencies:
+    - name: github-bewerberservice
+      eventSourceName: github
+      eventName: bewerberservice-ci
+  triggers:
+    - template:
+        name: log-trigger
+        log:
+          intervalSeconds: 20
+    - template:
+        name: create-argo-application-trigger
+        k8s:
+          operation: create
+          parameters:
+            - src:
+                dependencyName: github-bewerberservice
+                dataKey: body.ref
+              dest: spec.source.targetRevision
+            - src:
+                dependencyName: github-bewerberservice
+                dataTemplate: "weckdengeparden-ci-{{ .Input.body.ref }}"
+              dest: metadata.name
+          source:
+            resource:
+              apiVersion: argoproj.io/v1alpha1
+              kind: Application
+              metadata:
+                name: gets-set-from-parameter
+                namespace: openshift-gitops
+              spec:
+                destination:
+                  namespace: bewerberservice
+                  server: https://kubernetes.default.svc
+                project: default
+                source:
+                  path: .
+                  repoURL: https://github.com/gepardec/weckdengeparden-ci
+                  targetRevision: gets-set-from-parameter
+                syncPolicy:
+                  automated:
+                    prune: true
+                    selfHeal: true
+---
+apiVersion: argoproj.io/v1alpha1
 kind: EventBus
 metadata:
   name: default
@@ -109,11 +173,15 @@ spec:
   nats:
     native: {}
 ---
-
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: operate-workflow-sa
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: create-argo-application-sa
 ---
 # Similarly you can use a ClusterRole and ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
@@ -132,6 +200,18 @@ rules:
       - clusterworkflowtemplates
 ---
 apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: create-argo-application-role
+rules:
+  - apiGroups:
+      - argoproj.io
+    verbs:
+      - "*"
+    resources:
+      - applications
+---
+apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: operate-workflow-role-binding
@@ -142,6 +222,19 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: operate-workflow-sa
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: create-argo-application-binding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: create-argo-application-role
+subjects:
+  - kind: ServiceAccount
+    name: create-argo-application-sa
+    namespace: bewerberservice-ci
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
@@ -179,4 +272,3 @@ subjects:
   - kind: ServiceAccount
     name: default
 ---
-
