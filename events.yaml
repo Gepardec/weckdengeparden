@@ -76,6 +76,10 @@ spec:
                 dependencyName: github-bewerberservice
                 dataKey: body.ref
               dest: spec.arguments.parameters.1.value
+            - src:
+                dependencyName: github-bewerberservice
+                dataKey: body.repository.name
+              dest: spec.arguments.parameters.2.value
           operation: submit
           source:
             resource:
@@ -89,6 +93,8 @@ spec:
                     - name: repo
                       value: must get set from payload
                     - name: revision
+                      value: must get set from payload
+                    - name: reponame
                       value: must get set from payload
                 entrypoint: cicd
                 workflowTemplateRef:
