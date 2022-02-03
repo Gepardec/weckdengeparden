@@ -71,9 +71,10 @@ spec:
     container:
       image: gcr.io/kaniko-project/executor:latest
       args:
-      - "--dockerfile=Containerfile"
-      - "--context=/mnt/out/weckdengeparden"
-      - "--destination=fhochleitner/wdg:{{inputs.parameters.tag}}"
+        - --dockerfile=Containerfile
+        - --context=/mnt/out/weckdengeparden
+        - --destination=image-registry.openshift-image-registry.svc.cluster.local:5000/argo-workflows/wdg:{{inputs.parameters.tag}}
+        - --skip-tls-verify
       volumeMounts:
       - name: workspace
         mountPath: /mnt/out/
@@ -82,7 +83,7 @@ spec:
     volumes:
     - name: dockerconfig
       secret:
-        secretName: regcred
+        secretName: argo-sa-dockercfg-2
         items:
         - key: .dockerconfigjson
           path: config.json
