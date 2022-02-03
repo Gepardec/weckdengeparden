@@ -61,7 +61,7 @@ spec:
       container:
         image: "maven:3.8.4-jdk-11"
         command: [sh, -c]
-        args: ["cd /mnt/out/weckdengeparden/ && mvn clean package -DskipTests"]
+        args: ["cd /mnt/out/weckdengeparden/ && mvn clean package"]
         volumeMounts:
           - name: workspace
             mountPath: /mnt/out/

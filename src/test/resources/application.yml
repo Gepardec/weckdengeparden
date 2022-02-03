@@ -1,0 +1,5 @@
+ApplicationMailer:
+  Default: "ignore@me.at"
+personio:
+  company_id: "COMPANY_ID"
+  access_token: "ACCESS_TOKEN"
