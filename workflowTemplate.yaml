@@ -45,6 +45,8 @@ spec:
               parameters:
                 - name: tag
                   value: "{{ steps.extract-tag.outputs.parameters.image-tag }}"
+                - name: namespace
+                  value: "{{ steps.parse-branch.outputs.parameters.namespace }}"
         - - name: deploy-new-version
             template: deploy-new-version
             arguments:
@@ -59,15 +61,29 @@ spec:
         image: busybox
         name: busybox
         command: [sh, -c]
-        args: ["cd /mnt/out/ && touch branch && echo {{ workflow.parameters.revision }} | cut -d '/' -f3- | cat > branch"] #
+        args:
+          -| 
+            cd /mnt/out/ \
+            && touch branch \
+            && echo {{ workflow.parameters.revision }} | cut -d '/' -f3- | cat > branch \
+            && touch namespace \
+            && echo $NAMESPACE > namespace
         volumeMounts:
           - name: workspace
             mountPath: /mnt/out/
+        env:
+          - name: NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
       outputs:
         parameters:
           - name: branch
             valueFrom:
               path: /mnt/out/branch
+          - name: namespace
+            valueFrom:
+              path: /mnt/out/namespace
     - name: checkout
       inputs:
         parameters:
@@ -115,6 +131,7 @@ spec:
       inputs:
         parameters:
           - name: tag
+          - name: namespace
       metadata:
         labels:
           app: argo
@@ -123,13 +140,8 @@ spec:
         args:
           - --dockerfile=Containerfile
           - --context=/mnt/out/{{ workflow.parameters.reponame }} #$(cat /etc/podinfo/namespace)
-          - --destination=image-registry.openshift-image-registry.svc.cluster.local:5000/bewerberservice-ci/{{ workflow.parameters.reponame }}:{{ inputs.parameters.tag }}
+          - --destination=image-registry.openshift-image-registry.svc.cluster.local:5000/{{ inputs.parameters.namespace }}/{{ workflow.parameters.reponame }}:{{ inputs.parameters.tag }}
           - --skip-tls-verify
-        env:
-        - name: NAMESPACE
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.namespace
         volumeMounts:
           - name: workspace
             mountPath: /mnt/out/
