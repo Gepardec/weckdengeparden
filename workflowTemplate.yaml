@@ -1,6 +1,7 @@
 # TODO mit oc!
 # oc adm policy add-scc-to-user anyuid -z builder
 # oc create secret docker-registry builder-dockerconfig --docker-username=serviceaccount --docker-password=$(oc sa get-token builder) --docker-email=builder@example.org --docker-server=image-registry.openshift-image-registry.svc.cluster.local:5000
+# Diese File sollte nicht mehr verwendet werden, da in gepardec-ci verschoben!
 
 apiVersion: argoproj.io/v1alpha1
 kind: WorkflowTemplate
