@@ -10,4 +10,4 @@ COPY target/lib/* /work/lib/
 
 EXPOSE 8080
 
-CMD ["java","-jar application.jar -Dquarkus.http.host=0.0.0.0"]
+CMD ["java","-jar","application.jar","-Dquarkus.http.host=0.0.0.0"]
