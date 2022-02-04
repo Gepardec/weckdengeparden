@@ -29,7 +29,7 @@ spec:
         key: secret
       insecure: false
       active: true
-    bewerberservice-ci:
+    bewerberservice-ci-create:
       owner: "Gepardec"
       repository: "weckdengeparden-ci"
       webhook:
@@ -38,6 +38,21 @@ spec:
         method: "POST"
       events:
         - "create"
+      webhookSecret:
+        name: github-webhook-secret
+        key: secret
+      insecure: false
+      active: true
+      contentType: "json"
+    bewerberservice-ci-delete:
+      owner: "Gepardec"
+      repository: "weckdengeparden-ci"
+      webhook:
+        endpoint: "/delete"
+        port: "12000"
+        method: "POST"
+      events:
+        - "delete"
       webhookSecret:
         name: github-webhook-secret
         key: secret
@@ -118,14 +133,14 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Sensor
 metadata:
-  name: bewerberservice-ci
+  name: bewerberservice-ci-create-argo-application
 spec:
   template:
     serviceAccountName: create-argo-application-sa
   dependencies:
     - name: github-bewerberservice
       eventSourceName: github
-      eventName: bewerberservice-ci
+      eventName: bewerberservice-ci-create
   triggers:
     - template:
         name: log-trigger
@@ -151,6 +166,8 @@ spec:
               metadata:
                 name: gets-set-from-parameter
                 namespace: openshift-gitops
+                finalizers:
+                  - resources-finalizer.argocd.argoproj.io
               spec:
                 destination:
                   namespace: bewerberservice
@@ -164,6 +181,39 @@ spec:
                   automated:
                     prune: true
                     selfHeal: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Sensor
+metadata:
+  name: bewerberservice-ci-delete-argo-application
+spec:
+  template:
+    serviceAccountName: create-argo-application-sa
+  dependencies:
+    - name: github-bewerberservice
+      eventSourceName: github
+      eventName: bewerberservice-ci-delete
+  triggers:
+    - template:
+        name: log-trigger
+        log:
+          intervalSeconds: 20
+    - template:
+        name: delete-argo-application-trigger
+        k8s:
+          operation: delete
+          parameters:
+            - src:
+                dependencyName: github-bewerberservice
+                dataTemplate: "weckdengeparden-ci-{{ .Input.body.ref }}"
+              dest: metadata.name
+          source:
+            resource:
+              apiVersion: argoproj.io/v1alpha1
+              kind: Application
+              metadata:
+                name: gets-set-from-parameter
+                namespace: openshift-gitops
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: EventBus
