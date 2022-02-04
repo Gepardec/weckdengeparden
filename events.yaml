@@ -93,7 +93,7 @@ spec:
           - path: body.ref
             type: string
             value:
-              - "master"
+              - "feature/argo-workflows"
   triggers:
     - template:
         name: log-trigger
