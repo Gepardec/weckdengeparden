@@ -88,6 +88,12 @@ spec:
     - name: github-bewerberservice
       eventSourceName: github
       eventName: bewerberservice
+      filters:
+        data:
+          - path: body.ref
+            type: string
+            value:
+              - "master"
   triggers:
     - template:
         name: log-trigger
