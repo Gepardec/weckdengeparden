@@ -28,7 +28,7 @@ public class Base64LengthValidator implements ConstraintValidator<Base64Length, 
         final long padding = calculatePadding(value);
         final long size = (long) ((double) length * 0.75) - padding;
         //@WINStage3: Da hat sich wohl ein Fehler in den Vergleichsoperatoren eingeschlichen.
-        return (size >= minLength && size >= maxLength);
+        return (size >= minLength && size <= maxLength);
     }
 
     private long calculatePadding(String value) {

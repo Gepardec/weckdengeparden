@@ -45,7 +45,7 @@ public class RequestInputFilter implements ContainerRequestFilter {
         if(pathMatcher.matches()) {
             String input;
 
-            //\u000d extract input stream
+            // extract input stream
             try (BufferedReader br = new BufferedReader(new InputStreamReader(ctx.getEntityStream()))) {
                 input = br.lines().collect(Collectors.joining("\n"));
             }
