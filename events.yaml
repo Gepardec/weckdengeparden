@@ -1,0 +1,330 @@
+apiVersion: v1
+data:
+  secret: amtlamhkZW5qZHN2Ym9ld2V6dWl1NDNyZWdo
+kind: Secret
+metadata:
+  name: github-webhook-secret
+---
+apiVersion: argoproj.io/v1alpha1
+kind: EventSource
+metadata:
+  name: github
+spec:
+  service:
+    ports:
+      - port: 12000
+        targetPort: 12000
+  github:
+    bewerberservice:
+      owner: "Gepardec"
+      repository: "weckdengeparden"
+      webhook:
+        endpoint: "/push"
+        port: "12000"
+        method: "POST"
+      events:
+        - "push"
+      webhookSecret:
+        name: github-webhook-secret
+        key: secret
+      insecure: false
+      active: true
+    bewerberservice-ci-create:
+      owner: "Gepardec"
+      repository: "weckdengeparden-ci"
+      webhook:
+        endpoint: "/create"
+        port: "12000"
+        method: "POST"
+      events:
+        - "create"
+      webhookSecret:
+        name: github-webhook-secret
+        key: secret
+      insecure: false
+      active: true
+      contentType: "json"
+    bewerberservice-ci-delete:
+      owner: "Gepardec"
+      repository: "weckdengeparden-ci"
+      webhook:
+        endpoint: "/delete"
+        port: "12000"
+        method: "POST"
+      events:
+        - "delete"
+      webhookSecret:
+        name: github-webhook-secret
+        key: secret
+      insecure: false
+      active: true
+      contentType: "json"
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  labels:
+    controller: eventsource-controller
+    eventsource-name: github
+    owner-name: github
+  name: github-webhook
+spec:
+  host: ""
+  tls:
+    termination: edge
+  to:
+    kind: ""
+    name: github-eventsource-svc
+    weight: null
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Sensor
+metadata:
+  name: bewerberservice
+spec:
+  template:
+    serviceAccountName: operate-workflow-sa
+  dependencies:
+    - name: github-bewerberservice
+      eventSourceName: github
+      eventName: bewerberservice
+      filters:
+        data:
+          - path: body.ref
+            type: string
+            value:
+              - "feature/argo-workflows"
+  triggers:
+    - template:
+        name: log-trigger
+        log:
+          intervalSeconds: 20
+    - template:
+        name: bewerberservice-cicd-workflow-trigger
+        argoWorkflow:
+          parameters:
+            - src:
+                dependencyName: github-bewerberservice
+                dataKey: body.repository.clone_url
+              dest: spec.arguments.parameters.0.value
+            - src:
+                dependencyName: github-bewerberservice
+                dataKey: body.ref
+              dest: spec.arguments.parameters.1.value
+            - src:
+                dependencyName: github-bewerberservice
+                dataKey: body.repository.name
+              dest: spec.arguments.parameters.2.value
+          operation: submit
+          source:
+            resource:
+              apiVersion: argoproj.io/v1alpha1
+              kind: Workflow
+              metadata:
+                generateName: bewerberservice-cicd-workflow-trigger-
+              spec:
+                arguments:
+                  parameters:
+                    - name: repo
+                      value: must get set from payload
+                    - name: revision
+                      value: must get set from payload
+                    - name: reponame
+                      value: must get set from payload
+                entrypoint: cicd
+                workflowTemplateRef:
+                  name: bewerberservice-cicd-workflow
+                  clusterScope: false
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Sensor
+metadata:
+  name: bewerberservice-ci-create-argo-application
+spec:
+  template:
+    serviceAccountName: create-argo-application-sa
+  dependencies:
+    - name: github-bewerberservice
+      eventSourceName: github
+      eventName: bewerberservice-ci-create
+  triggers:
+    - template:
+        name: log-trigger
+        log:
+          intervalSeconds: 20
+    - template:
+        name: create-argo-application-trigger
+        k8s:
+          operation: create
+          parameters:
+            - src:
+                dependencyName: github-bewerberservice
+                dataKey: body.ref
+              dest: spec.source.targetRevision
+            - src:
+                dependencyName: github-bewerberservice
+                dataTemplate: "weckdengeparden-ci-{{ .Input.body.ref }}"
+              dest: metadata.name
+          source:
+            resource:
+              apiVersion: argoproj.io/v1alpha1
+              kind: Application
+              metadata:
+                name: gets-set-from-parameter
+                namespace: openshift-gitops
+                finalizers:
+                  - resources-finalizer.argocd.argoproj.io
+              spec:
+                destination:
+                  namespace: bewerberservice
+                  server: https://kubernetes.default.svc
+                project: default
+                source:
+                  path: .
+                  repoURL: https://github.com/gepardec/weckdengeparden-ci
+                  targetRevision: gets-set-from-parameter
+                syncPolicy:
+                  automated:
+                    prune: true
+                    selfHeal: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Sensor
+metadata:
+  name: bewerberservice-ci-delete-argo-application
+spec:
+  template:
+    serviceAccountName: create-argo-application-sa
+  dependencies:
+    - name: github-bewerberservice
+      eventSourceName: github
+      eventName: bewerberservice-ci-delete
+  triggers:
+    - template:
+        name: log-trigger
+        log:
+          intervalSeconds: 20
+    - template:
+        name: delete-argo-application-trigger
+        k8s:
+          operation: delete
+          parameters:
+            - src:
+                dependencyName: github-bewerberservice
+                dataTemplate: "weckdengeparden-ci-{{ .Input.body.ref }}"
+              dest: metadata.name
+          source:
+            resource:
+              apiVersion: argoproj.io/v1alpha1
+              kind: Application
+              metadata:
+                name: gets-set-from-parameter
+                namespace: openshift-gitops
+---
+apiVersion: argoproj.io/v1alpha1
+kind: EventBus
+metadata:
+  name: default
+spec:
+  nats:
+    native: {}
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: operate-workflow-sa
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: create-argo-application-sa
+---
+# Similarly you can use a ClusterRole and ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: operate-workflow-role
+rules:
+  - apiGroups:
+      - argoproj.io
+    verbs:
+      - "*"
+    resources:
+      - workflows
+      - workflowtemplates
+      - cronworkflows
+      - clusterworkflowtemplates
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: create-argo-application-role
+rules:
+  - apiGroups:
+      - argoproj.io
+    verbs:
+      - "*"
+    resources:
+      - applications
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: operate-workflow-role-binding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: operate-workflow-role
+subjects:
+  - kind: ServiceAccount
+    name: operate-workflow-sa
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: create-argo-application-binding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: create-argo-application-role
+subjects:
+  - kind: ServiceAccount
+    name: create-argo-application-sa
+    namespace: bewerberservice-ci
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: workflow-role
+rules:
+  # pod get/watch is used to identify the container IDs of the current pod
+  # pod patch is used to annotate the step's outputs back to controller (e.g. artifact location)
+  - apiGroups:
+      - ""
+    resources:
+      - pods
+    verbs:
+      - get
+      - watch
+      - patch
+  # logs get/watch are used to get the pods logs for script outputs, and for log archival
+  - apiGroups:
+      - ""
+    resources:
+      - pods/log
+    verbs:
+      - get
+      - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: workflow-role-binding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: workflow-role
+subjects:
+  - kind: ServiceAccount
+    name: default
+---

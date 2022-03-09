@@ -1,0 +1,18 @@
+## Logging configurations
+quarkus:
+  log:
+    console:
+      enable: true
+      level: ALL
+ApplicationMailer:
+  Default: "ignore@me.at"
+personio:
+  company_id: "COMPANY_ID"
+  access_token: "ACCESS_TOKEN"
+personio/mp-rest/scope: "javax.enterprise.context.RequestScoped"
+personio/mp-rest/connectTimeout: 2000
+personio/mp-rest/readTimeout: 2000
+mp:
+  opentracing:
+    server:
+      operation-name-provider: "http-path"

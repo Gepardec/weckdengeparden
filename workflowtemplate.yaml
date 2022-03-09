@@ -1,0 +1,232 @@
+# TODO mit oc!
+# oc adm policy add-scc-to-user anyuid -z builder
+# oc create secret docker-registry builder-dockerconfig --docker-username=serviceaccount --docker-password=$(oc sa get-token builder) --docker-email=builder@example.org --docker-server=image-registry.openshift-image-registry.svc.cluster.local:5000
+# Diese File sollte nicht mehr verwendet werden, da in gepardec-ci verschoben!
+
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  namespace: bewerberservice-ci
+  name: bewerberservice-cicd-workflow
+spec:
+  serviceAccountName: builder
+  entrypoint: cicd
+  arguments:
+    parameters:
+      - name: repo
+        value: comes-from-sensor-trigger
+      - name: revision
+        value: comes-from-sensor-trigger
+  volumeClaimTemplates:
+    - metadata:
+        name: workspace
+      spec:
+        resources:
+          requests:
+            storage: 500M
+        accessModes: ["ReadWriteOnce"]
+  templates:
+    - name: cicd
+      steps:
+        - - name: parse-branch
+            template: parse-branch
+        - - name: checkout
+            template: checkout
+            arguments:
+              parameters:
+                - name: branch
+                  value: "{{ steps.parse-branch.outputs.parameters.branch }}"
+        - - name: extract-tag
+            template: extract-tag
+        - - name: build-jar
+            template: build-jar
+        - - name: image-build-push
+            template: image-build-push
+            arguments:
+              parameters:
+                - name: tag
+                  value: "{{ steps.extract-tag.outputs.parameters.image-tag }}"
+                - name: namespace
+                  value: "{{ steps.parse-branch.outputs.parameters.namespace }}"
+        - - name: deploy-new-version
+            template: deploy-new-version
+            arguments:
+              parameters:
+                - name: tag
+                  value: "{{ steps.extract-tag.outputs.parameters.image-tag }}"
+    - name: parse-branch
+      metadata:
+        labels:
+          app: argo
+      container:
+        image: busybox
+        name: busybox
+        command: [sh, -c]
+        args:
+          -|
+            cd /mnt/out/ \
+            && touch branch \
+            && echo {{ workflow.parameters.revision }} | cut -d '/' -f3- | cat > branch \
+            && touch namespace \
+            && echo $NAMESPACE > namespace
+        volumeMounts:
+          - name: workspace
+            mountPath: /mnt/out/
+        env:
+          - name: NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+      outputs:
+        parameters:
+          - name: branch
+            valueFrom:
+              path: /mnt/out/branch
+          - name: namespace
+            valueFrom:
+              path: /mnt/out/namespace
+    - name: checkout
+      inputs:
+        parameters:
+          - name: branch
+      metadata:
+        labels:
+          app: argo
+      container:
+        image: alpine/git
+        name: git
+        command: [sh, -c]
+        args: ["cd /mnt/out/ && git clone {{ workflow.parameters.repo }} && cd {{ workflow.parameters.reponame }} && git checkout {{inputs.parameters.branch}}"]
+        volumeMounts:
+          - name: workspace
+            mountPath: /mnt/out/
+    - name: extract-tag
+      metadata:
+        labels:
+          app: argo
+      container:
+        image: alpine/git
+        name: git
+        command: [sh, -c]
+        args: ["cd /mnt/out/{{ workflow.parameters.reponame }} && git rev-parse --short HEAD > ../git-commit"]
+        volumeMounts:
+          - name: workspace
+            mountPath: /mnt/out/
+      outputs:
+        parameters:
+          - name: image-tag
+            valueFrom:
+              path: /mnt/out/git-commit
+    - name: build-jar
+      metadata:
+        labels:
+          app: argo
+      container:
+        image: "maven:3.8.4-jdk-11"
+        command: [sh, -c]
+        args: ["cd /mnt/out/weckdengeparden/ && mvn clean package"]
+        volumeMounts:
+          - name: workspace
+            mountPath: /mnt/out/
+    - name: image-build-push
+      inputs:
+        parameters:
+          - name: tag
+          - name: namespace
+      metadata:
+        labels:
+          app: argo
+      container:
+        image: gcr.io/kaniko-project/executor:latest
+        args:
+          - --dockerfile=Containerfile
+          - --context=/mnt/out/{{ workflow.parameters.reponame }} #$(cat /etc/podinfo/namespace)
+          - --destination=image-registry.openshift-image-registry.svc.cluster.local:5000/{{ inputs.parameters.namespace }}/{{ workflow.parameters.reponame }}:{{ inputs.parameters.tag }}
+          - --skip-tls-verify
+        volumeMounts:
+          - name: workspace
+            mountPath: /mnt/out/
+          - name: dockerconfig
+            mountPath: /kaniko/.docker
+          - name: podinfo
+            mountPath: /etc/podinfo
+      volumes:
+        - name: dockerconfig
+          secret:
+            secretName: builder-dockerconfig
+            items:
+              - key: .dockerconfigjson
+                path: config.json
+        - name: podinfo
+          downwardAPI:
+            items:
+              - path: "namespace"
+                fieldRef:
+                  fieldPath: metadata.namespace
+    - name: deploy-new-version
+      inputs:
+        parameters:
+          - name: tag
+      metadata:
+        labels:
+          app: argo
+      container:
+        image: alpine/git
+        command: [sh, -c]
+        args:
+        - |
+           cd /mnt/out \
+           && echo "token: $token" \
+           && echo "repository: $repository" \
+           && git clone $cloneurl || true\
+           && cd {{ workflow.parameters.reponame }}-ci \
+           && sed -i "s/tag: \w\{7\}/tag: {{ inputs.parameters.tag }}/g" values.yaml \
+           && git config --global user.name "argo-ci" \
+           && git config --global user.email "argo-ci@gepardec.com" \
+           && git add . \
+           && git commit -m "updated image version to tag {{ inputs.parameters.tag }}" \
+           && git push
+        volumeMounts:
+          - name: workspace
+            mountPath: /mnt/out/
+        envFrom:
+        - secretRef:
+            name: "{{ workflow.parameters.reponame }}-infra"
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: workflow-role
+rules:
+  # pod get/watch is used to identify the container IDs of the current pod
+  # pod patch is used to annotate the step's outputs back to controller (e.g. artifact location)
+  - apiGroups:
+      - ""
+    resources:
+      - pods
+    verbs:
+      - get
+      - watch
+      - patch
+  # logs get/watch are used to get the pods logs for script outputs, and for log archival
+  - apiGroups:
+      - ""
+    resources:
+      - pods/log
+    verbs:
+      - get
+      - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: workflow-binding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: workflow-role
+subjects:
+  - kind: ServiceAccount
+    name: builder
+---
