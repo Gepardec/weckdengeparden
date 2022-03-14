@@ -213,3 +213,4 @@ spec:
               metadata:
                 name: gets-set-from-parameter
                 namespace: openshift-gitops
+---
