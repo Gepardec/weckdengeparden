@@ -32,8 +32,8 @@ spec:
       events:
         - "create"
       webhookSecret:
-        name: github-webhook-secret
-        key: secret
+        name: workflow-weckdengeparden
+        key: webhook-secret
       insecure: false
       active: true
       contentType: "json"
