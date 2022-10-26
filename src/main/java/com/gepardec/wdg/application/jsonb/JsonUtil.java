@@ -9,7 +9,7 @@ import java.nio.charset.StandardCharsets;
 
 public class JsonUtil {
 
-    private static JsonbSerializer<InputStream> inputStreamJsonbSerializer = new InputStreamSerializer();
+    private static final JsonbSerializer<InputStream> inputStreamJsonbSerializer = new InputStreamSerializer();
 
     private JsonUtil() {
     }

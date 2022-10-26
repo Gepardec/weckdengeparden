@@ -47,7 +47,7 @@ public class RestGUI extends JFrame {
     private JLabel xingLabel;
     private JButton submitButton;
     private JTextArea messageTextArea;
-    private JComboBox sourceComboBox;
+    private JComboBox<Source> sourceComboBox;
     final static String utf8 = "utf-8";
     final static String WDG_ITANDTEL = "https://weckdengeparden-57-services.cloud.itandtel.at";
 
@@ -67,7 +67,8 @@ public class RestGUI extends JFrame {
     }
 
     public RestGUI() {
-        sourceComboBox.setModel(new DefaultComboBoxModel(Source.values()));
+        var comboBox = new DefaultComboBoxModel<>(Source.values());
+        sourceComboBox.setModel(comboBox);
         submitButton.addActionListener(e -> {
 
 
