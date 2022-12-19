@@ -14,7 +14,7 @@ Deshalb haben wir drei Challenges für dich - wähle eine Challenge aus und bewi
 
 Schick uns deine Bewerbung mittels REST-Call. Hier ein paar Infos für dich die nützlich sein könnten:
 
-`GET https://weckdengeparden-57-services.cloud.itandtel.at/challenge/1` +
+`GET https://<base_url>/challenge/1` +
 
 ==== Success Response
 
@@ -29,7 +29,7 @@ Schick uns deine Bewerbung mittels REST-Call. Hier ein paar Infos für dich die 
   }
 ]
 ----
-`POST https://weckdengeparden-57-services.cloud.itandtel.at/challenge/1/answer` +
+`POST https://<base_url>/challenge/1/answer` +
 
 .Request-Body
 [source,json]
